@@ -1,3 +1,4 @@
+import "windi.css";
 import Head from "next/head";
 
 export default function Home() {
@@ -9,7 +10,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1 className='text-blue-500'>Home</h1>
+        <h1 className='text-red-500 text-9xl'>Home</h1>
       </main>
     </div>
   );

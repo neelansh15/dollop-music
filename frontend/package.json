@@ -10,6 +10,8 @@
   "dependencies": {
     "next": "^11.0.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "windicss": "^3.2.0",
+    "windicss-webpack-plugin": "^1.5.5"
   }
 }
