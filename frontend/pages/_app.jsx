@@ -1,7 +1,7 @@
 import "windi.css";
 import Head from "next/head";
 
-export default function Home() {
+export default function Home({Component, pageProps}) {
   return (
     <div className='container'>
       <Head>
@@ -11,6 +11,8 @@ export default function Home() {
 
       <main>
         <h1 className='text-red-500 text-9xl'>Home</h1>
+
+        <Component {...pageProps} />
       </main>
     </div>
   );
