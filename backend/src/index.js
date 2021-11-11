@@ -16,7 +16,7 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
-const port = 3000;
+const port = 8000;
 
 // anything beginning with "/api" will go into this
 app.use("/api", require("./routes/api"));

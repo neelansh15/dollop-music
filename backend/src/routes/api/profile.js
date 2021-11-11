@@ -13,7 +13,7 @@ router.post("/details", (req, res) => {
       console.log(err);
       return;
     }
-    const collection = client.db("Cluster0").collection("users");
+    const collection = client.db("Dollop").collection("users");
     await collection.insertOne(obj);
     client.close();
   });
