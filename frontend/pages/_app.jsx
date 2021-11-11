@@ -1,5 +1,5 @@
 import "windi.css";
-import Head from "next/head";
+
 
 export default function Home({Component, pageProps}) {
   return (
