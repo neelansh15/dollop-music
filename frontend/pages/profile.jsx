@@ -44,7 +44,9 @@ function profile() {
             subtitle="Lil Nas X"
             imgSrc="#"
             audioLink="#"
-          ></Card>
+          >
+            LALALLALALALLA
+          </Card>
         </div>
       </div>
       <div className="right">
