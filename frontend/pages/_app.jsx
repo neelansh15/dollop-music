@@ -1,19 +1,12 @@
 import "windi.css";
 
-
-export default function Home({Component, pageProps}) {
+export default function Home({ Component }) {
   return (
-    <div className='container'>
-      <Head>
-        <title>Dollop Music</title>
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-
+    <div className="container">
       <main>
-        <h1 className='text-red-500 text-9xl'>Home</h1>
-
-        <Component {...pageProps} />
+        <h1 className="text-red-500 text-9xl">Home</h1>
       </main>
+      <Component />
     </div>
   );
 }

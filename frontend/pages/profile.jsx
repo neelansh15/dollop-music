@@ -1,15 +1,17 @@
+import Card from "../components/Card";
+
 function profile() {
   console.log("ehll");
 
   return (
-    <div className='container'>
-      <div className='left'>
-        <div className='container'>
-          <div className='banner'>
-            <img src='#' alt='' />
+    <div className="container">
+      <div className="left">
+        <div className="container">
+          <div className="banner">
+            <img src="#" alt="" />
           </div>
-          <div className='details'>
-            <img src='#' alt='' />
+          <div className="details">
+            <img src="#" alt="" />
             <div>
               <div>
                 <h1>Some name</h1>
@@ -18,7 +20,7 @@ function profile() {
               <button>Follow</button>
               <button>Chat</button>
             </div>
-            <div className='socials'>
+            <div className="socials">
               <ul>
                 <li>Insta</li>
                 <li>Tweet</li>
@@ -27,7 +29,7 @@ function profile() {
             </div>
           </div>
         </div>
-        <div className='about'>
+        <div className="about">
           <h1>About Me</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Non quod
@@ -36,42 +38,42 @@ function profile() {
             doloribus repudiandae ipsam dolores.
           </p>
         </div>
-        <div className='recent_music'>
+        <div className="recent_music">
           <Card
-            title='Industry'
-            subtitle='Lil Nas X'
-            imgSrc='#'
-            audioLink='#'
+            title="Industry"
+            subtitle="Lil Nas X"
+            imgSrc="#"
+            audioLink="#"
           ></Card>
         </div>
       </div>
-      <div className='right'>
+      <div className="right">
         <div>
           <Card
-            title='Industry'
-            subtitle='Lil Nas X'
-            imgSrc='#'
-            audioLink='#'
+            title="Industry"
+            subtitle="Lil Nas X"
+            imgSrc="#"
+            audioLink="#"
           ></Card>
         </div>
         <div>
           <Card
-            title='Some Body'
-            subtitle='Musician'
-            imgSrc='#'
-            audioLink='None'
+            title="Some Body"
+            subtitle="Musician"
+            imgSrc="#"
+            audioLink="None"
           ></Card>
           <Card
-            title='Some Body'
-            subtitle='Musician'
-            imgSrc='#'
-            audioLink='None'
+            title="Some Body"
+            subtitle="Musician"
+            imgSrc="#"
+            audioLink="None"
           ></Card>
           <Card
-            title='Some Body'
-            subtitle='Musician'
-            imgSrc='#'
-            audioLink='None'
+            title="Some Body"
+            subtitle="Musician"
+            imgSrc="#"
+            audioLink="None"
           ></Card>
         </div>
       </div>
