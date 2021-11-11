@@ -37,12 +37,9 @@ function profile() {
           </p>
         </div>
         <div className='recent_music'>
-          <Card
-            title='Industry'
-            subtitle='Lil Nas X'
-            imgSrc='#'
-            audioLink='#'
-          ></Card>
+          <Card title='Industry' subtitle='Lil Nas X' imgSrc='#' audioLink='#'>
+            LALALLALALALLA
+          </Card>
         </div>
       </div>
       <div className='right'>
