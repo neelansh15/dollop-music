@@ -1,6 +1,8 @@
 .env
 temp_env.js
 
+yarn.lock
+
 package-lock.json
 
 node_modules
