@@ -2,11 +2,10 @@ import "windi.css";
 
 export default function Home({ Component }) {
   return (
-    <div className="container">
+    <div className="h-screen w-full bg-dark-800 text-white">
       <main>
-        <h1 className="text-red-500 text-4xl">Dollop Music</h1>
+        <Component />
       </main>
-      <Component />
     </div>
   );
 }

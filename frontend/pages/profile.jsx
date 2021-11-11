@@ -1,4 +1,4 @@
-import Card from "../components/Card";
+import { Card, CardTitle, CardSubtitle } from "../components/Card";
 
 function profile() {
   console.log("ehll");
@@ -39,13 +39,9 @@ function profile() {
           </p>
         </div>
         <div className="recent_music">
-          <Card
-            title="Industry"
-            subtitle="Lil Nas X"
-            imgSrc="#"
-            audioLink="#"
-          >
-            LALALLALALALLA
+          <Card title="Industry" subtitle="Lil Nas X" imgSrc="#" audioLink="#">
+            <CardTitle>Hello there!</CardTitle>
+            <CardSubtitle>This is amazing</CardSubtitle>
           </Card>
         </div>
       </div>
