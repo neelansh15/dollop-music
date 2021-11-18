@@ -6,10 +6,19 @@ function profile() {
       <div className='left'>
         <div className='container'>
           <div className='banner'>
-            <img src='#' alt='' />
+            <img
+              src='https://images.unsplash.com/photo-1510915361894-db8b60106cb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+              alt=''
+            />
           </div>
-          <div className='details'>
-            <img src='#' alt='' />
+          <div className='details flex bg-light-600'>
+            <img
+              width='150px'
+              aspect-ratio='1'
+              border-radius='50%'
+              src='https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1471&q=80'
+              alt=''
+            />
             <div>
               <div>
                 <h1>Some name</h1>
@@ -36,7 +45,7 @@ function profile() {
             doloribus repudiandae ipsam dolores.
           </p>
         </div>
-        <div className="recent_music">
+        <div className='recent_music'>
           <Card>
             <CardTitle>Hello there!</CardTitle>
             <CardSubtitle>This is amazing</CardSubtitle>
