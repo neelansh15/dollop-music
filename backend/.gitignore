@@ -5,3 +5,4 @@ temp_env.js
 package-lock.json
 
 node_modules
+config.js
