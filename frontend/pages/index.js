@@ -1,15 +1,16 @@
 import Head from "next/head";
+import Home from "../components/Home";
 
-export default function Home() {
+export default function Index() {
   return (
-    <div className='container'>
+    <div>
       <Head>
         <title>Dollop Music</title>
-        <link rel='icon' href='/favicon.ico' />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <h1 className='text-blue-500'>Home</h1>
+        <Home />
       </main>
     </div>
   );
