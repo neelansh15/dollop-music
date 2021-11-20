@@ -2,6 +2,27 @@ var router = require("express").Router();
 const client = require("../../db");
 var ObjectId = require("mongodb").ObjectId;
 
+router.get("/getChats", (req, res) => {
+  const body = req.body;
+  var userId = new ObjectId(req.body.userId);
+  client.connect(async (err, res) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send("err");
+      return;
+    }
+    const collection = client.db("Dollop").collection("users");
+    collection
+      .find({ _id: userId }, { chats: 1 })
+      .find({})
+      .toArray((err, data) => {
+        console.log(data);
+      });
+
+    client.close();
+  });
+});
+
 router.post("/addFollowing", (req, res) => {
   const body = req.body;
   var userId = new ObjectId(req.body.userId);
@@ -25,17 +46,6 @@ router.post("/addFollowing", (req, res) => {
       { _id: followeeId },
       { $push: { followers: userId } },
     );
-    // collection
-    //   .find({ _id: followeeId }, { following: 1 })
-    //   .toArray((err, res) => {
-    //     if (err) {
-    //       console.log(err);
-    //       return;
-    //     }
-    //     if (userId in res) {
-    //       ///add to chat
-    //     }
-    //   });
     client.close();
   });
   res.status(200).send("Added to following");
