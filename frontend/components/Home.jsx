@@ -7,16 +7,19 @@ export default function Home() {
       name: "Music Name 1",
       artists: ["Neelansh", "Vedant"],
       clapCount: 1000,
+      image: "",
     },
     {
       name: "Music Name 2",
       artists: ["KSHMR"],
       clapCount: 2400,
+      image: "",
     },
     {
       name: "Music Name 3",
       artists: ["Lil Nas X", "Drake"],
       clapCount: 579,
+      image: "",
     },
   ];
 
