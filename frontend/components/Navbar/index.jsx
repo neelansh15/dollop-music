@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useStore } from "../../store";
 
-function Navbar() {
+export default function Navbar() {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
 
@@ -32,7 +32,9 @@ function Navbar() {
         <li>
           {user ? (
             <div className="flex items-center space-x-2">
-              <div className="bg-dark-800 py-1 px-4 rounded-lg font-bold">{user.name}</div>
+              <div className="bg-dark-800 py-1 px-4 rounded-lg font-bold">
+                {user.name}
+              </div>
               <button
                 onClick={Logout}
                 className="py-1 px-4 bg-white text-black font-semibold text-md rounded-lg"
@@ -53,5 +55,3 @@ function Navbar() {
     </div>
   );
 }
-
-export default Navbar;
