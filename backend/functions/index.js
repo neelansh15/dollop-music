@@ -1,12 +1,9 @@
 const functions = require("firebase-functions");
-
 const express = require("express");
 const app = express();
 app.use(express.json());
 
 const port = 8000;
-
-console.log(functions.config());
 
 // anything beginning with "/api" will go into this
 app.use("/api", require("./routes/api"));
