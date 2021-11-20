@@ -1,5 +1,5 @@
 var router = require("express").Router();
-const client = require("../../db");
+const { client } = require("../../db");
 var ObjectId = require("mongodb").ObjectId;
 
 router.post("/add_following", (req, res) => {

@@ -1,5 +1,5 @@
 var router = require("express").Router();
-const client = require("../../db");
+const { client } = require("../../db");
 
 router.post("/add_details", (req, res) => {
   const body = req.body;

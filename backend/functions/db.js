@@ -9,6 +9,6 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 const firebaseConfig = config.firebaseConfig;
-const defaultApp = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
 
-module.exports = { client, defaultApp };
+module.exports = { client, firebaseApp };
