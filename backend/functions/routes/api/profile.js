@@ -1,7 +1,7 @@
 var router = require("express").Router();
-const client = require("../../db");
+const { client } = require("../../db");
 
-router.post("/addDetails", (req, res) => {
+router.post("/add_details", (req, res) => {
   const body = req.body;
   const obj = {
     name: body.name ? body.name : "Adam",
@@ -33,7 +33,7 @@ router.post("/addDetails", (req, res) => {
 
 // TBD :( Below this
 
-router.post("/changeDetails", (req, res) => {
+router.post("/change_details", (req, res) => {
   /*
   body has object with details and document id
   */
@@ -64,7 +64,7 @@ router.post("/changeDetails", (req, res) => {
   res.status(200).send("Changed user details");
 });
 
-router.get("/getUserDetails", (req, res) => {
+router.get("/:id", (req, res) => {
   const body = req.body;
   const docId = body.userId;
   client.connect(async (err, res) => {
