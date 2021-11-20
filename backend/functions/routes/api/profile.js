@@ -3,7 +3,6 @@ const client = require("../../db");
 
 router.post("/addDetails", (req, res) => {
   const body = req.body;
-  console.log(req.body);
   const obj = {
     name: body.name ? body.name : "Adam",
     username: body.username ? body.username : "Adam123",
@@ -30,16 +29,18 @@ router.post("/addDetails", (req, res) => {
   res.status(200).send("Added user to db");
 });
 
+// TBD :( Below this
+
 router.post("/changeDetails", (req, res) => {
   /*
   body has object with details and document id
   */
   const body = req.body;
-  console.log(req.body);
-
+  const obj = req.body.obj;
   client.connect(async (err, res) => {
     if (err) {
       console.log(err);
+      res.status(400).send("err");
       return;
     }
     const collection = client.db("Dollop").collection("users");
@@ -47,14 +48,39 @@ router.post("/changeDetails", (req, res) => {
       { documentId: req.body.documentId },
       { $set: obj },
       function (err, res) {
-        if (err) throw err;
+        if (err) {
+          console.log(err);
+          res.status(400).send("err");
+          return;
+        }
         console.log("1 document updated");
-        db.close();
+        client.close();
       },
     );
-    client.close();
   });
   res.status(200).send("Changed user details");
+});
+
+router.get("/getUserDetails", (req, res) => {
+  const body = req.body;
+  const docId = body.userId;
+  client.connect(async (err, res) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send("err");
+      return;
+    }
+    const collection = client.db("Dollop").collection("users");
+    collection.findOne({ documentId: docId }, (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      res.send(result);
+      client.close();
+    });
+  });
 });
 
 module.exports = router;
