@@ -14,6 +14,8 @@ router.post("/addDetails", (req, res) => {
     github: body.github ? body.github : "#",
     image: body.image ? body.image : "https://bit.ly/3HCahMK",
     bannerImage: body.bannerImage ? body.bannerImage : "https://bit.ly/3x2aiVA",
+    followers: [],
+    following: [],
   };
 
   client.connect(async (err, res) => {
@@ -37,6 +39,7 @@ router.post("/changeDetails", (req, res) => {
   */
   const body = req.body;
   const obj = req.body.obj;
+
   client.connect(async (err, res) => {
     if (err) {
       console.log(err);
