@@ -2,7 +2,7 @@ var router = require("express").Router();
 const client = require("../../db");
 var ObjectId = require("mongodb").ObjectId;
 
-router.post("/addFollowing", (req, res) => {
+router.post("/add_following", (req, res) => {
   const body = req.body;
   var userId = new ObjectId(req.body.userId);
 
@@ -41,7 +41,7 @@ router.post("/addFollowing", (req, res) => {
   res.status(200).send("Added to following");
 });
 
-router.post("/removeFollowing", (req, res) => {
+router.post("/remove_following", (req, res) => {
   const body = req.body;
   var userId = new ObjectId(req.body.userId);
 
