@@ -1,20 +1,17 @@
-import Head from 'next/head'
-import { Button } from 'antd'
+import Head from "next/head";
+import Home from "../components/Home";
 
-import 'antd/dist/antd.css'
-
-export default function Home() {
+export default function Index() {
   return (
-    <div className="container">
+    <div>
       <Head>
         <title>Dollop Music</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <h1>Home</h1>
-        <Button>Click me</Button>
+        <Home />
       </main>
-      </div>
-    )
+    </div>
+  );
 }
