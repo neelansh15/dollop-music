@@ -3,10 +3,17 @@ import { useStore } from "../../store";
 
 function Navbar() {
   const user = useStore((state) => state.user);
-  const setUser = useStore((state) => state.setUser)
+  const setUser = useStore((state) => state.setUser);
 
-  function Login(){
-    setUser("test user string")
+  function Login() {
+    // Do login stuff here
+    setUser({
+      name: "Neelansh",
+    });
+  }
+
+  function Logout() {
+    setUser(null);
   }
 
   return (
@@ -23,13 +30,24 @@ function Navbar() {
           <li className="cursor-pointer">Profile</li>
         </Link>
         <li>
-          {user}
-          <button
-            onClick={Login}
-            className="py-1 px-4 bg-white text-black font-semibold text-md rounded-lg"
-          >
-            Login
-          </button>
+          {user ? (
+            <div className="flex items-center space-x-2">
+              <div className="bg-dark-800 py-1 px-4 rounded-lg font-bold">{user.name}</div>
+              <button
+                onClick={Logout}
+                className="py-1 px-4 bg-white text-black font-semibold text-md rounded-lg"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={Login}
+              className="py-1 px-4 bg-white text-black font-semibold text-md rounded-lg"
+            >
+              Login
+            </button>
+          )}
         </li>
       </ul>
     </div>

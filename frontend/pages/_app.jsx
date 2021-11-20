@@ -1,6 +1,8 @@
 import "windi.css";
 import "../assets/css/main.css"
 import Navbar from "../components/Navbar";
+import ReactJkMusicPlayer from 'react-jinke-music-player'
+import 'react-jinke-music-player/assets/index.css'
 
 export default function Home({ Component }) {
   return (
@@ -9,6 +11,9 @@ export default function Home({ Component }) {
       <main>
         <Component />
       </main>
+      <footer>
+        <ReactJkMusicPlayer />
+      </footer>
     </div>
   );
 }

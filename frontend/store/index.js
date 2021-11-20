@@ -10,5 +10,4 @@ export const useStore = create((set) => ({
 
   // Mutations/Actions
   setUser: (payload) => set((state) => ({ user: payload })),
-  logout: () => set((state) => ({ user: null })),
 }));
