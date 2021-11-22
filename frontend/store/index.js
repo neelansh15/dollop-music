@@ -1,6 +1,6 @@
 import create from "zustand";
 
-const useStore = create((set) => ({
+export const useStore = create((set) => ({
   //   bears: 0,
   //   increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
   //   removeAllBears: () => set({ bears: 0 }),
@@ -10,5 +10,4 @@ const useStore = create((set) => ({
 
   // Mutations/Actions
   setUser: (payload) => set((state) => ({ user: payload })),
-  logout: () => set((state) => ({ user: null })),
 }));
