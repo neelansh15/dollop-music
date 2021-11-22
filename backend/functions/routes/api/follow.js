@@ -69,4 +69,31 @@ router.post("/remove_following", (req, res) => {
   res.status(200).send("Removed from following");
 });
 
+router.get("/:id", (req, res) => {
+  const body = req.body;
+  const params = req.params;
+  var userId = new ObjectId(params.id);
+  client.connect(async (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send("err");
+      return;
+    }
+    const collection = client.db("Dollop").collection("users");
+
+    await collection
+      .find({ _id: userId })
+      .project({ _id: 0, followers: 1, following: 1 })
+      .toArray((err, data) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send("Error in finding");
+          return;
+        }
+        console.log(data);
+        res.status(200).send(data);
+      });
+  });
+});
+
 module.exports = router;
