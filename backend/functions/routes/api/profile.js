@@ -1,5 +1,6 @@
 var router = require("express").Router();
 const { client } = require("../../db");
+var ObjectId = require("mongodb").ObjectId;
 
 router.post("/add_details", (req, res) => {
   const body = req.body;
@@ -16,6 +17,7 @@ router.post("/add_details", (req, res) => {
     bannerImage: body.bannerImage ? body.bannerImage : "https://bit.ly/3x2aiVA",
     followers: [],
     following: [],
+    music: [],
   };
 
   client.connect(async (err, res) => {
@@ -66,21 +68,22 @@ router.post("/change_details", (req, res) => {
 
 router.get("/:id", (req, res) => {
   const body = req.body;
-  const docId = body.userId;
-  client.connect(async (err, res) => {
+  const params = req.params;
+  const docId = new ObjectId(params.id);
+  client.connect(async (err, data) => {
     if (err) {
       console.log(err);
       res.status(400).send("err");
       return;
     }
     const collection = client.db("Dollop").collection("users");
-    collection.findOne({ documentId: docId }, (err, result) => {
+    collection.find({ _id: docId }).toArray((err, result) => {
       if (err) {
         console.log(err);
         res.status(400).send("err");
         return;
       }
-      res.send(result);
+      res.status(200).send(result);
       client.close();
     });
   });
