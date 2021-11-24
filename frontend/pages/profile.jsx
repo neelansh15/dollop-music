@@ -1,9 +1,32 @@
 import SecondaryButton from "components/Buttons/Secondary";
+import { Card } from "components/Card";
+import MusicItem from "components/MusicItem";
 import PrimaryButton from "../components/Buttons/Primary";
 
 function profile() {
+  const usersMusic = [
+    {
+      name: "Music Name 1",
+      artists: ["Neelansh", "Vedant"],
+      clapCount: 1000,
+      image: "",
+    },
+    {
+      name: "Music Name 2",
+      artists: ["KSHMR"],
+      clapCount: 2400,
+      image: "",
+    },
+    {
+      name: "Music Name 3",
+      artists: ["Lil Nas X", "Drake"],
+      clapCount: 579,
+      image: "",
+    },
+  ];
   return (
     <div className="max-w-2xl md:max-w-7xl mx-5 md:mx-auto mt-10">
+      {/* Header Card */}
       <div className="p-8 bg-dark-400 flex items-center justify-between rounded-lg">
         <div className="flex items-center space-x-5">
           <img
@@ -18,11 +41,23 @@ function profile() {
         </div>
         <div>
           <div className="space-x-2">
-          <PrimaryButton>Follow</PrimaryButton>
-          <SecondaryButton>Message</SecondaryButton>
+            <PrimaryButton>Follow</PrimaryButton>
+            <SecondaryButton>Message</SecondaryButton>
           </div>
         </div>
       </div>
+      {/* End of Header Card */}
+      {/* User posts section */}
+      <div className="mt-8">
+        <Card>
+          <h1 className="text-xl font-semibold mb-5">Your Music</h1>
+
+          {usersMusic.map((music) => (
+            <MusicItem music={music} isOwner={true} />
+          ))}
+        </Card>
+      </div>
+      {/* End of user posts section */}
     </div>
   );
 }
