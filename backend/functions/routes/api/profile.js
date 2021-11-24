@@ -5,6 +5,7 @@ var ObjectId = require("mongodb").ObjectId;
 router.post("/add_details", (req, res) => {
   const body = req.body;
   const obj = {
+    _id: body.id,
     name: body.name ? body.name : "Adam",
     username: body.username ? body.username : "Adam123",
     tagline: body.tagline ? body.tagline : "No tags",
