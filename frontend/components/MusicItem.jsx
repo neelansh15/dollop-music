@@ -14,13 +14,16 @@ export default function MusicItem({ music, isOwner = false }) {
       </div>
       <div className="flex space-x-2">
         <div className="space-x-2">
-          <i className="fa fa-thumbs-up"></i>
+          {/* <i className="fa fa-thumbs-up"></i> */}
+          <span className="text-xl">👏🏻</span>
           <span>{music.clapCount}</span>
         </div>
         {isOwner == true ? (
           <div>
             <span className="mr-2">|</span>
-            <button className="text-red-500 px-2 focus:(outline-none ring ring-red-600) transition hover:(text-red-600)">Delete</button>
+            <button className="text-red-500 px-2 focus:(outline-none ring ring-red-600) transition hover:(text-red-600)">
+              Delete
+            </button>
           </div>
         ) : (
           <></>
