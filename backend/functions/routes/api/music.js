@@ -82,27 +82,48 @@ router.post("/", (req, res) => {
       res.status(400).send("err");
       return;
     }
+
     var extension = obj.image.split(".").pop();
     console.log("Extension", extension);
     var storage = await bucket
       .upload(__dirname + obj.image, {
         public: true,
         destination: `Images/${obj.userId}/${obj.name}.${extension}`,
+        metadata: {
+          cacheControl: "max-age=31536000",
+          metadata: {
+            firebaseStorageDownloadTokens: `${obj.userId}` + `${obj.name}`,
+          },
+        },
       })
-      .then(() => {
+      .then(err, res => {
+        if (err) {
+          console.log(err);
+          return;
+        }
         console.log("file uploaded.");
       })
       .catch(err => {
         console.error("ERROR:", err);
       });
-
-    console.log(storage);
+    const imgLink =
+      `https://firebasestorage.googleapis.com/v0/b/${
+        bucket.name
+      }/o/${encodeURIComponent(
+        `Images/${obj.userId}/${obj.name}.${extension}`,
+      )}?alt=media&token=${obj.userId}` + `${obj.name}`;
     extension = obj.music.split(".").pop();
     console.log("Extension", extension);
     storage = await bucket
       .upload(__dirname + obj.image, {
         public: true,
         destination: `Music/${obj.userId}/${obj.name}.${extension}`,
+        metadata: {
+          cacheControl: "max-age=31536000",
+          metadata: {
+            firebaseStorageDownloadTokens: `${obj.userId}` + `${obj.name}`,
+          },
+        },
       })
       .then(() => {
         console.log("file uploaded.");
@@ -110,7 +131,14 @@ router.post("/", (req, res) => {
       .catch(err => {
         console.error("ERROR:", err);
       });
-    console.log(storage);
+    const musicLink =
+      `https://firebasestorage.googleapis.com/v0/b/${
+        bucket.name
+      }/o/${encodeURIComponent(
+        `Music/${obj.userId}/${obj.name}.${extension}`,
+      )}?alt=media&token=${obj.userId}` + `${obj.name}`;
+    obj.image = imgLink;
+    obj.music = musicLink;
     const musicCollection = client.db("Dollop").collection("music");
     let musicId = await musicCollection.insertOne(obj);
 
