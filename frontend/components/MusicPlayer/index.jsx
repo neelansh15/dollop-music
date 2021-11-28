@@ -7,6 +7,7 @@ export default function MusicPlayer() {
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState("");
   const [progress, setProgress] = useState("00:00:00");
+  const [percentage, setPercentage] = useState(0);
 
   function convertHMS(value) {
     const sec = parseInt(value, 10); // convert value to number if it's string
@@ -30,8 +31,12 @@ export default function MusicPlayer() {
     const audioPlayer = new Audio(audioFile);
     audioPlayer.addEventListener("ended", () => setPlaying(false));
     audioPlayer.addEventListener("durationchange", () => {
-      const duration = audioPlayer.duration;
-      setDuration(convertHMS(duration));
+      setDuration(convertHMS(audioPlayer.duration));
+    });
+    audioPlayer.addEventListener("timeupdate", () => {
+      const currentTime = audioPlayer.currentTime;
+      setPercentage((currentTime * 100) / audioPlayer.duration);
+      setProgress(convertHMS(currentTime));
     });
     setAudio(audioPlayer);
   }, []);
@@ -64,7 +69,12 @@ export default function MusicPlayer() {
       <div className="w-1/2 md:w-3/4 px-5 md:px-10">
         {/* Line */}
         <div className="relative h-2 w-full bg-teal-600 mt-2">
-          <div className="absolute left-0 top-0 bg-black w-1/4 h-2"></div>
+          <div
+            className="absolute left-0 top-0 bg-black h-2"
+            style={{
+              width: percentage + "%",
+            }}
+          ></div>
         </div>
         <div className="text-xs md:text-sm float-left mt-0.5">{progress}</div>
         <div className="text-xs md:text-sm float-right mt-0.5">{duration}</div>
