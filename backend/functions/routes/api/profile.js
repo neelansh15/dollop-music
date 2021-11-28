@@ -1,9 +1,12 @@
 var router = require("express").Router();
-const { client } = require("../../db");
+const { client, firebaseApp, bucket } = require("../../db");
 var ObjectId = require("mongodb").ObjectId;
+const multer = require("multer");
+let upload = multer({ storage: multer.memoryStorage() });
 
-router.post("/add_details", (req, res) => {
+router.post("/", upload.array("uploadedFile", 5), (req, res) => {
   const body = req.body;
+  body.id = new ObjectId(body.id);
   const obj = {
     _id: body.id,
     name: body.name ? body.name : "Adam",
@@ -27,13 +30,40 @@ router.post("/add_details", (req, res) => {
       res.status(400).send("err");
       return;
     }
+
+    var image = req.files[0];
+    var bannerImage = req.files[0];
+
+    var mimetype = image.mimetype;
+    mimetype = mimetype.split("/");
+    var extension = mimetype[1];
+    console.log(image.buffer);
+    const file = bucket.file(`Images/${obj._id}/${obj.name}.${extension}`);
+    await file.save(image.buffer, { contentType: image.mimetype });
+    file.makePublic();
+    const imgLink = file.publicUrl();
+    obj.image = imgLink;
+
+    mimetype = bannerImage.mimetype;
+    mimetype = mimetype.split("/");
+    extension = mimetype[1];
+    console.log(bannerImage.buffer);
+    const bannerImageFile = bucket.file(
+      `Images/${obj._id}/${obj.name}.${extension}`,
+    );
+    await bannerImageFile.save(bannerImage.buffer, {
+      contentType: bannerImage.mimetype,
+    });
+    bannerImageFile.makePublic();
+    const bannerImageLink = bannerImageFile.publicUrl();
+    obj.bannerImage = bannerImageLink;
     const collection = client.db("Dollop").collection("users");
+    var new_id;
     await collection.insertOne(obj);
     client.close();
   });
   res.status(200).send("Added user to db");
 });
-
 // TBD :( Below this
 
 router.post("/change_details", (req, res) => {
