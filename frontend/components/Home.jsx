@@ -34,7 +34,7 @@ export default function Home() {
             <h1 className="text-xl font-semibold mb-5">Popular Songs</h1>
 
             {popularMusic.map((music) => (
-              <MusicItem music={music} />
+              <MusicItem music={music} key={music.name} />
             ))}
           </Card>
         </div>
