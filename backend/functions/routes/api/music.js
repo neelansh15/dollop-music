@@ -48,7 +48,6 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       music = req.files[i];
     }
   }
-  console.log(image, music);
   const obj = {
     userId: body.userId ? body.userId : -1,
     albumId: body.albumId ? body.albumId : -1,
@@ -107,27 +106,27 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
   res.status(200).send("Added music to db");
 });
 
-// router.get("/:id", (req, res) => {
-//   const body = req.body;
-//   const params = req.params;
-//   const musicId = new ObjectId(params.id);
-//   client.connect(async (err, res) => {
-//     if (err) {
-//       console.log(err);
-//       res.status(400).send("err");
-//       return;
-//     }
-//     const collection = client.db("Dollop").collection("music");
+router.get("/:id", (req, res) => {
+  const body = req.body;
+  const params = req.params;
+  const musicId = new ObjectId(params.id);
+  client.connect(async (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send("err");
+      return;
+    }
+    const collection = client.db("Dollop").collection("music");
 
-//     await collection.find({ _id: musicId }).toArray((err, data) => {
-//       if (err) {
-//         res.status(400).send("Error in finding");
-//         return;
-//       }
-//       res.status(200).send(data);
-//     });
-//     client.close();
-//   });
-// });
+    await collection.find({ _id: musicId }).toArray((err, data) => {
+      if (err) {
+        res.status(400).send("Error in finding");
+        return;
+      }
+      res.status(200).send(data);
+    });
+    client.close();
+  });
+});
 
 module.exports = router;
