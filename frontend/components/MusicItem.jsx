@@ -13,10 +13,10 @@ export default function MusicItem({ music, isOwner = false }) {
         </div>
       </div>
       <div className="flex space-x-2">
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 items-center">
           {/* <i className="fa fa-thumbs-up"></i> */}
-          <span className="text-xl">👏🏻</span>
           <span>{music.clapCount}</span>
+          <span className="text-xl">👏🏻</span>
         </div>
         {isOwner == true ? (
           <div>
