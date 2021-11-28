@@ -3,12 +3,35 @@ const { client, firebaseApp, bucket } = require("../../db");
 var ObjectId = require("mongodb").ObjectId;
 const multer = require("multer");
 let upload = multer({ storage: multer.memoryStorage() });
+const { signup } = require("./users");
 
-router.post("/", upload.array("uploadedFile", 5), (req, res) => {
+router.post("/", upload.array("uploadedFile", 5), async (req, res) => {
   const body = req.body;
-  body.id = new ObjectId(body.id);
+
+  console.log(body.email, body.username, body.password);
+  /*
+  body
+    email
+    username
+    password
+    tagline
+    name
+    about
+    socials
+    image
+    bannerImg
+  */
+
+  let id = await signup(body.email, body.username, body.password);
+  if (id == -1) {
+    res
+      .status(400)
+      .send("Error occurred in adding user with email and password");
+    return;
+  }
+
   const obj = {
-    _id: body.id,
+    _id: id,
     name: body.name ? body.name : "Adam",
     username: body.username ? body.username : "Adam123",
     tagline: body.tagline ? body.tagline : "No tags",
@@ -58,11 +81,10 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
     const bannerImageLink = bannerImageFile.publicUrl();
     obj.bannerImage = bannerImageLink;
     const collection = client.db("Dollop").collection("users");
-    var new_id;
     await collection.insertOne(obj);
     client.close();
   });
-  res.status(200).send("Added user to db");
+  res.status(201).send("Added user to db");
 });
 // TBD :( Below this
 

@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 const config = require("./config");
 const { initializeApp } = require("firebase-admin/app");
+const { getAuth } = require("firebase-admin/auth");
 const { getStorage } = require("firebase-admin/storage");
 
 const uri = config.MONGO_DB_URI;
@@ -11,6 +12,7 @@ const client = new MongoClient(uri, {
 });
 const firebaseConfig = config.firebaseConfig;
 const firebaseApp = initializeApp(firebaseConfig);
+const firebaseAuth = getAuth(firebaseApp);
 const bucket = getStorage().bucket();
 
-module.exports = { client, firebaseApp, bucket };
+module.exports = { client, firebaseApp, firebaseAuth, bucket };
