@@ -7,6 +7,8 @@ export default function MusicPlayer() {
   const [playing, setPlaying] = useState(false);
   useEffect(() => {
     const audioPlayer = new Audio(audioFile);
+    audioPlayer.addEventListener("ended", () => setPlaying(false));
+
     setAudio(audioPlayer);
   }, []);
 
@@ -35,7 +37,12 @@ export default function MusicPlayer() {
           </div>
         </div>
       </div>
-      <div>middle side</div>
+      <div className="w-3/4 px-5 md:px-10">
+        {/* Line */}
+        <div className="relative h-2 w-full bg-teal-600">
+          <div className="absolute left-0 top-0 bg-black w-1/4 h-2"></div>
+        </div>
+      </div>
       <div
         style={{
           fontSize: "1.3rem",
