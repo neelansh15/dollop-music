@@ -1,6 +1,24 @@
+import { useEffect, useState } from "react";
+
 export default function MusicPlayer() {
   const audioFile =
     "https://firebasestorage.googleapis.com/v0/b/dollop-a1e86.appspot.com/o/Music%2F6198fea3c06aa256eb08de66%2FMusic.mpeg?alt=media&token=6198fea3c06aa256eb08de66Music";
+  const [audio, setAudio] = useState(null);
+  const [playing, setPlaying] = useState(false);
+  useEffect(() => {
+    const audioPlayer = new Audio(audioFile);
+    setAudio(audioPlayer);
+  }, []);
+
+  function play() {
+    audio.play();
+    setPlaying(true);
+  }
+
+  function pause() {
+    audio.pause();
+    setPlaying(false);
+  }
 
   return (
     <div className="fixed bottom-0 left-0 w-full h-20 bg-teal-500 text-black p-5 flex justify-between items-center">
@@ -23,8 +41,11 @@ export default function MusicPlayer() {
           fontSize: "1.3rem",
         }}
       >
-        <i className="fa fa-play-circle fa-lg"></i>
-        <i className="fa fa-pause-circle fa-lg"></i>
+        {!playing ? (
+          <i className="fa fa-play-circle fa-lg" onClick={play}></i>
+        ) : (
+          <i className="fa fa-pause-circle fa-lg" onClick={pause}></i>
+        )}
       </div>
     </div>
   );
