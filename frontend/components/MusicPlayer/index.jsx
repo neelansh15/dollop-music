@@ -5,10 +5,34 @@ export default function MusicPlayer() {
     "https://firebasestorage.googleapis.com/v0/b/dollop-a1e86.appspot.com/o/Music%2F6198fea3c06aa256eb08de66%2FMusic.mpeg?alt=media&token=6198fea3c06aa256eb08de66Music";
   const [audio, setAudio] = useState(null);
   const [playing, setPlaying] = useState(false);
+  const [duration, setDuration] = useState("");
+  const [progress, setProgress] = useState("00:00:00");
+
+  function convertHMS(value) {
+    const sec = parseInt(value, 10); // convert value to number if it's string
+    let hours = Math.floor(sec / 3600); // get hours
+    let minutes = Math.floor((sec - hours * 3600) / 60); // get minutes
+    let seconds = sec - hours * 3600 - minutes * 60; //  get seconds
+    // add 0 if value < 10; Example: 2 => 02
+    if (hours < 10) {
+      hours = "0" + hours;
+    }
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    return hours + ":" + minutes + ":" + seconds; // Return is HH : MM : SS
+  }
+
   useEffect(() => {
     const audioPlayer = new Audio(audioFile);
     audioPlayer.addEventListener("ended", () => setPlaying(false));
-
+    audioPlayer.addEventListener("durationchange", () => {
+      const duration = audioPlayer.duration;
+      setDuration(convertHMS(duration));
+    });
     setAudio(audioPlayer);
   }, []);
 
@@ -32,16 +56,18 @@ export default function MusicPlayer() {
             className="rounded-lg w-15 h-15 object-cover"
           />
           <div className="-space-y-1">
-            <h1 className="font-bold">Music name</h1>
+            <h1 className="text-sm md:text-base font-bold">Music name</h1>
             <p className="text-xs text-gray-800">Artists List</p>
           </div>
         </div>
       </div>
-      <div className="w-3/4 px-5 md:px-10">
+      <div className="w-1/2 md:w-3/4 px-5 md:px-10">
         {/* Line */}
-        <div className="relative h-2 w-full bg-teal-600">
+        <div className="relative h-2 w-full bg-teal-600 mt-2">
           <div className="absolute left-0 top-0 bg-black w-1/4 h-2"></div>
         </div>
+        <div className="text-xs md:text-sm float-left mt-0.5">{progress}</div>
+        <div className="text-xs md:text-sm float-right mt-0.5">{duration}</div>
       </div>
       <div
         style={{
