@@ -51,6 +51,19 @@ export default function MusicPlayer() {
     setPlaying(false);
   }
 
+  function seek(e) {
+    // e = Mouse click event.
+    const rect = e.target.getBoundingClientRect();
+    const left = e.clientX - rect.left; //x position within the element.
+    const width = rect.width;
+    const percentage = left / width;
+
+    const seekTime = audio.duration * percentage;
+    console.log({ percentage, seekTime });
+    pause();
+    audio.currentTime = seekTime;
+  }
+
   return (
     <div className="fixed bottom-0 left-0 w-full h-20 bg-teal-500 text-black p-5 flex justify-between items-center">
       <div>
@@ -68,7 +81,7 @@ export default function MusicPlayer() {
       </div>
       <div className="w-1/2 md:w-3/4 px-5 md:px-10">
         {/* Line */}
-        <div className="relative h-2 w-full bg-teal-600 mt-2">
+        <div className="relative h-2 w-full bg-teal-600 mt-2" onClick={seek}>
           <div
             className="absolute left-0 top-0 bg-black h-2"
             style={{
