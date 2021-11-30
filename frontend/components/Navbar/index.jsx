@@ -43,12 +43,11 @@ export default function Navbar() {
               </button>
             </div>
           ) : (
-            <button
-              onClick={Login}
-              className="py-1 px-4 bg-white text-black font-semibold text-md rounded-lg"
-            >
-              Login
-            </button>
+            <Link href="/login">
+              <li className="py-1 px-4 bg-white text-black font-semibold text-md rounded-lg cursor-pointer">
+                Login
+              </li>
+            </Link>
           )}
         </li>
       </ul>

@@ -4,6 +4,8 @@ temp_env.js
 
 package-lock.json
 .runtimeconfig.json
-firebase-debug.lock
+firebase-debug.log
 node_modules
 config.js
+functions/service_account.json
+ui-debug.log

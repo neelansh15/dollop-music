@@ -1,4 +1,4 @@
-export default function MusicItem({ music }) {
+export default function MusicItem({ music, isOwner = false }) {
   return (
     <div className="flex justify-between items-center mt-3">
       <div className="flex space-x-3 items-center">
@@ -12,9 +12,22 @@ export default function MusicItem({ music }) {
           <p className="text-sm text-gray-300">{music.artists.join(", ")}</p>
         </div>
       </div>
-      <div className="space-x-2">
-        <i className="fa fa-thumbs-up"></i>
-        <span>{music.clapCount}</span>
+      <div className="flex space-x-2">
+        <div className="flex space-x-2 items-center">
+          {/* <i className="fa fa-thumbs-up"></i> */}
+          <span>{music.clapCount}</span>
+          <span className="text-xl">👏🏻</span>
+        </div>
+        {isOwner == true ? (
+          <div>
+            <span className="mr-2">|</span>
+            <button className="text-red-500 px-2 focus:(outline-none ring ring-red-600) transition hover:(text-red-600)">
+              Delete
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
