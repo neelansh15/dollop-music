@@ -1,12 +1,11 @@
 var router = require("express").Router();
 const { client } = require("../../db");
-var ObjectId = require("mongodb").ObjectId;
 
 router.post("/add_following", (req, res) => {
   const body = req.body;
-  var userId = new ObjectId(req.body.userId);
+  var userId = req.body.userId;
 
-  var followeeId = new ObjectId(req.body.followeeId);
+  var followeeId = req.body.followeeId;
   console.log(userId, followeeId);
 
   client.connect(async (err, res) => {
@@ -43,9 +42,9 @@ router.post("/add_following", (req, res) => {
 
 router.post("/remove_following", (req, res) => {
   const body = req.body;
-  var userId = new ObjectId(req.body.userId);
+  var userId = req.body.userId;
 
-  var followeeId = new ObjectId(req.body.followeeId);
+  var followeeId = req.body.followeeId;
   console.log(userId, followeeId);
 
   client.connect(async (err, res) => {
@@ -72,7 +71,7 @@ router.post("/remove_following", (req, res) => {
 router.get("/:id", (req, res) => {
   const body = req.body;
   const params = req.params;
-  var userId = new ObjectId(params.id);
+  var userId = params.id;
   client.connect(async (err, data) => {
     if (err) {
       console.log(err);
@@ -90,7 +89,7 @@ router.get("/:id", (req, res) => {
           res.status(400).send("Error in finding");
           return;
         }
-        console.log(data);
+
         res.status(200).send(data);
       });
   });

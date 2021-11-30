@@ -23,7 +23,6 @@ router.get("/most_clapped", (req, res) => {
       return;
     }
     const collection = client.db("Dollop").collection("music");
-
     await collection
       .find({})
       .sort({ claps: -1 })
@@ -63,7 +62,7 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
     res.status(400).send("No userId provided");
     return;
   }
-  var userId = new ObjectId(req.body.userId);
+  var userId = req.body.userId;
   client.connect(async (err, res) => {
     if (err) {
       console.log(err);
@@ -106,10 +105,9 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
   res.status(200).send("Added music to db");
 });
 
-router.get("/:id", (req, res) => {
+router.get("/", (req, res) => {
   const body = req.body;
-  const params = req.params;
-  const musicId = new ObjectId(params.id);
+  const musicId = body.ids;
   client.connect(async (err, data) => {
     if (err) {
       console.log(err);
@@ -118,7 +116,7 @@ router.get("/:id", (req, res) => {
     }
     const collection = client.db("Dollop").collection("music");
 
-    await collection.find({ _id: musicId }).toArray((err, data) => {
+    await collection.find({ _id: { $in: musicId } }).toArray((err, data) => {
       if (err) {
         res.status(400).send("Error in finding");
         return;
