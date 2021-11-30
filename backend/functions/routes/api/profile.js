@@ -137,53 +137,53 @@ router.post("/register", (req, res) => {
   res.status(201).send("Added user to db");
 });
 
-// router.post("/login", (req, res) => {
-//   const body = req.body;
-//   const hash = crypto.createHash("md5").digest("hex");
-//   client.connect(async (err, data) => {
-//     if (err) {
-//       console.log(err);
-//       res.status(400).send("err");
-//       return;
-//     }
-//     const collection = client.db("Dollop").collection("users");
-//     await collection
-//       .find({ _id: body.email })
-//       .project({ password: 1 })
-//       .toArray((err, result) => {
-//         if (err) {
-//           console.log(err);
-//           client.close();
-//           res.status(400).send("err");
-//           return;
-//         }
-//         if (
-//           crypto.createHash("md5").update(body.password).digest("hex") ==
-//           result[0].password
-//         ) {
-//           console.log("pass");
-//           res.status(200).send(hash);
-//           collection.updateOne(
-//             { _id: body.email },
-//             { $set: { activeSession: hash } },
-//             (err, result) => {
-//               if (err) {
-//                 console.log(err);
-//                 res.status(400).send("err while adding session");
-//                 client.close();
-//                 return;
-//               }
+router.post("/login", (req, res) => {
+  const body = req.body;
+  const hash = crypto.createHash("md5").digest("hex");
+  client.connect(async (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send("err");
+      return;
+    }
+    const collection = client.db("Dollop").collection("users");
+    await collection
+      .find({ _id: body.email })
+      .project({ password: 1 })
+      .toArray((err, result) => {
+        if (err) {
+          console.log(err);
+          client.close();
+          res.status(400).send("err");
+          return;
+        }
+        if (
+          crypto.createHash("md5").update(body.password).digest("hex") ==
+          result[0].password
+        ) {
+          console.log("pass");
+          res.status(200).send(hash);
+          collection.updateOne(
+            { _id: body.email },
+            { $set: { activeSession: hash } },
+            (err, result) => {
+              if (err) {
+                console.log(err);
+                res.status(400).send("err while adding session");
+                client.close();
+                return;
+              }
 
-//               client.close();
-//             },
-//           );
-//         } else {
-//           console.log(body.password, result[0].password);
-//           client.close();
-//           res.status(400).send("Invalid credentials");
-//         }
-//       });
-//   });
-// });
+              client.close();
+            },
+          );
+        } else {
+          console.log(body.password, result[0].password);
+          client.close();
+          res.status(400).send("Invalid credentials");
+        }
+      });
+  });
+});
 
 module.exports = router;
