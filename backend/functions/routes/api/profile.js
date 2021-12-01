@@ -173,7 +173,7 @@ router.post("/login", (req, res) => {
                 client.close();
                 return;
               }
-
+              res.status(200).send("Login success");
               client.close();
             },
           );
@@ -183,6 +183,32 @@ router.post("/login", (req, res) => {
           res.status(400).send("Invalid credentials");
         }
       });
+  });
+});
+
+router.post("/logout", (req, res) => {
+  const body = req.body;
+  client.connect(async (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send("err");
+      return;
+    }
+    const collection = client.db("Dollop").collection("users");
+    collection.updateOne(
+      { _id: body.email },
+      { $set: { activeSession: "" } },
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send("err while adding session");
+          client.close();
+          return;
+        }
+        res.status(200).send("Logout success");
+        client.close();
+      },
+    );
   });
 });
 
