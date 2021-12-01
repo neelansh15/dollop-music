@@ -1,4 +1,4 @@
-import Card from "components/Card/Card";
+import { Card } from "components/Card";
 import { useState } from "react";
 
 // let [isLoginHovered, setLoginHovered] = useState()
