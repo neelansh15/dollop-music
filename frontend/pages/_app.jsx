@@ -2,7 +2,6 @@ import "windi.css";
 import "../assets/css/main.css";
 import Navbar from "../components/Navbar";
 import MusicPlayer from "components/MusicPlayer";
-import { useRouter } from "next/router";
 
 export default function Home({ Component }) {
   return (
