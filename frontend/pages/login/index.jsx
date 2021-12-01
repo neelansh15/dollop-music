@@ -2,11 +2,13 @@ import { Card } from "components/Card";
 import { useState } from "react";
 import axios from "axios";
 import { useStore } from "../../store";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [hovered, setHovered] = useState(false);
   const toggleHover = () => setHovered(!hovered);
 
+  const router = useRouter();
   const setUser = useStore((state) => state.setUser);
 
   async function LoginHandle(e) {
@@ -27,13 +29,16 @@ export default function Login() {
         "http://localhost:8000/api/profile/" + formData.email
       );
       const userDoc = userDocs[0];
-      // Store user doc in state
       const userData = {
         token: data,
         ...userDoc,
       };
 
+      // Store user doc in state
       setUser(userData);
+
+      // Redirect to profile page
+      router.push("/profile");
     } catch (e) {
       console.error(e);
     }
