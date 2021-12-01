@@ -5,13 +5,6 @@ export default function Navbar() {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
 
-  function Login() {
-    // Do login stuff here
-    setUser({
-      name: "Neelansh",
-    });
-  }
-
   function Logout() {
     setUser(null);
   }
@@ -33,7 +26,7 @@ export default function Navbar() {
           {user ? (
             <div className="flex items-center space-x-2">
               <div className="bg-dark-800 py-1 px-4 rounded-lg font-bold">
-                {user.name}
+                {user.username}
               </div>
               <button
                 onClick={Logout}

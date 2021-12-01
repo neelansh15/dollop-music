@@ -1,42 +1,63 @@
 import { Card } from "components/Card";
 import { useState } from "react";
 import axios from "axios";
-
-// let [isLoginHovered, setLoginHovered] = useState()
-
-async function LoginHandle(e) {
-  e.preventDefault();
-  const formData = {
-    email: e.target.email.value,
-    password: e.target.password.value,
-  };
-
-  const { data, status } = await axios.post(
-    "http://localhost:8000/api/profile/login/",
-    formData
-  );
-  console.log("Data from Login Request", data);
-  console.log("Status of Login Request", status);
-}
-
-async function RegisterHandle(e) {
-  e.preventDefault();
-  const formData = {
-    email: e.target.email.value,
-    username: e.target.username.value,
-    password: e.target.password.value,
-  };
-
-  const { status } = await axios.post(
-    "http://localhost:8000/api/profile/register/",
-    formData
-  );
-  console.log("Status of Register Request", status);
-}
+import { useStore } from "../../store";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [hovered, setHovered] = useState(false);
   const toggleHover = () => setHovered(!hovered);
+
+  const router = useRouter();
+  const setUser = useStore((state) => state.setUser);
+
+  async function LoginHandle(e) {
+    e.preventDefault();
+    const formData = {
+      email: e.target.email.value,
+      password: e.target.password.value,
+    };
+
+    try {
+      const { data, status } = await axios.post(
+        "http://localhost:8000/api/profile/login/",
+        formData
+      );
+      //Fetch user doc if success
+      if (!data || status != 200) return;
+      const { data: userDocs } = await axios.get(
+        "http://localhost:8000/api/profile/" + formData.email
+      );
+      const userDoc = userDocs[0];
+      const userData = {
+        token: data,
+        ...userDoc,
+      };
+
+      // Store user doc in state
+      setUser(userData);
+
+      // Redirect to profile page
+      router.push("/profile");
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function RegisterHandle(e) {
+    e.preventDefault();
+    const formData = {
+      email: e.target.email.value,
+      username: e.target.username.value,
+      password: e.target.password.value,
+    };
+
+    const { status } = await axios.post(
+      "http://localhost:8000/api/profile/register/",
+      formData
+    );
+    console.log("Status of Register Request", status);
+  }
 
   return (
     <div className="px-15 py-8 w-full">
