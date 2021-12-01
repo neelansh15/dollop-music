@@ -107,7 +107,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
 
 router.get("/", (req, res) => {
   const body = req.body;
-  const musicId = body.ids;
+
+  const musicId = body.ids.map(x => new ObjectId(x));
   client.connect(async (err, data) => {
     if (err) {
       console.log(err);
