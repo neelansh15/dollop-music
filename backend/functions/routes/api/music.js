@@ -15,6 +15,7 @@ Routes:
 */
 
 router.get("/most_clapped", (req, res) => {
+  // body has nothing
   try {
     const body = req.body;
     client.connect(async (err, res) => {
@@ -42,7 +43,31 @@ router.get("/most_clapped", (req, res) => {
   }
 });
 
+router.post("/clap", (req, res) => {
+  // body has music id
+  try {
+    const body = req.body;
+    const music_id = new ObjectId(body.id);
+    client.connect(async (err, res) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("music");
+      await collection.updateOne({ _id: music_id }, { $inc: { claps: 1 } });
+      res.status(200).send("Added clap");
+      client.close();
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 router.post("/", upload.array("uploadedFile", 5), (req, res) => {
+  // body has all the fields needed for music
+  // userId, name, image, music file,
   try {
     const body = req.body;
     var image, music;
@@ -116,10 +141,10 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
 });
 
 router.get("/", (req, res) => {
+  // body has an array of music ids
   try {
     const body = req.body;
-
-    const musicId = body.ids.map(x => new ObjectId(x));
+    const musicIds = body.ids.map(x => new ObjectId(x));
     client.connect(async (err, data) => {
       if (err) {
         console.log(err);
@@ -128,7 +153,7 @@ router.get("/", (req, res) => {
       }
       const collection = client.db("Dollop").collection("music");
 
-      await collection.find({ _id: { $in: musicId } }).toArray((err, data) => {
+      await collection.find({ _id: { $in: musicIds } }).toArray((err, data) => {
         if (err) {
           res.status(400).send("Error in finding");
           return;

@@ -16,16 +16,18 @@ router.get("/:id", (req, res) => {
         return;
       }
       const collection = client.db("Dollop").collection("users");
-      collection.find({ _id: docId }).toArray((err, result) => {
-        if (err) {
-          console.log(err);
-          res.status(400).send("err");
-          return;
-        }
-        console.log("get user doc result", result);
-        res.status(200).send(result);
-        client.close();
-      });
+      collection
+        .find({ _id: docId })
+        .project({ password: 0, activeSession: 0 })
+        .toArray((err, result) => {
+          if (err) {
+            console.log(err);
+            res.status(400).send("err");
+            return;
+          }
+          res.status(200).send(result);
+          client.close();
+        });
     });
   } catch (error) {
     console.log(error);
