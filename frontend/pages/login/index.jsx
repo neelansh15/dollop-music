@@ -23,13 +23,14 @@ export default function Login() {
       );
       //Fetch user doc if success
       if (!data || status != 200) return;
-      const { data: userDoc } = await axios.get(
+      const { data: userDocs } = await axios.get(
         "http://localhost:8000/api/profile/" + formData.email
       );
-      console.log("User doc", userDoc);
+      const userDoc = userDocs[0];
       // Store user doc in state
       const userData = {
         token: data,
+        ...userDoc,
       };
 
       setUser(userData);
