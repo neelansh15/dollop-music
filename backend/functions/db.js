@@ -16,7 +16,9 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 const firebaseConfig = config.firebaseConfig;
-const firebaseApp = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp({
+  ...firebaseConfig,
+});
 const firebaseAuth = getAuth(firebaseApp);
 const bucket = getStorage().bucket();
 
