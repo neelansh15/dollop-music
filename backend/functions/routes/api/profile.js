@@ -3,12 +3,11 @@ const { client, firebaseApp, bucket } = require("../../db");
 var ObjectId = require("mongodb").ObjectId;
 const multer = require("multer");
 let upload = multer({ storage: multer.memoryStorage() });
-const { signup } = require("./users");
+const { signup, login } = require("./users");
+var crypto = require("crypto");
 
 router.post("/", upload.array("uploadedFile", 5), async (req, res) => {
   const body = req.body;
-
-  console.log(body.email, body.username, body.password);
   /*
   body
     email
@@ -21,17 +20,10 @@ router.post("/", upload.array("uploadedFile", 5), async (req, res) => {
     image
     bannerImg
   */
-
-  let id = await signup(body.email, body.username, body.password);
-  if (id == -1) {
-    res
-      .status(400)
-      .send("Error occurred in adding user with email and password");
-    return;
-  }
-
+  body.password = crypto.createHash("md5").update(body.password).digest("hex");
   const obj = {
-    _id: id,
+    _id: body.email,
+    password: body.password,
     name: body.name ? body.name : "Adam",
     username: body.username ? body.username : "Adam123",
     tagline: body.tagline ? body.tagline : "No tags",
@@ -47,7 +39,7 @@ router.post("/", upload.array("uploadedFile", 5), async (req, res) => {
     music: [],
   };
 
-  client.connect(async (err, res) => {
+  client.connect(async (err, data) => {
     if (err) {
       console.log(err);
       res.status(400).send("err");
@@ -86,43 +78,11 @@ router.post("/", upload.array("uploadedFile", 5), async (req, res) => {
   });
   res.status(201).send("Added user to db");
 });
-// TBD :( Below this
-
-router.post("/change_details", (req, res) => {
-  /*
-  body has object with details and document id
-  */
-  const body = req.body;
-  const obj = req.body.obj;
-
-  client.connect(async (err, res) => {
-    if (err) {
-      console.log(err);
-      res.status(400).send("err");
-      return;
-    }
-    const collection = client.db("Dollop").collection("users");
-    collection.updateOne(
-      { documentId: req.body.documentId },
-      { $set: obj },
-      function (err, res) {
-        if (err) {
-          console.log(err);
-          res.status(400).send("err");
-          return;
-        }
-        console.log("1 document updated");
-        client.close();
-      },
-    );
-  });
-  res.status(200).send("Changed user details");
-});
 
 router.get("/:id", (req, res) => {
   const body = req.body;
   const params = req.params;
-  const docId = new ObjectId(params.id);
+  const docId = params.id;
   client.connect(async (err, data) => {
     if (err) {
       console.log(err);
@@ -139,6 +99,90 @@ router.get("/:id", (req, res) => {
       res.status(200).send(result);
       client.close();
     });
+  });
+});
+
+// to verify
+router.post("/register", (req, res) => {
+  const body = req.body;
+  body.password = crypto.createHash("md5").update(body.password).digest("hex");
+  const obj = {
+    _id: body.email,
+    password: body.password,
+    name: "User",
+    username: body.username,
+    tagline: "No tags",
+    about: "No about",
+    instagram: "#",
+    soundcloud: "#",
+    twitter: "#",
+    github: "#",
+    image: "https://bit.ly/3HCahMK",
+    bannerImage: "https://bit.ly/3x2aiVA",
+    activeSession: "",
+    followers: [],
+    following: [],
+    music: [],
+  };
+  client.connect(async (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send("err");
+      return;
+    }
+    const collection = client.db("Dollop").collection("users");
+    await collection.insertOne(obj);
+    client.close();
+  });
+  res.status(201).send("Added user to db");
+});
+
+router.post("/login", (req, res) => {
+  const body = req.body;
+  const hash = crypto.createHash("md5").digest("hex");
+  client.connect(async (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send("err");
+      return;
+    }
+    const collection = client.db("Dollop").collection("users");
+    await collection
+      .find({ _id: body.email })
+      .project({ password: 1 })
+      .toArray((err, result) => {
+        if (err) {
+          console.log(err);
+          client.close();
+          res.status(400).send("err");
+          return;
+        }
+        if (
+          crypto.createHash("md5").update(body.password).digest("hex") ==
+          result[0].password
+        ) {
+          console.log("pass");
+          res.status(200).send(hash);
+          collection.updateOne(
+            { _id: body.email },
+            { $set: { activeSession: hash } },
+            (err, result) => {
+              if (err) {
+                console.log(err);
+                res.status(400).send("err while adding session");
+                client.close();
+                return;
+              }
+
+              client.close();
+            },
+          );
+        } else {
+          console.log(body.password, result[0].password);
+          client.close();
+          res.status(400).send("Invalid credentials");
+        }
+      });
   });
 });
 

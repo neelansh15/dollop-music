@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "firebase run --only functions"
+    "dev": "firebase run emulator:start --only functions"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "firebase": "^9.5.0",
     "firebase-admin": "^10.0.0",
     "firebase-functions": "^3.14.1",
     "mongodb": "^4.1.3",
