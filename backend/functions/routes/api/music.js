@@ -67,7 +67,7 @@ router.post("/clap", (req, res) => {
 
 router.post("/", upload.array("uploadedFile", 5), (req, res) => {
   // body has all the fields needed for music
-  // userId, name, image, music file,
+  // userId, name, image, music file as uploadedFile
   try {
     const body = req.body;
     var image, music;
@@ -87,6 +87,16 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       date: body.date ? body.date : Date.now(),
       music: body.music,
       claps: 0,
+      meta: {
+        image: {
+          name: "",
+          mimetype: "",
+        },
+        music: {
+          name: "",
+          mimetype: "",
+        },
+      },
     };
     console.log(obj.userId);
     if (obj.userId == -1) {
@@ -102,7 +112,12 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       }
 
       var mimetype = image.mimetype;
+      console.log(image);
       mimetype = mimetype.split("/");
+      obj.meta.image = {
+        name: image.name,
+        mimetype: mimetype,
+      };
       var extension = mimetype[1];
       console.log("Extension", extension);
       console.log(image.buffer);
@@ -112,6 +127,10 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       const imgLink = file.publicUrl();
 
       mimetype = music.mimetype.split("/");
+      obj.meta.music = {
+        name: music.name,
+        mimetype: mimetype,
+      };
       extension = mimetype[1];
       console.log("Extension", extension);
       const musicFile = bucket.file(
@@ -161,6 +180,60 @@ router.get("/", (req, res) => {
         res.status(200).send(data);
       });
       client.close();
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+router.delete("/", async (req, res) => {
+  // body has music id as id and userId as userId
+  try {
+    const body = req.body;
+    const music_id = new ObjectId(body.id);
+    console.log(music_id);
+    let name, meta;
+    client.connect(async (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+
+      const collection = client.db("Dollop").collection("music");
+      collection.find({ _id: music_id }).toArray(async (err, data) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send("Error in finding");
+          return;
+        }
+        console.log(data);
+        name = data[0].name;
+        meta = data[0].meta;
+
+        console.log(name, meta);
+
+        let imgExtension, musicExtension;
+        imgExtension = meta.image.mimetype[1];
+        musicExtension = meta.music.mimetype[1];
+        await bucket
+          .file(`Images/${body.userId}/${name}.${imgExtension}`)
+          .delete();
+        await bucket
+          .file(`Music/${body.userId}/${name}.${musicExtension}`)
+          .delete();
+        const musicCollection = client.db("Dollop").collection("music");
+        await musicCollection.deleteOne({ _id: music_id });
+
+        const userCollection = client.db("Dollop").collection("users");
+        await userCollection.updateOne(
+          { _id: body.userId },
+          { $pull: { music: music_id } },
+        );
+        res.status(200).send("Deleted successfully");
+        client.close();
+      });
     });
   } catch (error) {
     console.log(error);
