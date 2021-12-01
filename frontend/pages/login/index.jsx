@@ -16,7 +16,7 @@ export default function Login() {
   const toggleHover = () => setHovered(!hovered);
 
   return (
-    <div className="px-15 py-10 pb-20 w-full">
+    <div className="px-15 py-8 w-full">
       <div className="grid grid-cols-[1fr,50px,1fr] gap-x-5 mt-10">
         <div className="col-span-2 md:col-span-1">
           <h1 className="text-3xl font-bold text-center">Login</h1>
@@ -60,8 +60,6 @@ export default function Login() {
               <h1 className="text-lg font-semibold mb-3">Email</h1>
               <input className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
               <h1 className="text-lg font-semibold mb-3">Password</h1>
-              <input className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
-              <h1 className="text-lg font-semibold mb-3">Confirm Password</h1>
               <input className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
 
               <div className="text-center">
