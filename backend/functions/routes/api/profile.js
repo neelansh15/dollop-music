@@ -104,9 +104,21 @@ router.post("/register", (req, res) => {
     }
     const collection = client.db("Dollop").collection("users");
     await collection.insertOne(obj);
+    collection.updateOne(
+      { _id: body.email },
+      { $set: { activeSession: hash } },
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send("err while adding session");
+          client.close();
+          return;
+        }
+        res.status(200).send("Login success");
+      },
+    );
     client.close();
   });
-  res.status(200).send("Updated user");
 });
 
 router.post("/login", (req, res) => {
