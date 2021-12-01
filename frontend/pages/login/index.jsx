@@ -7,12 +7,12 @@ import axios from "axios";
 async function LoginHandle(e) {
   e.preventDefault();
   const formData = {
-    username: e.target.username.value,
+    email: e.target.email.value,
     password: e.target.password.value,
   };
 
   const { data, status } = await axios.post(
-    "localhost:8000/api/profile/login/",
+    "http://localhost:8000/api/profile/login/",
     formData
   );
   console.log("Data from Login Request", data);
@@ -28,7 +28,7 @@ async function RegisterHandle(e) {
   };
 
   const { status } = await axios.post(
-    "localhost:8000/api/profile/register/",
+    "http://localhost:8000/api/profile/register/",
     formData
   );
   console.log("Status of Register Request", status);
@@ -46,8 +46,12 @@ export default function Login() {
 
           <form onSubmit={LoginHandle} className="m-12 mx-auto max-w-375px">
             <Card>
-              <h1 className="text-lg font-semibold mb-3">Username</h1>
-              <input name="username" className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
+              <h1 className="text-lg font-semibold mb-3">Email</h1>
+              <input
+                name="email"
+                type="email"
+                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              ></input>
               <h1 className="text-lg font-semibold mb-3">Password</h1>
               <input
                 type="password"
