@@ -33,7 +33,7 @@ export default function Login() {
         token: data,
         ...userDoc,
       };
-
+      console.log(userData);
       // Store user doc in state
       setUser(userData);
 
