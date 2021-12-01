@@ -1,14 +1,37 @@
 import { Card } from "components/Card";
 import { useState } from "react";
+import axios from "axios";
 
 // let [isLoginHovered, setLoginHovered] = useState()
 
-function LoginHandle() {
-  console.log("Login Button Pressed");
+async function LoginHandle(e) {
+  e.preventDefault();
+  const formData = {
+    username: e.target.username.value,
+    password: e.target.password.value,
+  };
+
+  const { data, status } = await axios.post(
+    "localhost:8000/api/profile/login/",
+    formData
+  );
+  console.log("Data from Login Request", data);
+  console.log("Status of Login Request", status);
 }
 
-function RegisterHandle() {
-  console.log("Register Button Pressed");
+async function RegisterHandle(e) {
+  e.preventDefault();
+  const formData = {
+    email: e.target.email.value,
+    username: e.target.username.value,
+    password: e.target.password.value,
+  };
+
+  const { status } = await axios.post(
+    "localhost:8000/api/profile/register/",
+    formData
+  );
+  console.log("Status of Register Request", status);
 }
 
 export default function Login() {
@@ -21,16 +44,19 @@ export default function Login() {
         <div className="col-span-2 md:col-span-1">
           <h1 className="text-3xl font-bold text-center">Login</h1>
 
-          <div className="m-12 mx-auto max-w-375px">
+          <form onSubmit={LoginHandle} className="m-12 mx-auto max-w-375px">
             <Card>
               <h1 className="text-lg font-semibold mb-3">Username</h1>
-              <input className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
+              <input name="username" className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
               <h1 className="text-lg font-semibold mb-3">Password</h1>
-              <input className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
+              <input
+                type="password"
+                name="password"
+                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              ></input>
 
               <div className="text-center">
                 <button
-                  onClick={LoginHandle}
                   onMouseEnter={toggleHover}
                   onMouseLeave={toggleHover}
                   className={
@@ -42,7 +68,7 @@ export default function Login() {
                 </button>
               </div>
             </Card>
-          </div>
+          </form>
         </div>
 
         <div className="col-span-1">
@@ -53,25 +79,33 @@ export default function Login() {
         <div className="col-span-2 md:col-span-1 ">
           <h1 className="text-3xl font-bold text-center">Register</h1>
 
-          <div className="m-12 mx-auto max-w-375px">
+          <form onSubmit={RegisterHandle} className="m-12 mx-auto max-w-375px">
             <Card>
               <h1 className="text-lg font-semibold mb-3">Username</h1>
-              <input className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
+              <input
+                name="username"
+                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              ></input>
               <h1 className="text-lg font-semibold mb-3">Email</h1>
-              <input className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
+              <input
+                type="email"
+                name="email"
+                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              ></input>
               <h1 className="text-lg font-semibold mb-3">Password</h1>
-              <input className="bg-dark-300 p-2 mb-3 w-full rounded-lg"></input>
+              <input
+                type="password"
+                name="password"
+                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              ></input>
 
               <div className="text-center">
-                <button
-                  onClick={RegisterHandle}
-                  className="py-2 px-10 m-2 mt-5 bg-dark-300 text-white font-semibold text-md rounded-lg"
-                >
+                <button className="py-2 px-10 m-2 mt-5 bg-dark-300 text-white font-semibold text-md rounded-lg">
                   Register
                 </button>
               </div>
             </Card>
-          </div>
+          </form>
         </div>
       </div>
     </div>
