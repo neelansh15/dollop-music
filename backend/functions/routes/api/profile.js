@@ -4,10 +4,10 @@ const multer = require("multer");
 let upload = multer({ storage: multer.memoryStorage() });
 var crypto = require("crypto");
 
-router.get("/", (req, res) => {
+router.get("/:id", (req, res) => {
   // body has email id as id
   try {
-    const body = req.body;
+    const body = req.params;
     const docId = body.id;
     client.connect(async (err, data) => {
       if (err) {
