@@ -76,7 +76,7 @@ router.post("/", upload.array("uploadedFile", 5), async (req, res) => {
     await collection.insertOne(obj);
     client.close();
   });
-  res.status(201).send("Added user to db");
+  res.status(201).send("Success");
 });
 
 router.get("/:id", (req, res) => {
