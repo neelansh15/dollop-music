@@ -35,7 +35,7 @@ router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
       extension = mimetype[1];
       console.log(bannerImage.buffer);
       const bannerImageFile = bucket.file(
-        `Images/${obj._id}/${obj.name}.${extension}`,
+        `Images/${obj._id}/${obj.name}.${extension}`
       );
       await bannerImageFile.save(bannerImage.buffer, {
         contentType: bannerImage.mimetype,
@@ -115,7 +115,7 @@ router.post("/register", (req, res) => {
           return;
         }
         res.status(200).send("Login success");
-      },
+      }
     );
     client.close();
   });
@@ -159,7 +159,7 @@ router.post("/login", (req, res) => {
               }
               res.status(200).send("Login success");
               client.close();
-            },
+            }
           );
         } else {
           console.log(body.password, result[0].password);
@@ -191,7 +191,7 @@ router.post("/logout", (req, res) => {
         }
         res.status(200).send("Logout success");
         client.close();
-      },
+      }
     );
   });
 });
