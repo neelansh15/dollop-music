@@ -12,7 +12,7 @@ async function LoginHandle(e) {
   };
 
   const { data, status } = await axios.post(
-    "localhost:8000/api/profile/login",
+    "localhost:8000/api/profile/login/",
     formData
   );
   console.log("Data from Login Request", data);
@@ -28,7 +28,7 @@ async function RegisterHandle(e) {
   };
 
   const { status } = await axios.post(
-    "localhost:8000/api/profile/register",
+    "localhost:8000/api/profile/register/",
     formData
   );
   console.log("Status of Register Request", status);
