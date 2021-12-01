@@ -5,13 +5,6 @@ export default function Navbar() {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
 
-  function Login() {
-    // Do login stuff here
-    setUser({
-      name: "Neelansh",
-    });
-  }
-
   function Logout() {
     setUser(null);
   }

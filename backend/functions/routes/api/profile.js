@@ -4,10 +4,10 @@ const multer = require("multer");
 let upload = multer({ storage: multer.memoryStorage() });
 var crypto = require("crypto");
 
-router.get("/", (req, res) => {
+router.get("/:id", (req, res) => {
   // body has email id as id
   try {
-    const body = req.body;
+    const body = req.params;
     const docId = body.id;
     client.connect(async (err, data) => {
       if (err) {
@@ -22,6 +22,7 @@ router.get("/", (req, res) => {
           res.status(400).send("err");
           return;
         }
+        console.log("get user doc result", result);
         res.status(200).send(result);
         client.close();
       });
@@ -80,7 +81,7 @@ router.post("/register", (req, res) => {
           }
           res.status(200).send(token);
           client.close();
-        },
+        }
       );
       client.close();
     });
@@ -130,7 +131,7 @@ router.post("/login", (req, res) => {
                 }
                 res.status(200).send(token);
                 client.close();
-              },
+              }
             );
           } else {
             console.log(body.password, result[0].password);
@@ -168,7 +169,7 @@ router.post("/logout", (req, res) => {
           }
           res.status(200).send("Logout success");
           client.close();
-        },
+        }
       );
     });
   } catch (error) {
@@ -244,7 +245,7 @@ router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
         extension = mimetype[1];
         console.log(bannerImage.buffer);
         const bannerImageFile = bucket.file(
-          `Images/${obj._id}/${obj.name}.${extension}`,
+          `Images/${obj._id}/${obj.name}.${extension}`
         );
         await bannerImageFile.save(bannerImage.buffer, {
           contentType: bannerImage.mimetype,
