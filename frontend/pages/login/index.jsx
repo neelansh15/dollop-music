@@ -25,10 +25,9 @@ export default function Login() {
       );
       //Fetch user doc if success
       if (!data || status != 200) return;
-      const { data: userDocs } = await axios.get(
+      const { data: userDoc } = await axios.get(
         "http://localhost:8000/api/profile/" + formData.email
       );
-      const userDoc = userDocs[0];
       const userData = {
         token: data,
         ...userDoc,
