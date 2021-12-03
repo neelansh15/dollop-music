@@ -69,6 +69,14 @@ router.post("/register", (req, res) => {
         return;
       }
       const collection = client.db("Dollop").collection("users");
+      collection.find({}).toArray((err, data) => {
+        for (i in data) {
+          if (data[i].username == obj.username) {
+            res.send(400).send("Username taken");
+            return;
+          }
+        }
+      });
 
       await collection.insertOne(obj);
       const token = crypto.randomBytes(20).toString("hex");
