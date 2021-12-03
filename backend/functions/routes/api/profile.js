@@ -53,7 +53,9 @@ router.get("/:id", (req, res) => {
             res.status(400).send("err");
             return;
           }
-          res.status(200).send(result);
+          result[0].followers = result[0].followers.length;
+          result[0].following = result[0].following.length;
+          res.status(200).send(result[0]);
           client.close();
         });
     });
