@@ -143,8 +143,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       console.log(image);
       mimetype = mimetype.split("/");
       obj.meta.image = {
-        name: image.name,
-        mimetype: mimetype,
+        name: image.originalname,
+        mimetype: image.mimetype,
       };
       var extension = mimetype[1];
       console.log("Extension", extension);
@@ -156,8 +156,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
 
       mimetype = music.mimetype.split("/");
       obj.meta.music = {
-        name: music.name,
-        mimetype: mimetype,
+        name: music.originalname,
+        mimetype: music.mimetype,
       };
       extension = mimetype[1];
       console.log("Extension", extension);
@@ -190,8 +190,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
 router.get("/", (req, res) => {
   // body has an array of music ids
   try {
-    const params = req.params;
-    const musicIds = params.ids.map(x => new ObjectId(x));
+    const query = req.query;
+    const musicIds = query.ids.map(x => new ObjectId(x));
     client.connect(async (err, data) => {
       if (err) {
         console.log(err);
