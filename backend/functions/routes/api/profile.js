@@ -69,6 +69,7 @@ router.post("/register", (req, res) => {
         return;
       }
       const collection = client.db("Dollop").collection("users");
+
       await collection.insertOne(obj);
       const token = crypto.randomBytes(20).toString("hex");
       collection.updateOne(
@@ -269,5 +270,33 @@ router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
 });
 
 // get email frm username
+
+router.get("/email/:username", (req, res) => {
+  try {
+    const body = req.body;
+    const params = req.params;
+    client.connect(async (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("users");
+      collection.find({ username: params.username }).toArray((err, result) => {
+        if (err) {
+          console.log(err);
+          client.close();
+          res.status(400).send("err");
+          return;
+        }
+        res.status(200).send(result[0]._id);
+        client.close();
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
 
 module.exports = router;
