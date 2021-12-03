@@ -4,6 +4,34 @@ const multer = require("multer");
 let upload = multer({ storage: multer.memoryStorage() });
 var crypto = require("crypto");
 
+router.get("/", (req, res) => {
+  try {
+    client.connect((err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("users");
+      collection
+        .find({})
+        .project({ username: 1 })
+        .toArray((err, result) => {
+          if (err) {
+            console.log(err);
+            res.status(400).send("err");
+            return;
+          }
+          res.status(200).send(result);
+          client.close();
+        });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 router.get("/:id", (req, res) => {
   // body has email id as id
   try {
@@ -228,7 +256,7 @@ router.post("/validate_token", (req, res) => {
 
 // TBD
 
-router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
+router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
   // body has obj to be updated
   try {
     const body = req.body;
