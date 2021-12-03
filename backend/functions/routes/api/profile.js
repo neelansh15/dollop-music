@@ -71,7 +71,10 @@ router.post("/register", (req, res) => {
       const collection = client.db("Dollop").collection("users");
       collection.find({}).toArray((err, data) => {
         for (i in data) {
-          if (data[i].username == obj.username) {
+          if (data[i]._id == obj._id) {
+            res.send(400).send("Email taken");
+            return;
+          } else if (data[i].username == obj.username) {
             res.send(400).send("Username taken");
             return;
           }
