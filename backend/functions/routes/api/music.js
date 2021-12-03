@@ -14,6 +14,34 @@ Routes:
   clap a music
 */
 
+router.get("/name", (req, res) => {
+  try {
+    client.connect((err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("music");
+      collection
+        .find({})
+        .project({ name: 1 })
+        .toArray((err, result) => {
+          if (err) {
+            console.log(err);
+            res.status(400).send("err");
+            return;
+          }
+          res.status(200).send(result);
+          client.close();
+        });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 router.get("/most_clapped", (req, res) => {
   // body has nothing
   try {
