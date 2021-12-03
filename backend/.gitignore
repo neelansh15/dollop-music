@@ -9,3 +9,4 @@ node_modules
 config.js
 functions/service_account.json
 ui-debug.log
+setup_v.bat

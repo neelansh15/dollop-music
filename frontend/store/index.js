@@ -1,13 +1,17 @@
 import create from "zustand";
+import { persist } from "zustand/middleware";
 
-export const useStore = create((set) => ({
-  //   bears: 0,
-  //   increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  //   removeAllBears: () => set({ bears: 0 }),
+export const useStore = create(
+  persist(
+    (set, get) => ({
+      // State
+      user: null,
 
-  // State
-  user: null,
-
-  // Mutations/Actions
-  setUser: (payload) => set((state) => ({ user: payload })),
-}));
+      // Mutations/Actions
+      setUser: (payload) => set((state) => ({ user: payload })),
+    }),
+    {
+      name: "dollop-app", // name of item in the storage (must be unique)
+    }
+  )
+);

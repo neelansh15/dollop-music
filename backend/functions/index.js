@@ -1,7 +1,14 @@
 const functions = require("firebase-functions");
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+  }),
+);
 app.use(express.json());
 
 const port = 8000;
