@@ -283,6 +283,7 @@ router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
 // get email frm username
 
 router.get("/email/:username", (req, res) => {
+  // params has username
   try {
     const body = req.body;
     const params = req.params;
