@@ -114,6 +114,7 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       image: body.image ? body.image : "https://bit.ly/2Z7Plfp",
       date: body.date ? body.date : Date.now(),
       music: body.music,
+      artists: body.artists,
       claps: 0,
       meta: {
         image: {
