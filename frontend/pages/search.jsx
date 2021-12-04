@@ -6,19 +6,19 @@ export default function Search(){
         {
           name: "Music Name 1",
           artists: ["Billie Eilish"],
-          clapCount: 12000,
+          claps: 12000,
           image: "",
         },
         {
           name: "Music Name 2",
           artists: ["Jeremy Zucker"],
-          clapCount: 3400,
+          claps: 3400,
           image: "",
         },
         {
           name: "Music Name 3",
           artists: ["Miley Cyrus", "Eminem"],
-          clapCount: 5720,
+          claps: 5720,
           image: "",
         },
     ];
@@ -27,19 +27,19 @@ export default function Search(){
         {
           name: "User Name 1",
         //   artists: ["Billie Eilish"],
-          clapCount: 12000,
+          claps: 12000,
           image: "",
         },
         {
           name: "User Name 2",
         //   artists: ["Jeremy Zucker"],
-          clapCount: 3400,
+          claps: 3400,
           image: "",
         },
         {
           name: "User Name 3",
         //   artists: ["Miley Cyrus", "Eminem"],
-          clapCount: 5720,
+          claps: 5720,
           image: "",
         },
     ];
