@@ -25,7 +25,7 @@ export default function MusicItem({ music, isOwner = false }) {
         <div>
           <h1 className="font-bold">{music.name}</h1>
           {music.artists 
-            ? <p className="text-sm text-gray-300">{music.artists.join(", ")}</p> 
+            ? <p className="text-sm text-gray-300">{music.artists}</p> 
             : <p/>
           }
         </div>
