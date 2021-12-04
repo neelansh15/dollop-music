@@ -4,6 +4,34 @@ const multer = require("multer");
 let upload = multer({ storage: multer.memoryStorage() });
 var crypto = require("crypto");
 
+router.get("/", (req, res) => {
+  try {
+    client.connect((err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("users");
+      collection
+        .find({})
+        .project({ username: 1 })
+        .toArray((err, result) => {
+          if (err) {
+            console.log(err);
+            res.status(400).send("err");
+            return;
+          }
+          res.status(200).send(result);
+          client.close();
+        });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 router.get("/:id", (req, res) => {
   // body has email id as id
   try {
@@ -25,7 +53,9 @@ router.get("/:id", (req, res) => {
             res.status(400).send("err");
             return;
           }
-          res.status(200).send(result);
+          result[0].followers = result[0].followers.length;
+          result[0].following = result[0].following.length;
+          res.status(200).send(result[0]);
           client.close();
         });
     });
@@ -69,6 +99,18 @@ router.post("/register", (req, res) => {
         return;
       }
       const collection = client.db("Dollop").collection("users");
+      collection.find({}).toArray((err, data) => {
+        for (i in data) {
+          if (data[i]._id == obj._id) {
+            res.send(400).send("Email taken");
+            return;
+          } else if (data[i].username == obj.username) {
+            res.send(400).send("Username taken");
+            return;
+          }
+        }
+      });
+
       await collection.insertOne(obj);
       const token = crypto.randomBytes(20).toString("hex");
       collection.updateOne(
@@ -216,7 +258,7 @@ router.post("/validate_token", (req, res) => {
 
 // TBD
 
-router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
+router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
   // body has obj to be updated
   try {
     const body = req.body;
@@ -269,5 +311,34 @@ router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
 });
 
 // get email frm username
+
+router.get("/email/:username", (req, res) => {
+  // params has username
+  try {
+    const body = req.body;
+    const params = req.params;
+    client.connect(async (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("users");
+      collection.find({ username: params.username }).toArray((err, result) => {
+        if (err) {
+          console.log(err);
+          client.close();
+          res.status(400).send("err");
+          return;
+        }
+        res.status(200).send(result[0]._id);
+        client.close();
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
 
 module.exports = router;
