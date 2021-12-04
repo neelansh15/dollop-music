@@ -9,7 +9,10 @@ export default function MusicItem({ music, isOwner = false }) {
         />
         <div>
           <h1 className="font-bold">{music.name}</h1>
-          <p className="text-sm text-gray-300">{music.artists.join(", ")}</p>
+          {music.artists 
+            ? <p className="text-sm text-gray-300">{music.artists.join(", ")}</p> 
+            : <p/>
+          }
         </div>
       </div>
       <div className="flex space-x-2">
