@@ -76,7 +76,7 @@ router.post("/clap", (req, res) => {
   try {
     const body = req.body;
     const music_id = new ObjectId(body.id);
-    client.connect(async (err, res) => {
+    client.connect(async (err, data) => {
       if (err) {
         console.log(err);
         res.status(400).send("err");
