@@ -1,4 +1,19 @@
+import axios from "axios";
+import { useState } from "react";
+
 export default function MusicItem({ music, isOwner = false }) {
+  const [claps, setClaps] = useState(music.claps);
+  async function clap(id) {
+    const { data, status } = await axios.post(
+      "http://localhost:8000/api/music/clap",
+      {
+        id: id,
+      }
+    );
+    if (status === 200) {
+      setClaps(claps + 1);
+    } else console.error("Unable to clap " + data);
+  }
   return (
     <div className="flex justify-between items-center mt-3">
       <div className="flex space-x-3 items-center">
@@ -9,14 +24,19 @@ export default function MusicItem({ music, isOwner = false }) {
         />
         <div>
           <h1 className="font-bold">{music.name}</h1>
-          <p className="text-sm text-gray-300">{music.artists.join(", ")}</p>
+          {music.artists 
+            ? <p className="text-sm text-gray-300">{music.artists}</p> 
+            : <p/>
+          }
         </div>
       </div>
       <div className="flex space-x-2">
-        <div className="flex space-x-2 items-center">
-          {/* <i className="fa fa-thumbs-up"></i> */}
-          <span>{music.clapCount}</span>
+        <div
+          onClick={() => clap(music["_id"])}
+          className="flex space-x-2 items-center cursor-pointer"
+        >
           <span className="text-xl">👏🏻</span>
+          <span>{claps}</span>
         </div>
         {isOwner == true ? (
           <div>

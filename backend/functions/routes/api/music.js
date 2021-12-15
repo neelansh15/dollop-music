@@ -14,6 +14,34 @@ Routes:
   clap a music
 */
 
+router.get("/name", (req, res) => {
+  try {
+    client.connect((err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("music");
+      collection
+        .find({})
+        .project({ name: 1 })
+        .toArray((err, result) => {
+          if (err) {
+            console.log(err);
+            res.status(400).send("err");
+            return;
+          }
+          res.status(200).send(result);
+          client.close();
+        });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 router.get("/most_clapped", (req, res) => {
   // body has nothing
   try {
@@ -48,7 +76,7 @@ router.post("/clap", (req, res) => {
   try {
     const body = req.body;
     const music_id = new ObjectId(body.id);
-    client.connect(async (err, res) => {
+    client.connect(async (err, data) => {
       if (err) {
         console.log(err);
         res.status(400).send("err");
@@ -86,6 +114,7 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       image: body.image ? body.image : "https://bit.ly/2Z7Plfp",
       date: body.date ? body.date : Date.now(),
       music: body.music,
+      artists: body.artists,
       claps: 0,
       meta: {
         image: {
@@ -115,8 +144,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       console.log(image);
       mimetype = mimetype.split("/");
       obj.meta.image = {
-        name: image.name,
-        mimetype: mimetype,
+        name: image.originalname,
+        mimetype: image.mimetype,
       };
       var extension = mimetype[1];
       console.log("Extension", extension);
@@ -128,8 +157,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
 
       mimetype = music.mimetype.split("/");
       obj.meta.music = {
-        name: music.name,
-        mimetype: mimetype,
+        name: music.originalname,
+        mimetype: music.mimetype,
       };
       extension = mimetype[1];
       console.log("Extension", extension);
@@ -162,8 +191,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
 router.get("/", (req, res) => {
   // body has an array of music ids
   try {
-    const body = req.body;
-    const musicIds = body.ids.map(x => new ObjectId(x));
+    const query = req.query;
+    const musicIds = query.ids.map(x => new ObjectId(x));
     client.connect(async (err, data) => {
       if (err) {
         console.log(err);
