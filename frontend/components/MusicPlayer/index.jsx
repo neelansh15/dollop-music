@@ -59,7 +59,6 @@ export default function MusicPlayer() {
     const percentage = left / width;
 
     const seekTime = audio.duration * percentage;
-    console.log({ percentage, seekTime });
     pause();
     audio.currentTime = seekTime;
   }
@@ -83,7 +82,7 @@ export default function MusicPlayer() {
         {/* Line */}
         <div className="relative h-2 w-full bg-teal-600 mt-2" onClick={seek}>
           <div
-            className="absolute left-0 top-0 bg-black h-2"
+            className="absolute left-0 top-0 bg-black h-2 pointer-events-none"
             style={{
               width: percentage + "%",
             }}
