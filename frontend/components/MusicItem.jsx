@@ -2,7 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 import { useStore } from "store";
 
-export default function MusicItem({ music, isOwner = false }) {
+export default function MusicItem({
+  music,
+  isOwner = false,
+  onDeleteCallback,
+}) {
   const user = useStore(state => state.user);
   const musicState = useStore(state => state.music);
   const setMusic = useStore(state => state.setMusic);
@@ -39,6 +43,7 @@ export default function MusicItem({ music, isOwner = false }) {
         alert("Deleted music successfully");
       } else console.error("Unable to delete " + data);
     }
+    onDeleteCallback();
   }
 
   function playMusic() {

@@ -19,6 +19,32 @@ function profile() {
 
   ReactModal.setAppElement("#__next");
 
+  const fetchData = async () => {
+    if (!user) return;
+    const { data: userDoc } = await axios.get(
+      "http://localhost:8000/api/profile/" + user["_id"]
+    );
+    const userData = {
+      ...user,
+      ...userDoc,
+    };
+    setUser(userData);
+    if (user.music.length > 0) {
+      const { data: musicListArray, status } = await axios.get(
+        "http://localhost:8000/api/music",
+        {
+          params: {
+            ids: user.music,
+          },
+        }
+      );
+
+      if (status === 200) {
+        setMusicList(musicListArray);
+      }
+    }
+  };
+
   useEffect(async () => {
     if (!user) return;
     console.log(user);
@@ -123,7 +149,11 @@ function profile() {
               <h1 className="text-xl font-semibold mb-5">Your Music</h1>
               {musicList.length === 0 && <h3>No music yet</h3>}
               {musicList.map((music) => (
-                <MusicItem music={music} isOwner={true} />
+                <MusicItem
+                  music={music}
+                  isOwner={true}
+                  onDeleteCallback={fetchData}
+                />
               ))}
             </Card>
           </div>
