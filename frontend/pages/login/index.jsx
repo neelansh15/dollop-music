@@ -9,7 +9,7 @@ export default function Login() {
   const toggleHover = () => setHovered(!hovered);
 
   const router = useRouter();
-  const setUser = useStore((state) => state.setUser);
+  const setUser = useStore(state => state.setUser);
 
   async function LoginHandle(e) {
     e.preventDefault();
@@ -21,12 +21,12 @@ export default function Login() {
     try {
       const { data, status } = await axios.post(
         "http://localhost:8000/api/profile/login/",
-        formData
+        formData,
       );
       //Fetch user doc if success
       if (!data || status != 200) return;
       const { data: userDoc } = await axios.get(
-        "http://localhost:8000/api/profile/" + formData.email
+        "http://localhost:8000/api/profile/" + formData.email,
       );
       const userData = {
         token: data,
@@ -51,35 +51,53 @@ export default function Login() {
       password: e.target.password.value,
     };
 
-    const { status } = await axios.post(
-      "http://localhost:8000/api/profile/register/",
-      formData
-    );
-    console.log("Status of Register Request", status);
+    try {
+      const { data, status } = await axios.post(
+        "http://localhost:8000/api/profile/register/",
+        formData,
+      );
+      //Fetch user doc if success
+      if (!data || status != 201) return;
+      const { data: userDoc } = await axios.get(
+        "http://localhost:8000/api/profile/" + formData.email,
+      );
+      const userData = {
+        token: data,
+        ...userDoc,
+      };
+      console.log(userData);
+      // Store user doc in state
+      setUser(userData);
+
+      // Redirect to profile page
+      router.push("/profile");
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (
-    <div className="px-15 py-8 w-full">
-      <div className="grid grid-cols-[1fr,50px,1fr] gap-x-5 mt-10">
-        <div className="col-span-2 md:col-span-1">
-          <h1 className="text-3xl font-bold text-center">Login</h1>
+    <div className='px-15 py-8 w-full'>
+      <div className='grid grid-cols-[1fr,50px,1fr] gap-x-5 mt-10'>
+        <div className='col-span-2 md:col-span-1'>
+          <h1 className='text-3xl font-bold text-center'>Login</h1>
 
-          <form onSubmit={LoginHandle} className="m-12 mx-auto max-w-375px">
+          <form onSubmit={LoginHandle} className='m-12 mx-auto max-w-375px'>
             <Card>
-              <h1 className="text-lg font-semibold mb-3">Email</h1>
+              <h1 className='text-lg font-semibold mb-3'>Email</h1>
               <input
-                name="email"
-                type="email"
-                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+                name='email'
+                type='email'
+                className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
               ></input>
-              <h1 className="text-lg font-semibold mb-3">Password</h1>
+              <h1 className='text-lg font-semibold mb-3'>Password</h1>
               <input
-                type="password"
-                name="password"
-                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+                type='password'
+                name='password'
+                className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
               ></input>
 
-              <div className="text-center">
+              <div className='text-center'>
                 <button
                   onMouseEnter={toggleHover}
                   onMouseLeave={toggleHover}
@@ -95,36 +113,36 @@ export default function Login() {
           </form>
         </div>
 
-        <div className="col-span-1">
-          <h1 className="text-3xl text-gray-400 font-bold text-center">OR</h1>
-          <div className="border-l-3 border-dark-300 rounded-lg h-500px w-0px mx-auto mt-10"></div>
+        <div className='col-span-1'>
+          <h1 className='text-3xl text-gray-400 font-bold text-center'>OR</h1>
+          <div className='border-l-3 border-dark-300 rounded-lg h-500px w-0px mx-auto mt-10'></div>
         </div>
 
-        <div className="col-span-2 md:col-span-1 ">
-          <h1 className="text-3xl font-bold text-center">Register</h1>
+        <div className='col-span-2 md:col-span-1 '>
+          <h1 className='text-3xl font-bold text-center'>Register</h1>
 
-          <form onSubmit={RegisterHandle} className="m-12 mx-auto max-w-375px">
+          <form onSubmit={RegisterHandle} className='m-12 mx-auto max-w-375px'>
             <Card>
-              <h1 className="text-lg font-semibold mb-3">Username</h1>
+              <h1 className='text-lg font-semibold mb-3'>Username</h1>
               <input
-                name="username"
-                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+                name='username'
+                className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
               ></input>
-              <h1 className="text-lg font-semibold mb-3">Email</h1>
+              <h1 className='text-lg font-semibold mb-3'>Email</h1>
               <input
-                type="email"
-                name="email"
-                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+                type='email'
+                name='email'
+                className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
               ></input>
-              <h1 className="text-lg font-semibold mb-3">Password</h1>
+              <h1 className='text-lg font-semibold mb-3'>Password</h1>
               <input
-                type="password"
-                name="password"
-                className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+                type='password'
+                name='password'
+                className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
               ></input>
 
-              <div className="text-center">
-                <button className="py-2 px-10 m-2 mt-5 bg-dark-300 text-white font-semibold text-md rounded-lg">
+              <div className='text-center'>
+                <button className='py-2 px-10 m-2 mt-5 bg-dark-300 text-white font-semibold text-md rounded-lg'>
                   Register
                 </button>
               </div>
