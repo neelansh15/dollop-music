@@ -2,6 +2,7 @@ import { Card } from "./Card";
 import MusicItem from "./MusicItem";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ArtistItem from "./ArtistItem";
 
 export default function Home() {
   const [popularMusic, setMusicList] = useState([]);
@@ -9,7 +10,7 @@ export default function Home() {
 
   useEffect(async () => {
     const { data: musicListArray, status } = await axios.get(
-      "http://localhost:8000/api/music/most_clapped",
+      "http://localhost:8000/api/music/most_clapped"
     );
 
     if (status === 200) {
@@ -17,7 +18,7 @@ export default function Home() {
       setMusicList(musicListArray);
     }
     const { data: userListArray, status: status2 } = await axios.get(
-      "http://localhost:8000/api/profile/most_followed",
+      "http://localhost:8000/api/profile/most_followed"
     );
 
     console.log(userListArray, status2);
@@ -47,25 +48,25 @@ export default function Home() {
   // ];
 
   return (
-    <div className='px-15 pt-10 w-full'>
-      <h1 className='text-3xl font-bold'>Dashboard</h1>
+    <div className="px-15 pt-10 w-full">
+      <h1 className="text-3xl font-bold">Dashboard</h1>
 
       {/* 2/3 column grid */}
-      <div className='grid grid-cols-5 gap-x-5 mt-10'>
-        <div className='col-span-5 md:col-span-3'>
+      <div className="grid grid-cols-5 gap-x-5 mt-10">
+        <div className="col-span-5 md:col-span-3">
           <Card>
-            <h1 className='text-xl font-semibold mb-5'>Popular Songs</h1>
+            <h1 className="text-xl font-semibold mb-5">Popular Songs</h1>
 
-            {popularMusic.map(music => (
+            {popularMusic.map((music) => (
               <MusicItem music={music} key={music.name} />
             ))}
           </Card>
         </div>
-        <div className='col-span-5 md:col-span-2'>
+        <div className="col-span-5 md:col-span-2">
           <Card>
-            <h1 className='text-xl font-semibold'>Popular Artists</h1>
-            {popularArtist.map(music => (
-              <MusicItem music={music} key={music.name} />
+            <h1 className="text-xl font-semibold mb-5">Popular Artists</h1>
+            {popularArtist.map((artist) => (
+              <ArtistItem artist={artist} key={artist._id} />
             ))}
           </Card>
         </div>
