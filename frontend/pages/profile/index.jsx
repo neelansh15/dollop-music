@@ -27,18 +27,19 @@ function profile() {
     };
     setUser(userData);
 
-    const { data: musicListArray, status } = await axios.get(
-      "http://localhost:8000/api/music",
-      {
-        params: {
-          ids: user.music,
-        },
-      }
-    );
+    if (userDoc.music.length > 0) {
+      const { data: musicListArray, status } = await axios.get(
+        "http://localhost:8000/api/music",
+        {
+          params: {
+            ids: user.music,
+          },
+        }
+      );
 
-    if (status === 200) {
-      console.log({ musicListArray });
-      setMusicList(musicListArray);
+      if (status === 200) {
+        setMusicList(musicListArray);
+      }
     }
   }, []);
 

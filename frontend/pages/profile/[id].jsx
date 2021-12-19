@@ -85,7 +85,7 @@ function profileId() {
                   userState && (
                     <>
                       <PrimaryButton>Follow</PrimaryButton>
-                      <SecondaryButton>Message</SecondaryButton>
+                      {/* <SecondaryButton>Message</SecondaryButton> */}
                     </>
                   )
                 )}
