@@ -51,7 +51,7 @@ export default function MusicPlayer() {
 
     const audioPlayer = new Audio(music.url);
     audioPlayer.preload = "auto";
-    audioPlayer.autoplay = true;
+    // audioPlayer.autoplay = true;
     audioPlayer.addEventListener("ended", () => setPlaying(false));
     audioPlayer.addEventListener("durationchange", () => {
       setDuration(convertHMS(audioPlayer.duration));
