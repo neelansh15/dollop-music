@@ -147,14 +147,35 @@ function profile() {
       )}
 
       {/* Upload Modal */}
-      <ReactModal
-        isOpen={uploadModalOpen}
-        onRequestClose={closeUploadModal}
-        shouldCloseOnOverlayClick={true}
-        className="bg-dark-900 text-white mx-auto mt-20 w-4/5 md:w-3/4"
-      >
-        
-      </ReactModal>
+      {user && (
+        <ReactModal
+          isOpen={uploadModalOpen}
+          onRequestClose={closeUploadModal}
+          shouldCloseOnOverlayClick={true}
+          className="bg-dark-500 text-white mx-auto mt-20 p-5 rounded-lg focus:outline-none w-11/12 md:w-3/4"
+          overlayClassName="fixed top-0 left-0 bottom-0 right-0 bg-true-gray-400 bg-opacity-75"
+        >
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-semibold md:text-2xl">Upload Music</h1>
+            <span className="cursor-pointer" onClick={closeUploadModal}>
+              <i className="fa fa-close fa-lg"></i>
+            </span>
+          </div>
+          <form action="http://localhost:8000/api/music/" method="POST">
+            <label htmlFor="title">Title</label>
+            <input type="text" name="name" id="title" />
+            <label htmlFor="artists">Artists</label>
+            <input type="text" name="artists" id="artists" />
+            <label htmlFor="uploadedFile">Image</label>
+            <input type="file" name="uploadedFile" id="uploadedFile" />
+            <label htmlFor="uploadedFile2">Music</label>
+            <input type="file" name="uploadedFile" id="uploadedFile2" />
+
+            <input type="hidden" name="userId" id="userId" value={user._id} />
+            <button type="submit">Submit</button>
+          </form>
+        </ReactModal>
+      )}
     </div>
   );
 }

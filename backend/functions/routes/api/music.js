@@ -129,6 +129,7 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
   // body has all the fields needed for music
   // userId, name, image, music file as uploadedFile
   try {
+    console.log(req);
     const body = req.body;
     var image, music;
     for (i in req.files) {
@@ -206,7 +207,7 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       extension = mimetype[1];
       console.log("Extension", extension);
       const musicFile = bucket.file(
-        `Music/${obj.userId}/${obj.name}.${extension}`,
+        `Music/${obj.userId}/${obj.name}.${extension}`
       );
       await musicFile.save(music.buffer, { contentType: music.mimetype });
       musicFile.makePublic();
@@ -220,7 +221,7 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       const userCollection = client.db("Dollop").collection("users");
       await userCollection.updateOne(
         { _id: body.userId },
-        { $push: { music: musicId.insertedId } },
+        { $push: { music: musicId.insertedId } }
       );
       client.close();
       res.status(200).send("Added music to db");
@@ -234,7 +235,7 @@ router.get("/", (req, res) => {
   // body has an array of music ids
   try {
     const query = req.query;
-    const musicIds = query.ids.map(x => new ObjectId(x));
+    const musicIds = query.ids.map((x) => new ObjectId(x));
     client.connect(async (err, data) => {
       if (err) {
         console.log(err);
@@ -314,7 +315,7 @@ router.delete("/", async (req, res) => {
         const userCollection = client.db("Dollop").collection("users");
         await userCollection.updateOne(
           { _id: body.userId },
-          { $pull: { music: music_id } },
+          { $pull: { music: music_id } }
         );
         res.status(200).send("Deleted successfully");
         client.close();
