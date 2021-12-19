@@ -7,12 +7,17 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useStore } from "store";
 import PrimaryButton from "../../components/Buttons/Primary";
+import ReactModal from "react-modal";
 
 function profile() {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
 
   const [musicList, setMusicList] = useState([]);
+
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+
+  ReactModal.setAppElement("#__next");
 
   useEffect(async () => {
     if (!user) return;
@@ -43,6 +48,10 @@ function profile() {
     }
   }, []);
 
+  function openUploadModal() {
+    setUploadModalOpen(true);
+  }
+
   return (
     <div>
       <Head>
@@ -69,7 +78,9 @@ function profile() {
                   <i className="fa fa-pencil"></i>&nbsp; Edit
                 </SecondaryButton>
                 <PrimaryButton>
-                  <i className="fa fa-upload"></i>&nbsp; Upload
+                  <span onClick={openUploadModal}>
+                    <i className="fa fa-upload"></i>&nbsp; Upload
+                  </span>
                 </PrimaryButton>
                 {/* <PrimaryButton>Follow</PrimaryButton>
                 <SecondaryButton>Message</SecondaryButton> */}
@@ -130,6 +141,15 @@ function profile() {
           </h1>
         </div>
       )}
+
+      {/* Upload Modal */}
+      {uploadModalOpen ? "true" : "false"}
+      <ReactModal isOpen={uploadModalOpen}>
+        <h1>Upload!</h1>
+        <h1>Upload!</h1>
+        <h1>Upload!</h1>
+        <h1>Upload!</h1>
+      </ReactModal>
     </div>
   );
 }
