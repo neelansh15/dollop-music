@@ -8,8 +8,10 @@ import { useStore } from "store";
 import PrimaryButton from "../../components/Buttons/Primary";
 
 function profileId() {
+  const userState = useStore((state) => state.user);
   const [user, setUser] = useState({});
   const [musicList, setMusicList] = useState([]);
+  const [isOwner, setIsOwner] = useState(false);
 
   const router = useRouter();
 
@@ -26,7 +28,8 @@ function profileId() {
       "http://localhost:8000/api/profile/" + email
     );
     setUser(userDoc);
-    console.log({ userDoc });
+
+    if (userDoc._id === userState._id) setIsOwner(true);
 
     if (userDoc.music.length !== 0) {
       const { data: musicListArray, status } = await axios.get(
@@ -63,9 +66,11 @@ function profileId() {
             </div>
             <div>
               <div className="space-x-2">
-                <PrimaryButton>
-                  <i className="fa fa-pencil"></i>&nbsp; Edit
-                </PrimaryButton>
+                {isOwner && (
+                  <PrimaryButton>
+                    <i className="fa fa-pencil"></i>&nbsp; Edit
+                  </PrimaryButton>
+                )}
                 {/* <PrimaryButton>Follow</PrimaryButton>
                 <SecondaryButton>Message</SecondaryButton> */}
               </div>
@@ -103,7 +108,7 @@ function profileId() {
               <h1 className="text-xl font-semibold mb-5">Your Music</h1>
               {musicList.length === 0 && <h3>No music yet</h3>}
               {musicList.map((music) => (
-                <MusicItem music={music} isOwner={false} />
+                <MusicItem music={music} isOwner={isOwner} />
               ))}
             </Card>
           </div>
