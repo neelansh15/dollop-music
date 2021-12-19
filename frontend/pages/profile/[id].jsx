@@ -71,7 +71,7 @@ function profileId() {
     const { data: followers } = await axios.get(
       "http://localhost:8000/api/follow/" + userDoc._id,
     );
-    if (userState._id in followers[0].followers) {
+    if (followers[0].followers.includes(userState._id)) {
       setFollowed(true);
     }
 
