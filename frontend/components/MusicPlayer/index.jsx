@@ -50,7 +50,8 @@ export default function MusicPlayer() {
     setPercentage(0);
 
     const audioPlayer = new Audio(music.url);
-    audioPlayer.preload = "auto"
+    audioPlayer.preload = "auto";
+    audioPlayer.autoplay = true;
     audioPlayer.addEventListener("ended", () => setPlaying(false));
     audioPlayer.addEventListener("durationchange", () => {
       setDuration(convertHMS(audioPlayer.duration));
