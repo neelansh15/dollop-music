@@ -115,10 +115,13 @@ function profileId() {
               <div className='space-x-2'>
                 {/* If logged in */}
                 {userState && (
-                  <>
-                    <PrimaryButton>Follow</PrimaryButton>
-                    {/* <SecondaryButton>Message</SecondaryButton> */}
-                  </>
+                  <div onClick={handleFollow}>
+                    {isFollowed ? (
+                      <SecondaryButton>Unfollow</SecondaryButton>
+                    ) : (
+                      <PrimaryButton>Follow</PrimaryButton>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
