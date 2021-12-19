@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useStore } from "store";
 
 export default function MusicItem({ music, isOwner = false }) {
+  const musicState = useStore((state) => state.music);
   const setMusic = useStore((state) => state.setMusic);
 
   const [claps, setClaps] = useState(music.claps);
@@ -19,7 +20,9 @@ export default function MusicItem({ music, isOwner = false }) {
   }
 
   function playMusic() {
+    if (musicState?.id === music._id) return;
     setMusic({
+      id: music._id,
       title: music.name,
       artists: music.artists,
       imageUrl: music.image,
