@@ -3,7 +3,6 @@ import { useStore } from "store";
 
 export default function MusicPlayer() {
   const music = useStore((state) => state.music);
-
   
   const [audio, setAudio] = useState(null);
   const [playing, setPlaying] = useState(false);
