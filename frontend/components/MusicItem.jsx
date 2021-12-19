@@ -22,7 +22,8 @@ export default function MusicItem({ music, isOwner = false }) {
   }
 
   async function deleteMusic() {
-    if (window.confirm("Are you sure you want to delete", music.name, "?")) {
+    console.log(music.name);
+    if (window.confirm("Are you sure you want to delete " + music.name + "?")) {
       const id = music["_id"];
       const { data, status } = await axios.delete(
         "http://localhost:8000/api/music/",
@@ -35,7 +36,7 @@ export default function MusicItem({ music, isOwner = false }) {
         },
       );
       if (status === 200) {
-        console.log("Deleted");
+        alert("Deleted music successfully");
       } else console.error("Unable to delete " + data);
     }
   }
