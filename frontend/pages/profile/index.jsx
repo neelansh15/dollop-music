@@ -106,7 +106,7 @@ function profile() {
           <div className="mt-8">
             <Card>
               <h1 className="text-xl font-semibold mb-5">Your Music</h1>
-
+              {musicList.length === 0 && <h3>No music yet</h3>}
               {musicList.map((music) => (
                 <MusicItem music={music} isOwner={true} />
               ))}
