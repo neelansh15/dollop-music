@@ -144,7 +144,7 @@ function profile() {
 
       {/* Upload Modal */}
       {uploadModalOpen ? "true" : "false"}
-      <ReactModal isOpen={uploadModalOpen}>
+      <ReactModal isOpen={uploadModalOpen} shouldCloseOnOverlayClick={true}>
         <h1>Upload!</h1>
         <h1>Upload!</h1>
         <h1>Upload!</h1>
