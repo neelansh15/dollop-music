@@ -6,9 +6,11 @@ export const useStore = create(
     (set, get) => ({
       // State
       user: null,
+      music: null,
 
       // Mutations/Actions
       setUser: (payload) => set((state) => ({ user: payload })),
+      setMusic: (payload) => set((state) => ({ music: payload })),
     }),
     {
       name: "dollop-app", // name of item in the storage (must be unique)

@@ -4,9 +4,11 @@ import { useStore } from "../../store";
 export default function Navbar() {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
+  const setMusic = useStore((state) => state.setMusic);
 
   function Logout() {
     setUser(null);
+    setMusic(null);
   }
 
   return (
