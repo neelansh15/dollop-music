@@ -1,17 +1,21 @@
 const functions = require("firebase-functions");
 const express = require("express");
 const cors = require("cors");
-var bodyParser = require("body-parser");
 
 const app = express();
+var bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
+// var multer = require('multer');
+// var upload = multer();
+// app.use(upload.array());
+
 app.use(
   cors({
     origin: "*",
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
-  }),
+  })
 );
 app.use(express.json());
-app.use(bodyParser);
 
 const port = 8000;
 

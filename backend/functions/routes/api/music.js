@@ -129,7 +129,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
   // body has all the fields needed for music
   // userId, name, image, music file as uploadedFile
   try {
-    console.log(req);
+    console.log(req.body);
+    console.log(req.files);
     const body = req.body;
     var image, music;
     for (i in req.files) {

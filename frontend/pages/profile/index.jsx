@@ -191,7 +191,11 @@ function profile() {
               <i className="fa fa-close fa-lg"></i>
             </span>
           </div>
-          <form action="http://localhost:8000/api/music/" method="POST">
+          <form
+            action="http://localhost:8000/api/music/"
+            method="POST"
+            enctype="multipart/form-data"
+          >
             <label htmlFor="title">Title</label>
             <input type="text" name="name" id="title" />
             <label htmlFor="artists">Artists</label>
@@ -202,6 +206,7 @@ function profile() {
             <input type="file" name="uploadedFile" id="uploadedFile2" />
 
             <input type="hidden" name="userId" id="userId" value={user._id} />
+            <input type="hidden" name="token" id="token" value={user.token} />
             <button type="submit">Submit</button>
           </form>
         </ReactModal>
