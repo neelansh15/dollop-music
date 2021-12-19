@@ -46,7 +46,7 @@ router.get("/most_clapped", (req, res) => {
   // body has nothing
   try {
     const body = req.body;
-    client.connect(async (err, res) => {
+    client.connect(async (err, data) => {
       if (err) {
         console.log(err);
         res.status(400).send("err");
