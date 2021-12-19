@@ -66,18 +66,6 @@ router.post("/register", (req, res) => {
         return;
       }
       const collection = client.db("Dollop").collection("users");
-      // collection.find({}).toArray((err, data) => {
-      //   for (i in data) {
-      //     if (data[i]._id == obj._id) {
-      //       res.send(400).send("Email taken");
-      //       return;
-      //     } else if (data[i].username == obj.username) {
-      //       res.send(400).send("Username taken");
-      //       return;
-      //     }
-      //   }
-      // });
-
       let response = await collection.findOne({
         $or: [{ _id: obj._id }, { username: obj.username }],
       });
