@@ -73,6 +73,35 @@ router.get("/most_clapped", (req, res) => {
     res.status(500).send(error);
   }
 });
+router.get("/recent", (req, res) => {
+  // body has nothing
+  try {
+    const body = req.body;
+    client.connect(async (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("music");
+      await collection
+        .find({})
+        .sort({ date: -1 })
+        .limit(10)
+        .toArray((err, data) => {
+          if (err) {
+            res.status(400).send("Error in finding");
+            return;
+          }
+          res.status(200).send(data);
+        });
+      client.close();
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
 
 router.post("/clap", (req, res) => {
   // body has music id
