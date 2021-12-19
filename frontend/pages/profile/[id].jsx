@@ -13,7 +13,7 @@ function profileId() {
   const userState = useStore(state => state.user);
   const [user, setUser] = useState({});
   const [musicList, setMusicList] = useState([]);
-  const [isFollowed, setFollowed] = useState(false);
+  const [isFollowed, setFollowed] = useState(null);
 
   const router = useRouter();
 
@@ -73,6 +73,8 @@ function profileId() {
     );
     if (followers[0].followers.includes(userState._id)) {
       setFollowed(true);
+    } else {
+      setFollowed(false);
     }
 
     if (userDoc.music.length !== 0) {
@@ -114,7 +116,7 @@ function profileId() {
             <div>
               <div className='space-x-2'>
                 {/* If logged in */}
-                {userState && (
+                {userState && isFollowed !== null && (
                   <div onClick={handleFollow}>
                     {isFollowed ? (
                       <SecondaryButton>Unfollow</SecondaryButton>
