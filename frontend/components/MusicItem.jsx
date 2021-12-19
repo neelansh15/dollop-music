@@ -8,7 +8,8 @@ export default function MusicItem({ music, isOwner = false }) {
   const setMusic = useStore((state) => state.setMusic);
 
   const [claps, setClaps] = useState(music.claps);
-  async function clap(id) {
+  async function clap() {
+    const id = music["_id"];
     const { data, status } = await axios.post(
       "http://localhost:8000/api/music/clap",
       {
@@ -53,7 +54,7 @@ export default function MusicItem({ music, isOwner = false }) {
       {user && (
         <div className="flex space-x-2">
           <div
-            onClick={() => clap(music["_id"])}
+            onClick={clap}
             className="flex space-x-2 items-center cursor-pointer"
           >
             <span className="text-xl">👏🏻</span>

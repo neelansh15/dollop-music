@@ -3,17 +3,13 @@ import { useStore } from "store";
 
 export default function MusicPlayer() {
   const music = useStore((state) => state.music);
-  
+
   const [audio, setAudio] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState("");
   const [progress, setProgress] = useState("00:00:00");
   const [percentage, setPercentage] = useState(0);
-  
-  if (!music) {
-    return <></>;
-  }
-  
+
   function convertHMS(value) {
     const sec = parseInt(value, 10); // convert value to number if it's string
     let hours = Math.floor(sec / 3600); // get hours
@@ -33,6 +29,7 @@ export default function MusicPlayer() {
   }
 
   useEffect(() => {
+    if (!music) return;
     // Reset
     if (audio) audio.pause();
     setPlaying(false);
@@ -52,6 +49,10 @@ export default function MusicPlayer() {
     });
     setAudio(audioPlayer);
   }, [music]);
+
+  if (!music) {
+    return <></>;
+  }
 
   function play() {
     audio.play();
