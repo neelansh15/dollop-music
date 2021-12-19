@@ -4,8 +4,10 @@ import { Card } from "components/Card";
 import MusicItem from "components/MusicItem";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 import { useStore } from "store";
 import PrimaryButton from "../../components/Buttons/Primary";
+import Link from "next/link";
 
 function profileId() {
   const userState = useStore((state) => state.user);
@@ -29,7 +31,7 @@ function profileId() {
     );
     setUser(userDoc);
 
-    if (userDoc._id === userState._id) setIsOwner(true);
+    if (userState && userDoc._id === userState._id) setIsOwner(true);
 
     if (userDoc.music.length !== 0) {
       const { data: musicListArray, status } = await axios.get(
@@ -51,6 +53,9 @@ function profileId() {
     <div>
       {user ? (
         <div className="max-w-2xl md:max-w-7xl mx-5 md:mx-auto mt-10">
+          <Head>
+            <title>{user.username} - Dollop Music</title>
+          </Head>
           {/* Header Card */}
           <div className="p-8 bg-dark-400 flex items-center justify-between rounded-lg shadow shadow-light-300">
             <div className="flex items-center space-x-5">
@@ -66,13 +71,24 @@ function profileId() {
             </div>
             <div>
               <div className="space-x-2">
-                {isOwner && (
+                {isOwner ? (
                   <PrimaryButton>
-                    <i className="fa fa-pencil"></i>&nbsp; Edit
+                    <Link href="/profile">
+                      <span>
+                        <i className="fa fa-external-link"></i>&nbsp; Go to your
+                        profile
+                      </span>
+                    </Link>
                   </PrimaryButton>
+                ) : (
+                  // If logged in
+                  userState && (
+                    <>
+                      <PrimaryButton>Follow</PrimaryButton>
+                      <SecondaryButton>Message</SecondaryButton>
+                    </>
+                  )
                 )}
-                {/* <PrimaryButton>Follow</PrimaryButton>
-                <SecondaryButton>Message</SecondaryButton> */}
               </div>
             </div>
           </div>
@@ -105,10 +121,10 @@ function profileId() {
           {/* User posts section */}
           <div className="mt-8">
             <Card>
-              <h1 className="text-xl font-semibold mb-5">Your Music</h1>
+              <h1 className="text-xl font-semibold mb-5">Music</h1>
               {musicList.length === 0 && <h3>No music yet</h3>}
               {musicList.map((music) => (
-                <MusicItem music={music} isOwner={isOwner} />
+                <MusicItem music={music} isOwner={isOwner} key={music._id} />
               ))}
             </Card>
           </div>

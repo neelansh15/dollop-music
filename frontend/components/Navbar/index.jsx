@@ -13,7 +13,9 @@ export default function Navbar() {
 
   return (
     <div className="py-5 px-15 w-full flex justify-between items-center bg-dark-500">
-      <h1>Dollop Music</h1>
+      <Link href="/">
+        <h1 className="cursor-pointer">Dollop Music</h1>
+      </Link>
       <ul className="list-none flex space-x-4 items-center text-sm">
         <Link href="/">
           <li className="cursor-pointer">Dashboard</li>
