@@ -190,7 +190,7 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
 
       const userCollection = client.db("Dollop").collection("users");
       await userCollection.updateOne(
-        { _id: userId },
+        { _id: body.userId },
         { $push: { music: musicId.insertedId } },
       );
       client.close();
@@ -233,14 +233,27 @@ router.delete("/", async (req, res) => {
   // body has music id as id and userId as userId
   try {
     const body = req.body;
+    console.log(body);
     const music_id = new ObjectId(body.id);
     console.log(music_id);
+
     let name, meta;
     client.connect(async (err, data) => {
       if (err) {
         console.log(err);
         res.status(400).send("err");
         return;
+      }
+      const userCollection = client.db("Dollop").collection("users");
+      let response = await userCollection.findOne({ _id: body.userId });
+      if (response == null) {
+        res.status(400).send("Invalid user id");
+        return;
+      } else {
+        if (response.activeSession != body.token) {
+          res.status(400).send("Invalid session");
+          return;
+        }
       }
 
       const collection = client.db("Dollop").collection("music");
@@ -257,8 +270,9 @@ router.delete("/", async (req, res) => {
         console.log(name, meta);
 
         let imgExtension, musicExtension;
-        imgExtension = meta.image.mimetype[1];
-        musicExtension = meta.music.mimetype[1];
+        imgExtension = meta.image.mimetype.split("/")[1];
+        musicExtension = meta.music.mimetype.split("/")[1];
+        console.log(imgExtension, musicExtension);
         await bucket
           .file(`Images/${body.userId}/${name}.${imgExtension}`)
           .delete();
