@@ -14,6 +14,8 @@ Routes:
   clap a music
 */
 
+// check for token in post/upload music
+
 router.get("/name", (req, res) => {
   try {
     client.connect((err, data) => {
@@ -46,7 +48,7 @@ router.get("/most_clapped", (req, res) => {
   // body has nothing
   try {
     const body = req.body;
-    client.connect(async (err, res) => {
+    client.connect(async (err, data) => {
       if (err) {
         console.log(err);
         res.status(400).send("err");
@@ -56,6 +58,7 @@ router.get("/most_clapped", (req, res) => {
       await collection
         .find({})
         .sort({ claps: -1 })
+        .limit(10)
         .toArray((err, data) => {
           if (err) {
             res.status(400).send("Error in finding");
@@ -132,12 +135,23 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       res.status(400).send("No userId provided");
       return;
     }
-    var userId = req.body.userId;
-    client.connect(async (err, res) => {
+    client.connect(async (err, data) => {
       if (err) {
         console.log(err);
         res.status(400).send("err");
         return;
+      }
+      const collection = client.db("Dollop").collection("users");
+      let response = await collection.findOne({ _id: body.userId });
+      console.log(response);
+      if (response == null) {
+        res.status(400).send("Invalid user id");
+        return;
+      } else {
+        if (response.activeSession != body.token) {
+          res.status(400).send("Invalid session");
+          return;
+        }
       }
 
       var mimetype = image.mimetype;
@@ -180,10 +194,9 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
         { $push: { music: musicId.insertedId } },
       );
       client.close();
+      res.status(200).send("Added music to db");
     });
-    res.status(200).send("Added music to db");
   } catch (error) {
-    console.log(error);
     res.status(500).send(error);
   }
 });

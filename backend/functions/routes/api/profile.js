@@ -32,39 +32,6 @@ router.get("/", (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
-  // body has email id as id
-  try {
-    const body = req.params;
-    const docId = body.id;
-    client.connect(async (err, data) => {
-      if (err) {
-        console.log(err);
-        res.status(400).send("err");
-        return;
-      }
-      const collection = client.db("Dollop").collection("users");
-      collection
-        .find({ _id: docId })
-        .project({ password: 0, activeSession: 0 })
-        .toArray((err, result) => {
-          if (err) {
-            console.log(err);
-            res.status(400).send("err");
-            return;
-          }
-          result[0].followers = result[0].followers.length;
-          result[0].following = result[0].following.length;
-          res.status(200).send(result[0]);
-          client.close();
-        });
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
-  }
-});
-
 router.post("/register", (req, res) => {
   // body has email pass and username
   try {
@@ -99,18 +66,30 @@ router.post("/register", (req, res) => {
         return;
       }
       const collection = client.db("Dollop").collection("users");
-      collection.find({}).toArray((err, data) => {
-        for (i in data) {
-          if (data[i]._id == obj._id) {
-            res.send(400).send("Email taken");
-            return;
-          } else if (data[i].username == obj.username) {
-            res.send(400).send("Username taken");
-            return;
-          }
-        }
-      });
+      // collection.find({}).toArray((err, data) => {
+      //   for (i in data) {
+      //     if (data[i]._id == obj._id) {
+      //       res.send(400).send("Email taken");
+      //       return;
+      //     } else if (data[i].username == obj.username) {
+      //       res.send(400).send("Username taken");
+      //       return;
+      //     }
+      //   }
+      // });
 
+      let response = await collection.findOne({
+        $or: [{ _id: obj._id }, { username: obj.username }],
+      });
+      if (response != null) {
+        if (response._id == obj._id) {
+          res.status(400).send("Email taken");
+          return;
+        } else if (response.email == obj.email) {
+          res.status(400).send("Username taken");
+          return;
+        }
+      }
       await collection.insertOne(obj);
       const token = crypto.randomBytes(20).toString("hex");
       collection.updateOne(
@@ -127,7 +106,6 @@ router.post("/register", (req, res) => {
           client.close();
         },
       );
-      client.close();
     });
   } catch (error) {
     console.log(error);
@@ -334,6 +312,81 @@ router.get("/email/:username", (req, res) => {
         res.status(200).send(result[0]._id);
         client.close();
       });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+router.get("/most_followed", (req, res) => {
+  // params has username
+  try {
+    client.connect(async (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("users");
+      collection
+        .aggregate([
+          {
+            $project: {
+              _id: 1,
+              name: 1,
+              username: 1,
+              image: 1,
+              follower_count: { $size: "$followers" },
+            },
+          },
+          { $sort: { follower_count: -1 } },
+        ])
+        .limit(10)
+        .toArray((err, result) => {
+          if (err) {
+            console.log(err);
+            client.close();
+            res.status(400).send("err");
+            return;
+          }
+          console.log(result);
+          res.status(200).send(result);
+          client.close();
+        });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+router.get("/:id", (req, res) => {
+  // body has email id as id
+  try {
+    const body = req.params;
+    const docId = body.id;
+    client.connect(async (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("err");
+        return;
+      }
+      const collection = client.db("Dollop").collection("users");
+      collection
+        .find({ _id: docId })
+        .project({ password: 0, activeSession: 0 })
+        .toArray((err, result) => {
+          if (err) {
+            console.log(err);
+            res.status(400).send("err");
+            return;
+          }
+          result[0].followers = result[0].followers.length;
+          result[0].following = result[0].following.length;
+          res.status(200).send(result[0]);
+          client.close();
+        });
     });
   } catch (error) {
     console.log(error);

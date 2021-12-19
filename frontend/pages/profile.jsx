@@ -14,6 +14,7 @@ function profile() {
   const [musicList, setMusicList] = useState([]);
 
   useEffect(async () => {
+    if (!user) return;
     console.log(user);
     // Update user doc
     const { data: userDoc } = await axios.get(
