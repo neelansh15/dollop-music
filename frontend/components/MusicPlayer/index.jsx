@@ -30,6 +30,11 @@ export default function MusicPlayer() {
   }
 
   useEffect(() => {
+    // Reset
+    setDuration("");
+    setProgress("00:00:00");
+    setPercentage(0);
+
     const audioPlayer = new Audio(music.url);
     audioPlayer.addEventListener("ended", () => setPlaying(false));
     audioPlayer.addEventListener("durationchange", () => {
