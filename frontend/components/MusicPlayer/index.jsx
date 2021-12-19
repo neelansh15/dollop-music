@@ -30,14 +30,12 @@ export default function MusicPlayer() {
 
   function play() {
     if (!audio) return;
-    console.log("play function called");
     audio.play();
     setPlaying(true);
   }
 
   function pause() {
     if (!audio) return;
-    console.log("pause function called");
     audio.pause();
     setPlaying(false);
   }
@@ -68,6 +66,10 @@ export default function MusicPlayer() {
     audioPlayer.addEventListener("pause", () => {
       audioPlayer.pause();
       setPlaying(false);
+    });
+    audioPlayer.addEventListener("ended", () => {
+      // Reset for playing again
+      audioPlayer.currentTime = 0;
     });
     setAudio(audioPlayer);
   }, [music]);
