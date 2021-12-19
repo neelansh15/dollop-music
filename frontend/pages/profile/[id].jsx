@@ -121,7 +121,7 @@ function profileId() {
           {/* User posts section */}
           <div className="mt-8">
             <Card>
-              <h1 className="text-xl font-semibold mb-5">Your Music</h1>
+              <h1 className="text-xl font-semibold mb-5">Music</h1>
               {musicList.length === 0 && <h3>No music yet</h3>}
               {musicList.map((music) => (
                 <MusicItem music={music} isOwner={isOwner} key={music._id} />
