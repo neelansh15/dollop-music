@@ -3,8 +3,11 @@ import { useStore } from "store";
 
 export default function MusicPlayer() {
   const music = useStore((state) => state.music);
-  // const audioFile =
-  //   "https://firebasestorage.googleapis.com/v0/b/dollop-a1e86.appspot.com/o/Music%2F6198fea3c06aa256eb08de66%2FMusic.mpeg?alt=media&token=6198fea3c06aa256eb08de66Music";
+
+  if (!music) {
+    return <></>;
+  }
+
   const [audio, setAudio] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [duration, setDuration] = useState("");
@@ -31,6 +34,8 @@ export default function MusicPlayer() {
 
   useEffect(() => {
     // Reset
+    if (audio) audio.pause();
+    setPlaying(false);
     setDuration("");
     setProgress("00:00:00");
     setPercentage(0);
