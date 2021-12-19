@@ -7,6 +7,7 @@ export const useStore = create(
       // State
       user: null,
       music: null,
+      apiUrl: "http://localhost:8000",
 
       // Mutations/Actions
       setUser: (payload) => set((state) => ({ user: payload })),

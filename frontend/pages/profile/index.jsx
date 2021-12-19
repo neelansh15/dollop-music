@@ -10,6 +10,7 @@ import PrimaryButton from "../../components/Buttons/Primary";
 import ReactModal from "react-modal";
 
 function profile() {
+  const apiUrl = useStore((state) => state.apiUrl);
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
 
@@ -22,7 +23,7 @@ function profile() {
   const fetchData = async () => {
     if (!user) return;
     const { data: userDoc } = await axios.get(
-      "http://localhost:8000/api/profile/" + user["_id"]
+      `${apiUrl}/api/profile/` + user["_id"]
     );
     const userData = {
       ...user,
@@ -31,7 +32,7 @@ function profile() {
     setUser(userData);
     if (user.music.length > 0) {
       const { data: musicListArray, status } = await axios.get(
-        "http://localhost:8000/api/music",
+        `${apiUrl}/api/music`,
         {
           params: {
             ids: user.music,
@@ -50,7 +51,7 @@ function profile() {
     console.log(user);
     // Update user doc
     const { data: userDoc } = await axios.get(
-      "http://localhost:8000/api/profile/" + user["_id"]
+      `${apiUrl}/api/profile/` + user["_id"]
     );
     const userData = {
       ...user,
@@ -60,7 +61,7 @@ function profile() {
 
     if (userDoc.music.length > 0) {
       const { data: musicListArray, status } = await axios.get(
-        "http://localhost:8000/api/music",
+        `${apiUrl}/api/music`,
         {
           params: {
             ids: user.music,
@@ -192,7 +193,7 @@ function profile() {
             </span>
           </div>
           <form
-            action="http://localhost:8000/api/music/"
+            action={apiUrl + "/api/music/"}
             method="POST"
             enctype="multipart/form-data"
           >
