@@ -1,66 +1,49 @@
 import axios from "axios";
-import SecondaryButton from "components/Buttons/Secondary";
+import SecondaryButton from "../../components/Buttons/Secondary";
 import { Card } from "components/Card";
 import MusicItem from "components/MusicItem";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useStore } from "store";
-import PrimaryButton from "../components/Buttons/Primary";
+import PrimaryButton from "../../components/Buttons/Primary";
 
-function profile() {
-  const user = useStore((state) => state.user);
-  const setUser = useStore((state) => state.setUser);
-
+function profileId() {
+  const [user, setUser] = useState({});
   const [musicList, setMusicList] = useState([]);
 
+  const router = useRouter();
+
   useEffect(async () => {
-    if (!user) return;
-    console.log(user);
-    // Update user doc
+    if (!router.isReady) return;
+    const id = router.query.id;
+    // Get user email from username, to use as id for fetching user doc
+    const { data: email } = await axios.get(
+      "http://localhost:8000/api/profile/email/" + id.toLowerCase()
+    );
+
+    // Get User doc
     const { data: userDoc } = await axios.get(
-      "http://localhost:8000/api/profile/" + user["_id"]
+      "http://localhost:8000/api/profile/" + email
     );
-    const userData = {
-      ...user,
-      ...userDoc,
-    };
-    setUser(userData);
+    setUser(userDoc);
+    console.log({ userDoc });
 
-    const { data: musicListArray, status } = await axios.get(
-      "http://localhost:8000/api/music",
-      {
-        params: {
-          ids: user.music,
-        },
+    if (userDoc.music.length !== 0) {
+      const { data: musicListArray, status } = await axios.get(
+        "http://localhost:8000/api/music",
+        {
+          params: {
+            ids: userDoc.music,
+          },
+        }
+      );
+
+      if (status === 200) {
+        setMusicList(musicListArray);
       }
-    );
-
-    if (status === 200) {
-      console.log({ musicListArray });
-      setMusicList(musicListArray);
     }
-  }, []);
+  }, [router.isReady]);
 
-  // const usersMusic = [
-  //   {
-  //     name: "Music Name 1",
-  //     artists: ["Neelansh", "Vedant"],
-  //     clapCount: 1000,
-  //     image: "",
-  //   },
-  //   {
-  //     name: "Music Name 2",
-  //     artists: ["KSHMR"],
-  //     clapCount: 2400,
-  //     image: "",
-  //   },
-  //   {
-  //     name: "Music Name 3",
-  //     artists: ["Lil Nas X", "Drake"],
-  //     clapCount: 579,
-  //     image: "",
-  //   },
-  // ];
   return (
     <div>
       {user ? (
@@ -118,9 +101,9 @@ function profile() {
           <div className="mt-8">
             <Card>
               <h1 className="text-xl font-semibold mb-5">Your Music</h1>
-
+              {musicList.length === 0 && <h3>No music yet</h3>}
               {musicList.map((music) => (
-                <MusicItem music={music} isOwner={true} />
+                <MusicItem music={music} isOwner={false} />
               ))}
             </Card>
           </div>
@@ -132,13 +115,7 @@ function profile() {
             <span>
               <i className="fa fa-lock"></i>
             </span>{" "}
-            &nbsp;
-            <Link href="/login">
-              <span className="text-blue-500 cursor-pointer hover:underline">
-                Log in
-              </span>
-            </Link>{" "}
-            to view your profile
+            &nbsp; User does not exist
           </h1>
         </div>
       )}
@@ -146,4 +123,4 @@ function profile() {
   );
 }
 
-export default profile;
+export default profileId;
