@@ -3,6 +3,7 @@ import SecondaryButton from "../../components/Buttons/Secondary";
 import { Card } from "components/Card";
 import MusicItem from "components/MusicItem";
 import Link from "next/link";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useStore } from "store";
 import PrimaryButton from "../../components/Buttons/Primary";
@@ -43,6 +44,9 @@ function profile() {
 
   return (
     <div>
+      <Head>
+        <title>Profile - Dollop Music</title>
+      </Head>
       {user ? (
         <div className="max-w-2xl md:max-w-7xl mx-5 md:mx-auto mt-10">
           {/* Header Card */}
@@ -60,8 +64,11 @@ function profile() {
             </div>
             <div>
               <div className="space-x-2">
-                <PrimaryButton>
+                <SecondaryButton>
                   <i className="fa fa-pencil"></i>&nbsp; Edit
+                </SecondaryButton>
+                <PrimaryButton>
+                  <i className="fa fa-upload"></i>&nbsp; Upload
                 </PrimaryButton>
                 {/* <PrimaryButton>Follow</PrimaryButton>
                 <SecondaryButton>Message</SecondaryButton> */}
