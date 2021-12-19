@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [popularMusic, setMusicList] = useState([]);
+  const [popularArtist, setArtistList] = useState([]);
 
   useEffect(async () => {
     const { data: musicListArray, status } = await axios.get(
@@ -14,6 +15,14 @@ export default function Home() {
     if (status === 200) {
       console.log({ musicListArray });
       setMusicList(musicListArray);
+    }
+    const { data: userListArray, status: status2 } = await axios.get(
+      "http://localhost:8000/api/profile/most_followed",
+    );
+
+    console.log(userListArray, status2);
+    if (status2 === 200) {
+      setArtistList(userListArray);
     }
   }, []);
   // const popularMusic = [
@@ -55,6 +64,9 @@ export default function Home() {
         <div className='col-span-5 md:col-span-2'>
           <Card>
             <h1 className='text-xl font-semibold'>Popular Artists</h1>
+            {popularArtist.map(music => (
+              <MusicItem music={music} key={music.name} />
+            ))}
           </Card>
         </div>
       </div>
