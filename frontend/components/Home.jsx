@@ -16,14 +16,12 @@ export default function Home() {
     );
 
     if (status === 200) {
-      console.log({ musicListArray });
       setMusicList(musicListArray);
     }
     const { data: userListArray, status: status2 } = await axios.get(
       `${apiUrl}/api/profile/most_followed`
     );
 
-    console.log(userListArray, status2);
     if (status2 === 200) {
       setArtistList(userListArray);
     }

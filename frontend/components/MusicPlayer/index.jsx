@@ -28,6 +28,20 @@ export default function MusicPlayer() {
     return hours + ":" + minutes + ":" + seconds; // Return is HH : MM : SS
   }
 
+  function play() {
+    if (!audio) return;
+    console.log("play function called");
+    audio.play();
+    setPlaying(true);
+  }
+
+  function pause() {
+    if (!audio) return;
+    console.log("pause function called");
+    audio.pause();
+    setPlaying(false);
+  }
+
   useEffect(() => {
     if (!music) return;
     // Reset
@@ -47,21 +61,19 @@ export default function MusicPlayer() {
       setPercentage((currentTime * 100) / audioPlayer.duration);
       setProgress(convertHMS(currentTime));
     });
+    audioPlayer.addEventListener("play", () => {
+      audioPlayer.play();
+      setPlaying(true);
+    });
+    audioPlayer.addEventListener("pause", () => {
+      audioPlayer.pause();
+      setPlaying(false);
+    });
     setAudio(audioPlayer);
   }, [music]);
 
   if (!music) {
     return <></>;
-  }
-
-  function play() {
-    audio.play();
-    setPlaying(true);
-  }
-
-  function pause() {
-    audio.pause();
-    setPlaying(false);
   }
 
   function seek(e) {
