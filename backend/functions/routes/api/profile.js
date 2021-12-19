@@ -90,7 +90,7 @@ router.post("/register", (req, res) => {
             client.close();
             return;
           }
-          res.status(200).send(token);
+          res.status(201).send(token);
           client.close();
         },
       );
