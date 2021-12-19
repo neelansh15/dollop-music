@@ -5,7 +5,7 @@ import MusicPlayer from "components/MusicPlayer";
 
 export default function Home({ Component }) {
   return (
-    <div className="min-h-screen pb-30 w-full bg-dark-800 text-white font-poppins">
+    <div id="myroot" className="min-h-screen pb-30 w-full bg-dark-800 text-white font-poppins">
       <Navbar />
       <main>
         <Component />
