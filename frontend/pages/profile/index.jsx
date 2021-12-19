@@ -15,7 +15,7 @@ function profile() {
 
   const [musicList, setMusicList] = useState([]);
 
-  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [uploadModalOpen, setUploadModalOpen] = useState(true);
 
   ReactModal.setAppElement("#__next");
 
@@ -50,6 +50,10 @@ function profile() {
 
   function openUploadModal() {
     setUploadModalOpen(true);
+  }
+
+  function closeUploadModal() {
+    setUploadModalOpen(false);
   }
 
   return (
@@ -143,12 +147,13 @@ function profile() {
       )}
 
       {/* Upload Modal */}
-      {uploadModalOpen ? "true" : "false"}
-      <ReactModal isOpen={uploadModalOpen} shouldCloseOnOverlayClick={true}>
-        <h1>Upload!</h1>
-        <h1>Upload!</h1>
-        <h1>Upload!</h1>
-        <h1>Upload!</h1>
+      <ReactModal
+        isOpen={uploadModalOpen}
+        onRequestClose={closeUploadModal}
+        shouldCloseOnOverlayClick={true}
+        className="bg-dark-900 text-white mx-auto mt-20 w-4/5 md:w-3/4"
+      >
+        
       </ReactModal>
     </div>
   );
