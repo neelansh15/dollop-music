@@ -70,10 +70,12 @@ export default function MusicPlayer() {
     const left = e.clientX - rect.left; //x position within the element.
     const width = rect.width;
     const percentage = left / width;
+    const currentlyPlaying = playing;
 
     const seekTime = audio.duration * percentage;
     pause();
     audio.currentTime = seekTime;
+    if (currentlyPlaying) setTimeout(() => play(), 100);
   }
 
   return (
