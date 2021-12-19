@@ -1,11 +1,11 @@
 import axios from "axios";
-import SecondaryButton from "components/Buttons/Secondary";
+import SecondaryButton from "../../components/Buttons/Secondary";
 import { Card } from "components/Card";
 import MusicItem from "components/MusicItem";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useStore } from "store";
-import PrimaryButton from "../components/Buttons/Primary";
+import PrimaryButton from "../../components/Buttons/Primary";
 
 function profile() {
   const user = useStore((state) => state.user);
@@ -41,26 +41,6 @@ function profile() {
     }
   }, []);
 
-  // const usersMusic = [
-  //   {
-  //     name: "Music Name 1",
-  //     artists: ["Neelansh", "Vedant"],
-  //     clapCount: 1000,
-  //     image: "",
-  //   },
-  //   {
-  //     name: "Music Name 2",
-  //     artists: ["KSHMR"],
-  //     clapCount: 2400,
-  //     image: "",
-  //   },
-  //   {
-  //     name: "Music Name 3",
-  //     artists: ["Lil Nas X", "Drake"],
-  //     clapCount: 579,
-  //     image: "",
-  //   },
-  // ];
   return (
     <div>
       {user ? (
