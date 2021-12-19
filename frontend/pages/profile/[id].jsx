@@ -13,7 +13,6 @@ function profileId() {
   const userState = useStore(state => state.user);
   const [user, setUser] = useState({});
   const [musicList, setMusicList] = useState([]);
-  const [isOwner, setIsOwner] = useState(false);
   const [isFollowed, setFollowed] = useState(false);
 
   const router = useRouter();
@@ -63,7 +62,11 @@ function profileId() {
     );
     setUser(userDoc);
 
-    if (userState && userDoc._id === userState._id) setIsOwner(true);
+    if (userState && userDoc._id === userState._id) {
+      // Is Owner
+      router.push("/profile");
+      return;
+    }
 
     const { data: followers } = await axios.get(
       "http://localhost:8000/api/follow/" + userDoc._id,
@@ -110,23 +113,12 @@ function profileId() {
             </div>
             <div>
               <div className='space-x-2'>
-                {isOwner ? (
-                  <PrimaryButton>
-                    <Link href='/profile'>
-                      <span>
-                        <i className='fa fa-external-link'></i>&nbsp; Go to your
-                        profile
-                      </span>
-                    </Link>
-                  </PrimaryButton>
-                ) : (
-                  // If logged in
-                  userState && (
-                    <div onClick={handleFollow}>
-                      <PrimaryButton>Follow</PrimaryButton>
-                      {/* <SecondaryButton>Message</SecondaryButton> */}
-                    </div>
-                  )
+                {/* If logged in */}
+                {userState && (
+                  <>
+                    <PrimaryButton>Follow</PrimaryButton>
+                    {/* <SecondaryButton>Message</SecondaryButton> */}
+                  </>
                 )}
               </div>
             </div>
@@ -163,7 +155,7 @@ function profileId() {
               <h1 className='text-xl font-semibold mb-5'>Music</h1>
               {musicList.length === 0 && <h3>No music yet</h3>}
               {musicList.map(music => (
-                <MusicItem music={music} isOwner={isOwner} key={music._id} />
+                <MusicItem music={music} isOwner={false} key={music._id} />
               ))}
             </Card>
           </div>
