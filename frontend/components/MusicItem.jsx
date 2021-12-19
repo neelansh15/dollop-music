@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useStore } from "store";
 
 export default function MusicItem({ music, isOwner = false }) {
+  const user = useStore((state) => state.user);
   const musicState = useStore((state) => state.music);
   const setMusic = useStore((state) => state.setMusic);
 
@@ -49,25 +50,27 @@ export default function MusicItem({ music, isOwner = false }) {
           )}
         </div>
       </div>
-      <div className="flex space-x-2">
-        <div
-          onClick={() => clap(music["_id"])}
-          className="flex space-x-2 items-center cursor-pointer"
-        >
-          <span className="text-xl">👏🏻</span>
-          <span>{claps}</span>
-        </div>
-        {isOwner == true ? (
-          <div>
-            <span className="mr-2">|</span>
-            <button className="text-red-500 px-2 focus:(outline-none ring ring-red-600) transition hover:(text-red-600)">
-              Delete
-            </button>
+      {user && (
+        <div className="flex space-x-2">
+          <div
+            onClick={() => clap(music["_id"])}
+            className="flex space-x-2 items-center cursor-pointer"
+          >
+            <span className="text-xl">👏🏻</span>
+            <span>{claps}</span>
           </div>
-        ) : (
-          <></>
-        )}
-      </div>
+          {isOwner == true ? (
+            <div>
+              <span className="mr-2">|</span>
+              <button className="text-red-500 px-2 focus:(outline-none ring ring-red-600) transition hover:(text-red-600)">
+                Delete
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+      )}
     </div>
   );
 }
