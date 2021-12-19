@@ -55,7 +55,7 @@ router.get("/most_clapped", (req, res) => {
         return;
       }
       const collection = client.db("Dollop").collection("music");
-      collection
+      await collection
         .find({})
         .sort({ claps: -1 })
         .limit(10)
