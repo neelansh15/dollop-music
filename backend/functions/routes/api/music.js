@@ -55,9 +55,10 @@ router.get("/most_clapped", (req, res) => {
         return;
       }
       const collection = client.db("Dollop").collection("music");
-      await collection
+      collection
         .find({})
         .sort({ claps: -1 })
+        .limit(10)
         .toArray((err, data) => {
           if (err) {
             res.status(400).send("Error in finding");
