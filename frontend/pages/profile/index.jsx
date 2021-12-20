@@ -16,7 +16,7 @@ function profile() {
 
   const [musicList, setMusicList] = useState([]);
 
-  const [uploadModalOpen, setUploadModalOpen] = useState(true);
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
   ReactModal.setAppElement("#__next");
 
