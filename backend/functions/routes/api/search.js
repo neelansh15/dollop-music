@@ -3,7 +3,7 @@ const { client } = require("../../db");
 
 router.get("/", async (req, res) => {
   try {
-    const query = req.body;
+    const query = req.query;
     console.log(query);
     const response = [];
     client.connect(async (err, data) => {
