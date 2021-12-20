@@ -108,8 +108,8 @@ function profile() {
                 <SecondaryButton>
                   <i className="fa fa-pencil"></i>&nbsp; Edit
                 </SecondaryButton>
-                <PrimaryButton>
-                  <span onClick={openUploadModal}>
+                <PrimaryButton onClick={openUploadModal}>
+                  <span>
                     <i className="fa fa-upload"></i>&nbsp; Upload
                   </span>
                 </PrimaryButton>
@@ -183,7 +183,7 @@ function profile() {
           isOpen={uploadModalOpen}
           onRequestClose={closeUploadModal}
           shouldCloseOnOverlayClick={true}
-          className="bg-dark-500 text-white mx-auto mt-20 p-5 rounded-lg focus:outline-none w-11/12 md:w-3/4"
+          className="bg-dark-500 text-white mx-auto mt-20 p-5 rounded-lg focus:outline-none w-11/12 md:w-1/2"
           overlayClassName="fixed top-0 left-0 bottom-0 right-0 bg-true-gray-400 bg-opacity-75"
         >
           <div className="flex justify-between items-center">
@@ -196,19 +196,29 @@ function profile() {
             action={apiUrl + "/api/music/"}
             method="POST"
             enctype="multipart/form-data"
+            className="form mt-3"
           >
             <label htmlFor="title">Title</label>
             <input type="text" name="name" id="title" />
+
             <label htmlFor="artists">Artists</label>
             <input type="text" name="artists" id="artists" />
-            <label htmlFor="uploadedFile">Image</label>
-            <input type="file" name="uploadedFile" id="uploadedFile" />
-            <label htmlFor="uploadedFile2">Music</label>
-            <input type="file" name="uploadedFile" id="uploadedFile2" />
+
+            <div className="mt-3 md:(flex justify-between items-center)">
+              <div className="flex flex-col">
+                <label htmlFor="uploadedFile">Image</label>
+                <input type="file" name="uploadedFile" id="uploadedFile" />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="uploadedFile2">Music</label>
+                <input type="file" name="uploadedFile" id="uploadedFile2" />
+              </div>
+            </div>
 
             <input type="hidden" name="userId" id="userId" value={user._id} />
             <input type="hidden" name="token" id="token" value={user.token} />
-            <button type="submit">Submit</button>
+
+            <PrimaryButton type="submit">Upload</PrimaryButton>
           </form>
         </ReactModal>
       )}
