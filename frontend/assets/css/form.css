@@ -7,10 +7,7 @@
 }
 
 .form input[type="text"] {
-  @apply text-black p-1 mt-1 font-poppins;
-}
-
-.form input[type="file"] {
+  @apply text-black p-1 mt-1 font-poppins text-sm;
 }
 
 .form button {

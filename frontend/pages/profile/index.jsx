@@ -199,19 +199,29 @@ function profile() {
             className="form mt-3"
           >
             <label htmlFor="title">Title</label>
-            <input type="text" name="name" id="title" />
+            <input type="text" name="name" id="title" required />
 
             <label htmlFor="artists">Artists</label>
-            <input type="text" name="artists" id="artists" />
+            <input type="text" name="artists" id="artists" required />
 
             <div className="mt-3 md:(flex justify-between items-center)">
               <div className="flex flex-col">
                 <label htmlFor="uploadedFile">Image</label>
-                <input type="file" name="uploadedFile" id="uploadedFile" />
+                <input
+                  type="file"
+                  name="uploadedFile"
+                  id="uploadedFile"
+                  required
+                />
               </div>
               <div className="flex flex-col">
                 <label htmlFor="uploadedFile2">Music</label>
-                <input type="file" name="uploadedFile" id="uploadedFile2" />
+                <input
+                  type="file"
+                  name="uploadedFile"
+                  id="uploadedFile2"
+                  required
+                />
               </div>
             </div>
 
