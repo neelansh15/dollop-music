@@ -3,49 +3,29 @@ import MusicItem from "./MusicItem";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ArtistItem from "./ArtistItem";
+import { useStore } from "../store";
 
 export default function Home() {
+  const apiUrl = useStore((state) => state.apiUrl);
   const [popularMusic, setMusicList] = useState([]);
   const [popularArtist, setArtistList] = useState([]);
 
   useEffect(async () => {
     const { data: musicListArray, status } = await axios.get(
-      "http://localhost:8000/api/music/most_clapped"
+      `${apiUrl}/api/music/most_clapped`
     );
 
     if (status === 200) {
-      console.log({ musicListArray });
       setMusicList(musicListArray);
     }
     const { data: userListArray, status: status2 } = await axios.get(
-      "http://localhost:8000/api/profile/most_followed"
+      `${apiUrl}/api/profile/most_followed`
     );
 
-    console.log(userListArray, status2);
     if (status2 === 200) {
       setArtistList(userListArray);
     }
   }, []);
-  // const popularMusic = [
-  //   {
-  //     name: "Music Name 1",
-  //     artists: ["Neelansh", "Vedant"],
-  //     clapCount: 1000,
-  //     image: "",
-  //   },
-  //   {
-  //     name: "Music Name 2",
-  //     artists: ["KSHMR"],
-  //     clapCount: 2400,
-  //     image: "",
-  //   },
-  //   {
-  //     name: "Music Name 3",
-  //     artists: ["Lil Nas X", "Drake"],
-  //     clapCount: 579,
-  //     image: "",
-  //   },
-  // ];
 
   return (
     <div className="px-15 pt-10 w-full">
