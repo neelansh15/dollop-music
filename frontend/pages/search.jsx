@@ -1,48 +1,44 @@
+import axios from "axios";
 import { Card } from "components/Card";
 import MusicItem from "components/MusicItem";
+import { useEffect, useState } from "react";
 
 export default function Search(){
-    const searchedMusic = [
-        {
-          name: "Music Name 1",
-          artists: ["Billie Eilish"],
-          claps: 12000,
-          image: "",
-        },
-        {
-          name: "Music Name 2",
-          artists: ["Jeremy Zucker"],
-          claps: 3400,
-          image: "",
-        },
-        {
-          name: "Music Name 3",
-          artists: ["Miley Cyrus", "Eminem"],
-          claps: 5720,
-          image: "",
-        },
-    ];
+    let [searchedMusic, setSearchedMusic] = useState([])
+    let [searchedUser, setSearchedUser] = useState([])
+    let [searchString, setSearchString] = useState("")
 
-    const searchedUser = [
-        {
-          name: "User Name 1",
-        //   artists: ["Billie Eilish"],
-          claps: 12000,
-          image: "",
-        },
-        {
-          name: "User Name 2",
-        //   artists: ["Jeremy Zucker"],
-          claps: 3400,
-          image: "",
-        },
-        {
-          name: "User Name 3",
-        //   artists: ["Miley Cyrus", "Eminem"],
-          claps: 5720,
-          image: "",
-        },
-    ];
+    const getResults = async () => {
+        let searchResults = await axios({
+            url: "http://localhost:8000/api/search", 
+            params: { name: searchString }
+        });
+
+        // console.log(status);
+        // console.log(searchResults);
+
+        // temp variables to store search results before changing state variables
+        let tempMusic = []
+        let tempUsers = []
+        
+        searchResults.data.forEach(element => {
+            if (element.type == "user") {
+                tempUsers.push(element)
+            } else if (element.type == "music") {
+                tempMusic.push(element)
+            }
+        });
+
+        setSearchedMusic(tempMusic);
+        setSearchedUser(tempUsers);
+
+        // console.log(tempMusic);
+        // console.log(tempUsers);
+    }
+
+    const handleSearchChange = (event) => {
+        setSearchString(event.target.value)
+    }
 
     return (
         <div className="px-15 pt-10 w-full">
@@ -52,32 +48,34 @@ export default function Search(){
             {/* Search Bar */}
             <div className="bg-dark-300 p-2 mb-3 w-full rounded-lg">
                 <i className="fa fa-search ml-3" aria-hidden="true"></i>
-                <input className="bg-dark-300 ml-5 w-19/20 rounded-lg"></input>
+
+                <input value={searchString} onChange={handleSearchChange} className="bg-dark-300 ml-5 w-17/20 rounded-lg"></input>
+                
+                <button className="ml-5 px-5 bg-dark-300 text-white font-semibold text-md rounded-lg w-1/10" onClick={getResults}>
+                  Search
+                </button>
             </div>
 
             {/* Results */}
-            <Card>
+            {searchedUser.length == 0 ? null : <Card>
                 <h1 className="text-xl font-semibold mb-5">User Results</h1>
+
                 {searchedUser.map((music) => (
                 <MusicItem music={music} key={music.name} />
                 ))}
-            </Card>
+            </Card>}
 
             <div className="my-5">
                 <p/>
             </div>
 
-            <Card>
+            { searchedMusic.length == 0 ? null : <Card>
                 <h1 className="text-xl font-semibold mb-5">Song Results</h1>
+                
                 {searchedMusic.map((music) => (
                 <MusicItem music={music} key={music.name} />
                 ))}
-            </Card>
-
-            {/* Space so that last stuff is seen */}
-            <div className="pb-25" >
-                <p/>
-            </div>
+            </Card>}
         </div>
     )
 }
