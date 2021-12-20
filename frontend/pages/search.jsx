@@ -1,4 +1,5 @@
 import axios from "axios";
+import ArtistItem from "components/ArtistItem";
 import { Card } from "components/Card";
 import MusicItem from "components/MusicItem";
 import { useEffect, useState } from "react";
@@ -46,12 +47,12 @@ export default function Search(){
             <h1 className="pb-3 text-3xl font-bold">Search</h1>
 
             {/* Search Bar */}
-            <div className="bg-dark-300 p-2 mb-3 w-full rounded-lg">
+            <div className="bg-dark-300 p-2 mb-3 w-full rounded-lg flex justify-between">
                 <i className="fa fa-search ml-3" aria-hidden="true"></i>
 
-                <input value={searchString} onChange={handleSearchChange} className="bg-dark-300 ml-5 w-17/20 rounded-lg"></input>
+                <input value={searchString} onChange={handleSearchChange} className="bg-dark-300 w-17/20 rounded-lg"></input>
                 
-                <button className="ml-5 px-5 bg-dark-300 text-white font-semibold text-md rounded-lg w-1/10" onClick={getResults}>
+                <button className="px-5 bg-dark-300 text-white font-semibold text-md rounded-lg" onClick={getResults}>
                   Search
                 </button>
             </div>
@@ -60,8 +61,8 @@ export default function Search(){
             {searchedUser.length == 0 ? null : <Card>
                 <h1 className="text-xl font-semibold mb-5">User Results</h1>
 
-                {searchedUser.map((music) => (
-                <MusicItem music={music} key={music.name} />
+                {searchedUser.map((user) => (
+                <ArtistItem artist={user} key={user.name} />
                 ))}
             </Card>}
 
@@ -71,7 +72,7 @@ export default function Search(){
 
             { searchedMusic.length == 0 ? null : <Card>
                 <h1 className="text-xl font-semibold mb-5">Song Results</h1>
-                
+
                 {searchedMusic.map((music) => (
                 <MusicItem music={music} key={music.name} />
                 ))}
