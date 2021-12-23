@@ -30,8 +30,8 @@ router.get("/", async (req, res) => {
       userCollection
         .find({
           $or: [
-            { name: { $regex: `.*${query.name}.*`, $options: "i" } },
-            { username: { $regex: `.*${query.name}.*`, $options: "i" } },
+            { name: { $regex: `${query.name}`, $options: "i" } },
+            { username: { $regex: `${query.name}`, $options: "i" } },
           ],
         })
         .toArray((err, data) => {
