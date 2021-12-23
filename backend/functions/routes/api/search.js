@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
       const userCollection = client.db("Dollop").collection("users");
 
       userCollection
-        .find({ name: { $regex: `.*${query.name}.*`, $options: "i" } })
+        .find({$or:{{ name: { $regex: `.*${query.name}.*`, $options: "i" } },{ username: { $regex: `.*${query.name}.*`, $options: "i" } }}})
         .toArray((err, data) => {
           if (err) {
             console.log(err);
