@@ -8,9 +8,11 @@ import { useStore } from "../store";
 export default function Home() {
   const apiUrl = useStore((state) => state.apiUrl);
   const [popularMusic, setMusicList] = useState([]);
+  const [recentMusic, setRecentMusic] = useState([]);
   const [popularArtist, setArtistList] = useState([]);
 
   useEffect(async () => {
+    // Fetch most clapped music
     const { data: musicListArray, status } = await axios.get(
       `${apiUrl}/api/music/most_clapped`
     );
@@ -18,12 +20,23 @@ export default function Home() {
     if (status === 200) {
       setMusicList(musicListArray);
     }
+
+    // Fetch most followed people
     const { data: userListArray, status: status2 } = await axios.get(
       `${apiUrl}/api/profile/most_followed`
     );
 
     if (status2 === 200) {
       setArtistList(userListArray);
+    }
+
+    // Fetch recent music for featuring on dashboard
+    const { data: recentMusicArray, status: status3 } = await axios.get(
+      `${apiUrl}/api/music/recent`
+    );
+    console.log("Recent music data", recentMusicArray);
+    if (status3 === 200) {
+      setRecentMusic(recentMusicArray);
     }
   }, []);
 

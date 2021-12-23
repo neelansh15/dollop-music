@@ -87,10 +87,10 @@ router.get("/recent", (req, res) => {
       await collection
         .find({})
         .sort({ date: -1 })
-        .limit(10)
+        .limit(5)
         .toArray((err, data) => {
           if (err) {
-            res.status(400).send("Error in finding");
+            res.status(400).send("Error in finding recent music");
             return;
           }
           res.status(200).send(data);
