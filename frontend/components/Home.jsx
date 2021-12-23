@@ -42,8 +42,35 @@ export default function Home() {
 
   return (
     <div className="px-15 pt-10 w-full">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
-
+      {/* Featured Jumbotron */}
+      {recentMusic.length > 0 && (
+        <div className="flex flex-wrap">
+          <div
+            className=" flex flex-col p-4 w-64 h-64 rounded-lg"
+            style={{
+              flex: "0 1 auto",
+              backgroundImage:
+                "url('" +
+                recentMusic[0].image +
+                "'), linear-gradient(to top, #000, red)",
+              backgroundSize: "cover",
+            }}
+          >
+            <div className="mt-auto">
+              <h1 className="text-xl font-medium">{recentMusic[0].name}</h1>
+              <h2>{recentMusic[0].artists}</h2>
+            </div>
+          </div>
+          {recentMusic.slice(1).map((music) => (
+            <MusicItem
+              music={music}
+              key={music._id}
+              disableClaps={true}
+              className=""
+            />
+          ))}
+        </div>
+      )}
       {/* 2/3 column grid */}
       <div className="grid grid-cols-5 gap-x-5 mt-10">
         <div className="col-span-5 md:col-span-3">
@@ -51,7 +78,7 @@ export default function Home() {
             <h1 className="text-xl font-semibold mb-5">Popular Songs</h1>
 
             {popularMusic.map((music) => (
-              <MusicItem music={music} key={music.name} />
+              <MusicItem music={music} key={music._id} />
             ))}
           </Card>
         </div>

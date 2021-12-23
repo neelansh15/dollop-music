@@ -5,6 +5,8 @@ import { useStore } from "store";
 export default function MusicItem({
   music,
   isOwner = false,
+  disableClaps = false,
+  className = "",
   onDeleteCallback,
 }) {
   const apiUrl = useStore((state) => state.apiUrl);
@@ -53,7 +55,10 @@ export default function MusicItem({
   }
   return (
     <div
-      className="flex justify-between items-center mt-1 rounded-lg p-2 hover:(bg-dark-100 cursor-pointer)"
+      className={
+        "flex justify-between items-center mt-1 rounded-lg p-2 hover:(bg-dark-100 cursor-pointer) " +
+        className
+      }
       onClick={playMusic}
     >
       <div className="flex space-x-3 items-center">
@@ -71,7 +76,7 @@ export default function MusicItem({
           )}
         </div>
       </div>
-      {user && (
+      {user && !disableClaps && (
         <div className="flex space-x-2">
           <div
             onClick={clap}
