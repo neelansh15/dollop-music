@@ -211,6 +211,7 @@ function profile() {
                   type="file"
                   name="uploadedFile"
                   id="uploadedFile"
+                  accept="image/*"
                   required
                 />
               </div>
@@ -220,6 +221,7 @@ function profile() {
                   type="file"
                   name="uploadedFile"
                   id="uploadedFile2"
+                  accept="audio/*"
                   required
                 />
               </div>
