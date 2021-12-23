@@ -1,0 +1,18 @@
+.form {
+  @apply flex flex-col;
+}
+
+.form label {
+  @apply mt-2 text-sm;
+}
+
+.form input[type="text"] {
+  @apply text-black p-1 mt-1 font-poppins text-sm;
+}
+.form input[type="file"] {
+  @apply mt-1;
+}
+
+.form button {
+  @apply mt-5 w-32 ml-auto;
+}
