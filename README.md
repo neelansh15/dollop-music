@@ -58,13 +58,23 @@ User Requirements: Works on any computer that support a modern browser
 
 ## Screenshots
 Dashboard
+![image](https://user-images.githubusercontent.com/60062557/147338771-43f0feed-0a92-4702-bfa3-72eb4eebc997.png)
 
 Login or Register
+![image](https://user-images.githubusercontent.com/60062557/147338583-e0699c20-5fac-48a5-9c3d-a587633bdf89.png)
 
 Profile
+![image](https://user-images.githubusercontent.com/60062557/147338721-0fdd7c87-e91f-4093-b686-4598cc6a677d.png)
 
 Edit Profile
+![image](https://user-images.githubusercontent.com/60062557/147338695-d3fe2eb1-4154-41d1-a2bc-d60b62acb056.png)
+![image](https://user-images.githubusercontent.com/60062557/147338705-e74bccac-47a2-480f-a677-f256fb20ccb4.png)
 
 Search
+![image](https://user-images.githubusercontent.com/60062557/147338796-ae8bec23-6483-422b-81e4-646e19697748.png)
+![image](https://user-images.githubusercontent.com/60062557/147338826-15e4c52f-0803-411f-9bbd-206d112c797d.png)
 
 ## Contributors Info
+[Mugdha Kurkure](https://github.com/diamondgelato)
+[Neelansh Mathur](https://github.com/neelansh15)
+[Vedant Mahadik](https://github.com/VedantMahadik)
