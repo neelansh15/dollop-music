@@ -86,7 +86,7 @@ export default function Search() {
           <h1 className='text-xl font-semibold mb-5'>User Results</h1>
 
           {searchedUser.map(user => (
-            <ArtistItem artist={user} key={user.name} />
+            <ArtistItem artist={user} key={user._id} />
           ))}
         </Card>
       )}
