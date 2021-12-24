@@ -1,2 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;900&display=swap");
 @import url("https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.css");
+
+.enter-animation {
+  opacity: 0;
+  animation: fadeSlideIn 1s ease forwards;
+  animation-delay: calc(var(--animation-order) * 100ms);
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

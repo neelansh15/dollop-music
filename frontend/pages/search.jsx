@@ -10,7 +10,8 @@ export default function Search() {
   let [searchedUser, setSearchedUser] = useState([]);
   let [searchString, setSearchString] = useState("");
 
-  const getResults = async () => {
+  const getResults = async e => {
+    e.preventDefault();
     setSearchedMusic([]);
     setSearchedUser([]);
     let searchResults = await axios({
@@ -57,22 +58,27 @@ export default function Search() {
       <h1 className='pb-3 text-3xl font-bold'>Search</h1>
 
       {/* Search Bar */}
-      <div className='bg-dark-300 p-2 mb-3 w-full rounded-lg flex justify-between'>
-        <i className='fa fa-search ml-3' aria-hidden='true'></i>
+      <form onSubmit={getResults}>
+        <div className='bg-dark-300  mb-3 w-full rounded-lg flex justify-between '>
+          <input
+            value={searchString}
+            onChange={handleSearchChange}
+            className='bg-dark-300 w-full rounded-lg  p-3 focus:(outline-solid-dark-100 bg-dark-400 transition)'
+          ></input>
 
-        <input
-          value={searchString}
-          onChange={handleSearchChange}
-          className='bg-dark-300 w-17/20 rounded-lg'
-        ></input>
-
-        <button
-          className='px-5 bg-dark-300 text-white font-semibold text-md rounded-lg'
-          onClick={getResults}
-        >
-          Search
-        </button>
-      </div>
+          <button
+            className='px-5 bg-dark-300 max-w-xs text-white font-semibold text-md rounded-lg flex justify-center items-center p-1 focus:outline-solid-dark-100'
+            onClick={getResults}
+            type='submit'
+          >
+            <i
+              className='fa fa-search mb-0.5 ml-3 mr-3 '
+              aria-hidden='true'
+            ></i>
+            Search
+          </button>
+        </div>
+      </form>
 
       {/* Results */}
       {searchedUser.length == 0 ? null : (
@@ -80,7 +86,7 @@ export default function Search() {
           <h1 className='text-xl font-semibold mb-5'>User Results</h1>
 
           {searchedUser.map(user => (
-            <ArtistItem artist={user} key={user.name} />
+            <ArtistItem artist={user} key={user._id} />
           ))}
         </Card>
       )}

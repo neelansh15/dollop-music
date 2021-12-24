@@ -6,7 +6,10 @@ import ArtistItem from "./ArtistItem";
 import { useStore } from "../store";
 
 export default function Home() {
-  const apiUrl = useStore((state) => state.apiUrl);
+  const apiUrl = useStore(state => state.apiUrl);
+  const musicState = useStore(state => state.music);
+  const setMusic = useStore(state => state.setMusic);
+
   const [popularMusic, setMusicList] = useState([]);
   const [recentMusic, setRecentMusic] = useState([]);
   const [popularArtist, setArtistList] = useState([]);
@@ -14,7 +17,7 @@ export default function Home() {
   useEffect(async () => {
     // Fetch most clapped music
     const { data: musicListArray, status } = await axios.get(
-      `${apiUrl}/api/music/most_clapped`
+      `${apiUrl}/api/music/most_clapped`,
     );
 
     if (status === 200) {
@@ -23,7 +26,7 @@ export default function Home() {
 
     // Fetch most followed people
     const { data: userListArray, status: status2 } = await axios.get(
-      `${apiUrl}/api/profile/most_followed`
+      `${apiUrl}/api/profile/most_followed`,
     );
 
     if (status2 === 200) {
@@ -32,7 +35,7 @@ export default function Home() {
 
     // Fetch recent music for featuring on dashboard
     const { data: recentMusicArray, status: status3 } = await axios.get(
-      `${apiUrl}/api/music/recent`
+      `${apiUrl}/api/music/recent`,
     );
     console.log("Recent music data", recentMusicArray);
     if (status3 === 200) {
@@ -40,52 +43,61 @@ export default function Home() {
     }
   }, []);
 
+  function playMusic(music) {
+    if (musicState?.id === music._id) return;
+    setMusic({
+      id: music._id,
+      title: music.name,
+      artists: music.artists,
+      imageUrl: music.image,
+      url: music.music,
+    });
+  }
+
   return (
-    <div className="px-15 pt-10 w-full">
+    <div className='px-15 pt-10 w-full'>
       {/* Featured Jumbotron */}
       {recentMusic.length > 0 && (
-        <div className="flex flex-wrap">
-          <div
-            className=" flex flex-col p-4 w-64 h-64 rounded-lg"
-            style={{
-              flex: "0 1 auto",
-              backgroundImage:
-                "url('" +
-                recentMusic[0].image +
-                "'), linear-gradient(to top, #000, red)",
-              backgroundSize: "cover",
-            }}
-          >
-            <div className="mt-auto">
-              <h1 className="text-xl font-medium">{recentMusic[0].name}</h1>
-              <h2>{recentMusic[0].artists}</h2>
+        <div className='flex flex-wrap gap-2'>
+          {recentMusic.map((music, i) => (
+            <div
+              key={music.name}
+              className='flex flex-col p-4 w-35 h-35 md:(w-64 h-64) rounded-lg enter-animation cursor-pointer transition-all hover:(shadow-xl shadow-true-gray-600)'
+              style={{
+                flex: "0 1 auto",
+                background:
+                  "linear-gradient(to top, rgba(0,0,0), rgba(255,255,255,0)), url('" +
+                  music.image +
+                  "')",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                "--animation-order": i,
+              }}
+              onClick={() => playMusic(music)}
+            >
+              <div className='mt-auto'>
+                <h1 className='md:(text-lg) font-semibold'>{music.name}</h1>
+                <h2 className='text-true-gray-400'>{music.artists}</h2>
+              </div>
             </div>
-          </div>
-          {recentMusic.slice(1).map((music) => (
-            <MusicItem
-              music={music}
-              key={music._id}
-              disableClaps={true}
-              className=""
-            />
           ))}
         </div>
       )}
       {/* 2/3 column grid */}
-      <div className="grid grid-cols-5 gap-x-5 mt-10">
-        <div className="col-span-5 md:col-span-3">
+      <div className='grid grid-cols-5 gap-x-5 mt-10'>
+        <div className='col-span-5 md:col-span-3'>
           <Card>
-            <h1 className="text-xl font-semibold mb-5">Popular Songs</h1>
+            <h1 className='text-xl font-semibold mb-5'>Popular Songs</h1>
 
-            {popularMusic.map((music) => (
+            {popularMusic.map((music, i) => (
               <MusicItem music={music} key={music._id} />
             ))}
           </Card>
         </div>
-        <div className="col-span-5 md:col-span-2">
+        <div className='col-span-5 md:col-span-2'>
           <Card>
-            <h1 className="text-xl font-semibold mb-5">Popular Artists</h1>
-            {popularArtist.map((artist) => (
+            <h1 className='text-xl font-semibold mb-5'>Popular Artists</h1>
+            {popularArtist.map(artist => (
               <ArtistItem artist={artist} key={artist._id} />
             ))}
           </Card>
