@@ -10,7 +10,6 @@ router.get("/", async (req, res) => {
       useUnifiedTopology: true,
     });
     const query = req.query;
-    console.log(query);
     const response = [];
     client.connect(async (err, data) => {
       if (err) {
