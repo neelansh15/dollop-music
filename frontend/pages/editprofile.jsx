@@ -1,8 +1,10 @@
 import axios from "axios";
 import Card from "components/Card/Card";
 import { useEffect, useState } from "react";
+import { useStore } from "store";
 
 export default function EditProfile() {
+  const userState = useStore((state) => state.user);
   // let [email, setEmail] = useState()
   // let [username, setUsername] = useState()
   // let [tagline, setTagline] = useState()
@@ -15,34 +17,32 @@ export default function EditProfile() {
   // let [confPassword, setConfPassword] = useState()
 
   let [userDetails, setUserDetails] = useState({
-    bannerImage: '',
-    image: '',
-    username: '',
-    name: '',
-    tagline: '',
-    about: '',
-    instagram: '',
-    soundcloud: '',
-    twitter: '',
-    github: '',
-    _id: '',         // email
-    password: '',
-    confPassword: '',
-  })
+    bannerImage: "",
+    image: "",
+    username: "",
+    name: "",
+    tagline: "",
+    about: "",
+    instagram: "",
+    soundcloud: "",
+    twitter: "",
+    github: "",
+    _id: "", // email
+    password: "",
+    confPassword: "",
+  });
 
   useEffect(() => {
     getUserData();
   }, []);
 
   async function getUserData() {
-    let userID = "fridge@xbox.com"
-
-    let {data: fetchedData} = await axios({
-      url: "http://localhost:8000/api/profile/" + userID,
+    let { data: fetchedData } = await axios({
+      url: "http://localhost:8000/api/profile/" + userState._id,
     });
 
     console.log(fetchedData);
-    setUserDetails({...fetchedData});
+    setUserDetails({ ...fetchedData });
   }
 
   function handleInput(e) {
@@ -52,7 +52,7 @@ export default function EditProfile() {
     let field = e.target.name;
     let value = e.target.value;
 
-    setUserDetails({...userDetails, [field]: value})
+    setUserDetails({ ...userDetails, [field]: value });
   }
 
   const [hovered, setHovered] = useState(false);
@@ -65,7 +65,7 @@ export default function EditProfile() {
       <div className="max-w-700px mx-auto mt-10">
         <Card>
           <h1 className="text-lg font-semibold mb-5">Avatar</h1>
-          <img 
+          <img
             className="object-cover w-3/5 h-3/5 max-w-300px max-h-300px rounded-full mx-auto mb-5"
             src={userDetails.image}
           ></img>
@@ -171,7 +171,7 @@ export default function EditProfile() {
                 (hovered ? "" : "bg-dark-100")
               }
             >
-              Edit
+              Save
             </button>
           </div>
         </Card>
