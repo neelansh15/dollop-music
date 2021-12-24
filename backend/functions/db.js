@@ -22,4 +22,4 @@ const firebaseApp = initializeApp({
 const firebaseAuth = getAuth(firebaseApp);
 const bucket = getStorage().bucket();
 
-module.exports = { client, firebaseApp, firebaseAuth, bucket };
+module.exports = { client, firebaseApp, firebaseAuth, bucket, uri };

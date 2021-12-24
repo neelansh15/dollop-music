@@ -1,5 +1,6 @@
 var router = require("express").Router();
-const { client, firebaseApp, bucket } = require("../../db");
+const { uri, firebaseApp, bucket } = require("../../db");
+const { MongoClient } = require("mongodb");
 var ObjectId = require("mongodb").ObjectId;
 const multer = require("multer");
 let upload = multer({ storage: multer.memoryStorage() });
@@ -18,6 +19,10 @@ Routes:
 
 router.get("/name", (req, res) => {
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     client.connect((err, data) => {
       if (err) {
         console.log(err);
@@ -46,7 +51,12 @@ router.get("/name", (req, res) => {
 
 router.get("/most_clapped", (req, res) => {
   // body has nothing
+
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
     client.connect(async (err, data) => {
       if (err) {
@@ -76,6 +86,10 @@ router.get("/most_clapped", (req, res) => {
 router.get("/recent", (req, res) => {
   // body has nothing
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
     client.connect(async (err, data) => {
       if (err) {
@@ -106,6 +120,10 @@ router.get("/recent", (req, res) => {
 router.post("/clap", (req, res) => {
   // body has music id
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
     const music_id = new ObjectId(body.id);
     client.connect(async (err, data) => {
@@ -129,6 +147,10 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
   // body has all the fields needed for music
   // userId, name, image, music file as uploadedFile
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
     console.log(body);
     console.log(req.files);
@@ -235,6 +257,10 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
 router.get("/", (req, res) => {
   // body has an array of music ids
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const query = req.query;
     const musicIds = query.ids.map(x => new ObjectId(x));
     client.connect(async (err, data) => {
@@ -263,6 +289,10 @@ router.get("/", (req, res) => {
 router.delete("/", async (req, res) => {
   // body has music id as id and userId as userId
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
     console.log(body);
     const music_id = new ObjectId(body.id);

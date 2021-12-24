@@ -4,7 +4,7 @@ const cors = require("cors");
 
 const app = express();
 var bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 // var multer = require('multer');
 // var upload = multer();
 // app.use(upload.array());
@@ -13,7 +13,7 @@ app.use(
   cors({
     origin: "*",
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
-  })
+  }),
 );
 app.use(express.json());
 

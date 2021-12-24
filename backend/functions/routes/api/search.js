@@ -1,8 +1,13 @@
 var router = require("express").Router();
-const { client } = require("../../db");
+const { uri } = require("../../db");
+const { MongoClient } = require("mongodb");
 
 router.get("/", async (req, res) => {
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const query = req.query;
     console.log(query);
     const response = [];
