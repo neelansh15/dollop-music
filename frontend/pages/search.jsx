@@ -63,15 +63,15 @@ export default function Search() {
           <input
             value={searchString}
             onChange={handleSearchChange}
-            className='bg-dark-300 w-17/20 rounded-lg'
+            className='bg-dark-300 w-9/10 rounded-lg pr-10 pl-10'
           ></input>
 
           <button
-            className='px-5 bg-dark-300 text-white font-semibold text-md rounded-lg'
+            className='px-5 bg-dark-300 w-9/100 text-white font-semibold text-md rounded-lg'
             onClick={getResults}
             type='submit'
           >
-            <i className='fa fa-search ml-3' aria-hidden='true'></i>
+            <i className='fa fa-search ml-3 mr-3' aria-hidden='true'></i>
             Search
           </button>
         </div>
