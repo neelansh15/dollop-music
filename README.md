@@ -64,7 +64,7 @@ Login or Register
 ![image](https://user-images.githubusercontent.com/60062557/147338583-e0699c20-5fac-48a5-9c3d-a587633bdf89.png)
 
 Profile
-![image](https://user-images.githubusercontent.com/60062557/147338721-0fdd7c87-e91f-4093-b686-4598cc6a677d.png)
+![image](https://user-images.githubusercontent.com/60062557/147339005-8ceafde8-eb34-49f9-8295-754e297913c3.png)
 
 Edit Profile
 ![image](https://user-images.githubusercontent.com/60062557/147338695-d3fe2eb1-4154-41d1-a2bc-d60b62acb056.png)
@@ -75,6 +75,6 @@ Search
 ![image](https://user-images.githubusercontent.com/60062557/147338826-15e4c52f-0803-411f-9bbd-206d112c797d.png)
 
 ## Contributors Info
-[Mugdha Kurkure](https://github.com/diamondgelato)
-[Neelansh Mathur](https://github.com/neelansh15)
-[Vedant Mahadik](https://github.com/VedantMahadik)
+- [Mugdha Kurkure](https://github.com/diamondgelato)
+- [Neelansh Mathur](https://github.com/neelansh15)
+- [Vedant Mahadik](https://github.com/VedantMahadik)
