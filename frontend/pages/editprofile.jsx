@@ -2,10 +2,12 @@ import axios from "axios";
 import Card from "components/Card/Card";
 import { useEffect, useState } from "react";
 import { useStore } from "store";
+import { useRouter } from "next/router";
 
 export default function EditProfile() {
   const userState = useStore(state => state.user);
   const apiUrl = useStore(state => state.apiUrl);
+  const router = useRouter();
   // let [email, setEmail] = useState()
   // let [username, setUsername] = useState()
   // let [tagline, setTagline] = useState()
@@ -82,6 +84,7 @@ export default function EditProfile() {
       config,
     );
     console.log("end", returnDoc);
+    router.push("/profile");
   };
   const [hovered, setHovered] = useState(false);
   const toggleHover = () => setHovered(!hovered);
