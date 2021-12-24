@@ -44,30 +44,26 @@ export default function Home() {
     <div className="px-15 pt-10 w-full">
       {/* Featured Jumbotron */}
       {recentMusic.length > 0 && (
-        <div className="flex flex-wrap">
-          <div
-            className=" flex flex-col p-4 w-64 h-64 rounded-lg"
-            style={{
-              flex: "0 1 auto",
-              backgroundImage:
-                "url('" +
-                recentMusic[0].image +
-                "'), linear-gradient(to top, #000, red)",
-              backgroundSize: "cover",
-            }}
-          >
-            <div className="mt-auto">
-              <h1 className="text-xl font-medium">{recentMusic[0].name}</h1>
-              <h2>{recentMusic[0].artists}</h2>
+        <div className="flex flex-wrap gap-2">
+          {recentMusic.map((music, i) => (
+            <div
+              className="flex flex-col p-4 w-35 h-35 md:(w-64 h-64) rounded-lg enter-animation"
+              style={{
+                flex: "0 1 auto",
+                background:
+                  "linear-gradient(to top, rgba(0,0,0), rgba(255,255,255,0)), url('" +
+                  music.image +
+                  "')",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                "--animation-order": i,
+              }}
+            >
+              <div className="mt-auto">
+                <h1 className="md:(text-lg) font-semibold">{music.name}</h1>
+                <h2 className="text-true-gray-400">{music.artists}</h2>
+              </div>
             </div>
-          </div>
-          {recentMusic.slice(1).map((music) => (
-            <MusicItem
-              music={music}
-              key={music._id}
-              disableClaps={true}
-              className=""
-            />
           ))}
         </div>
       )}
@@ -77,8 +73,13 @@ export default function Home() {
           <Card>
             <h1 className="text-xl font-semibold mb-5">Popular Songs</h1>
 
-            {popularMusic.map((music) => (
-              <MusicItem music={music} key={music._id} />
+            {popularMusic.map((music, i) => (
+              <MusicItem
+                music={music}
+                key={music._id}
+                className="enter-animation"
+                style={{ "--animation-order": i }}
+              />
             ))}
           </Card>
         </div>
