@@ -253,8 +253,6 @@ router.post("/validate_token", (req, res) => {
 
 router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
   console.log("UPDATE PROFILE called");
-  console.log(req.body);
-  console.log(req.files);
   // body has obj to be updated
   try {
     const client = new MongoClient(uri, {
@@ -290,10 +288,8 @@ router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
       file.makePublic();
       const imgLink = file.publicUrl();
       obj.image = imgLink;
-      console.log(body.id);
       const collection = client.db("Dollop").collection("users");
-      let data222 = await collection.updateOne({ _id: body.id }, { $set: obj });
-      console.log(data222);
+      await collection.updateOne({ _id: body.id }, { $set: obj });
       res.status(200).send("Success");
       client.close();
     });
