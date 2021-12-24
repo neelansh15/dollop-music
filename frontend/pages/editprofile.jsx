@@ -1,8 +1,10 @@
 import axios from "axios";
 import Card from "components/Card/Card";
 import { useEffect, useState } from "react";
+import { useStore } from "store";
 
 export default function EditProfile() {
+  const userState = useStore(state => state.user);
   // let [email, setEmail] = useState()
   // let [username, setUsername] = useState()
   // let [tagline, setTagline] = useState()
@@ -35,10 +37,8 @@ export default function EditProfile() {
   }, []);
 
   async function getUserData() {
-    let userID = "fridge@xbox.com";
-
     let { data: fetchedData } = await axios({
-      url: "http://localhost:8000/api/profile/" + userID,
+      url: "http://localhost:8000/api/profile/" + userState._id,
     });
 
     console.log(fetchedData);
@@ -171,7 +171,7 @@ export default function EditProfile() {
                 (hovered ? "" : "bg-dark-100")
               }
             >
-              Edit
+              Save
             </button>
           </div>
         </Card>
