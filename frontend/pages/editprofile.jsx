@@ -63,8 +63,8 @@ export default function EditProfile() {
     const formData = new FormData();
     formData.append("uploadedFile", e.target[0].files[0]);
     formData.append("username", e.target[1].value);
-    formData.append("tagline", e.target[1].value);
-    formData.append("about", e.target[1].value);
+    formData.append("tagline", e.target[2].value);
+    formData.append("about", e.target[3].value);
     formData.append("instagram", e.target[4].value);
     formData.append("soundcloud", e.target[5].value);
     formData.append("twitter", e.target[5].value);

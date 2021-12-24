@@ -292,10 +292,7 @@ router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
       obj.image = imgLink;
       console.log(body.id);
       const collection = client.db("Dollop").collection("users");
-      let data222 = await collection.updateOne(
-        { _id: body.id },
-        { $set: { obj } },
-      );
+      let data222 = await collection.updateOne({ _id: body.id }, { $set: obj });
       console.log(data222);
       res.status(200).send("Success");
       client.close();
