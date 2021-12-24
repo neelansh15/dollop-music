@@ -251,9 +251,10 @@ router.post("/validate_token", (req, res) => {
 
 // TBD
 
-router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
+router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
   console.log("UPDATE PROFILE called");
-
+  console.log(req.body);
+  console.log(req.files);
   // body has obj to be updated
   try {
     const client = new MongoClient(uri, {
@@ -261,7 +262,16 @@ router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
       useUnifiedTopology: true,
     });
     const body = req.body;
-    const obj = body.obj;
+    const obj = {
+      _id: body.id,
+      username: body.username,
+      tagline: body.tagline,
+      about: body.about,
+      instagram: body.instagram,
+      soundcloud: body.soundcloud,
+      twitter: body.twitter,
+      github: body.github,
+    };
     client.connect(async (err, data) => {
       if (err) {
         console.log(err);
@@ -269,38 +279,27 @@ router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
         return;
       }
 
-      if (req.file) {
-        var image = req.files[0];
-        var bannerImage = req.files[0];
-
-        var mimetype = image.mimetype;
-        mimetype = mimetype.split("/");
-        var extension = mimetype[1];
-        const file = bucket.file(`Images/${obj._id}/${obj.name}.${extension}`);
-        await file.save(image.buffer, { contentType: image.mimetype });
-        file.makePublic();
-        const imgLink = file.publicUrl();
-        obj.image = imgLink;
-
-        mimetype = bannerImage.mimetype;
-        mimetype = mimetype.split("/");
-        extension = mimetype[1];
-        const bannerImageFile = bucket.file(
-          `Images/${obj._id}/${obj.name}.${extension}`,
-        );
-        await bannerImageFile.save(bannerImage.buffer, {
-          contentType: bannerImage.mimetype,
-        });
-        bannerImageFile.makePublic();
-        const bannerImageLink = bannerImageFile.publicUrl();
-        obj.bannerImage = bannerImageLink;
-      }
-
+      var image = req.files[0];
+      var mimetype = image.mimetype;
+      mimetype = mimetype.split("/");
+      var extension = mimetype[1];
+      const file = bucket.file(
+        `Images/${obj._id}/${obj.username}.${extension}`,
+      );
+      await file.save(image.buffer, { contentType: image.mimetype });
+      file.makePublic();
+      const imgLink = file.publicUrl();
+      obj.image = imgLink;
+      console.log(body.id);
       const collection = client.db("Dollop").collection("users");
-      await collection.updateOne({ _id: body.id }, { $set: { obj } });
+      let data222 = await collection.updateOne(
+        { _id: body.id },
+        { $set: { obj } },
+      );
+      console.log(data222);
+      res.status(200).send("Success");
       client.close();
     });
-    res.status(200).send("Success");
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
