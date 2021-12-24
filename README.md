@@ -34,6 +34,26 @@ yarn dev
 ```
 
 ### For Backend:
+#### Configuration file
+For privacy reasons, the config file is not included in the repo. You can make your own at `backend/functions/` and give it the following structure:
+```js
+exports.MONGO_DB_URI = "";
+
+exports.firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: "",
+  storageBucket: "",
+};
+```
+You will get the Firebase config from the Firebase settings => Web app. You will need to enable Storage in Firebase.
+
+You will get the MongoDB URI string from MongoDB Atlas. 
+#### Running
 - Open Command Prompt/Terminal in another window
 - Enter command
 ```
@@ -55,6 +75,8 @@ firebase emulators:start --only functions
 
 ## Requirements
 User Requirements: Works on any computer that support a modern browser
+Firebase Account 
+MongoDB Atlas Account
 
 ## Screenshots
 Dashboard
