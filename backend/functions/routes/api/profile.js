@@ -276,18 +276,19 @@ router.post("/update", upload.array("uploadedFile", 5), async (req, res) => {
         res.status(400).send("err");
         return;
       }
-
-      var image = req.files[0];
-      var mimetype = image.mimetype;
-      mimetype = mimetype.split("/");
-      var extension = mimetype[1];
-      const file = bucket.file(
-        `Images/${obj._id}/${obj.username}.${extension}`,
-      );
-      await file.save(image.buffer, { contentType: image.mimetype });
-      file.makePublic();
-      const imgLink = file.publicUrl();
-      obj.image = imgLink;
+      if (req.files[0]) {
+        var image = req.files[0];
+        var mimetype = image.mimetype;
+        mimetype = mimetype.split("/");
+        var extension = mimetype[1];
+        const file = bucket.file(
+          `Images/${obj._id}/${obj.username}.${extension}`,
+        );
+        await file.save(image.buffer, { contentType: image.mimetype });
+        file.makePublic();
+        const imgLink = file.publicUrl();
+        obj.image = imgLink;
+      }
       const collection = client.db("Dollop").collection("users");
       await collection.updateOne({ _id: body.id }, { $set: obj });
       res.status(200).send("Success");
