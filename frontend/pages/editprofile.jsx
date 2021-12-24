@@ -64,7 +64,9 @@ export default function EditProfile() {
     console.log("start");
     console.log(e);
     const formData = new FormData();
-    formData.append("uploadedFile", e.target[0].files[0]);
+    if (e.target[0].files[0]) {
+      formData.append("uploadedFile", e.target[0].files[0]);
+    }
     formData.append("username", e.target[1].value);
     formData.append("tagline", e.target[2].value);
     formData.append("about", e.target[3].value);
