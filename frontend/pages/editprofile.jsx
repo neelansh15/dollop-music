@@ -64,9 +64,15 @@ export default function EditProfile() {
 
       <div className='max-w-700px mx-auto mt-10'>
         <Card>
-          <h1 className='text-lg font-semibold mb-5'>Avatar</h1>
-          <img
-            className='object-cover w-3/5 h-3/5 max-w-300px max-h-300px rounded-full mx-auto mb-5'
+          <h1 className="text-lg font-semibold mb-5">Banner</h1>
+          <img 
+            className="object-cover h-3/5 max-h-200px mx-auto mb-5"
+            src={userDetails.bannerImage}
+          ></img>
+            
+          <h1 className="text-lg font-semibold mb-5">Avatar</h1>
+          <img 
+            className="object-cover w-3/5 h-3/5 max-w-300px max-h-300px rounded-full mx-auto mb-5"
             src={userDetails.image}
           ></img>
 
