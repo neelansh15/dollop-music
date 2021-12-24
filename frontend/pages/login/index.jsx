@@ -1,5 +1,5 @@
 import { Card } from "components/Card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useStore } from "../../store";
 import { useRouter } from "next/router";
@@ -78,9 +78,20 @@ export default function Login() {
     }
   }
 
+  let [width, setWidth] = useState();
+
+  useEffect (() => {
+    window.addEventListener('resize', handleResize);
+  }, [])
+
+  function handleResize (e) {
+    setWidth(window.innerWidth)
+    console.log(width);
+  }
+
   return (
     <div className="px-15 py-8 w-full">
-      <div className="grid grid-cols-[1fr,50px,1fr] gap-x-5 mt-10">
+      <div className="grid md:grid-cols-[1fr,50px,1fr] gap-x-5 mt-10">
         <div className="col-span-2 md:col-span-1">
           <h1 className="text-3xl font-bold text-center">Login</h1>
 
@@ -115,10 +126,10 @@ export default function Login() {
           </form>
         </div>
 
-        <div className="col-span-1">
+        {width > 768 ? <div className="col-span-1">
           <h1 className="text-3xl text-gray-400 font-bold text-center">OR</h1>
           <div className="border-l-3 border-dark-300 rounded-lg h-500px w-0px mx-auto mt-10"></div>
-        </div>
+        </div> : null }
 
         <div className="col-span-2 md:col-span-1 ">
           <h1 className="text-3xl font-bold text-center">Register</h1>
