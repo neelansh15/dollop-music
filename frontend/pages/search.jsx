@@ -10,7 +10,8 @@ export default function Search() {
   let [searchedUser, setSearchedUser] = useState([]);
   let [searchString, setSearchString] = useState("");
 
-  const getResults = async () => {
+  const getResults = async e => {
+    e.preventDefault();
     setSearchedMusic([]);
     setSearchedUser([]);
     let searchResults = await axios({
@@ -57,22 +58,24 @@ export default function Search() {
       <h1 className='pb-3 text-3xl font-bold'>Search</h1>
 
       {/* Search Bar */}
-      <div className='bg-dark-300 p-2 mb-3 w-full rounded-lg flex justify-between'>
-        <i className='fa fa-search ml-3' aria-hidden='true'></i>
+      <form onSubmit={getResults}>
+        <div className='bg-dark-300 p-2 mb-3 w-full rounded-lg flex justify-between'>
+          <input
+            value={searchString}
+            onChange={handleSearchChange}
+            className='bg-dark-300 w-17/20 rounded-lg'
+          ></input>
 
-        <input
-          value={searchString}
-          onChange={handleSearchChange}
-          className='bg-dark-300 w-17/20 rounded-lg'
-        ></input>
-
-        <button
-          className='px-5 bg-dark-300 text-white font-semibold text-md rounded-lg'
-          onClick={getResults}
-        >
-          Search
-        </button>
-      </div>
+          <button
+            className='px-5 bg-dark-300 text-white font-semibold text-md rounded-lg'
+            onClick={getResults}
+            type='submit'
+          >
+            <i className='fa fa-search ml-3' aria-hidden='true'></i>
+            Search
+          </button>
+        </div>
+      </form>
 
       {/* Results */}
       {searchedUser.length == 0 ? null : (
