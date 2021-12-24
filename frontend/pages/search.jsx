@@ -59,19 +59,22 @@ export default function Search() {
 
       {/* Search Bar */}
       <form onSubmit={getResults}>
-        <div className='bg-dark-300 p-2 mb-3 w-full rounded-lg flex justify-between'>
+        <div className='bg-dark-300  mb-3 w-full rounded-lg flex justify-between '>
           <input
             value={searchString}
             onChange={handleSearchChange}
-            className='bg-dark-300 w-9/10 rounded-lg pr-10 pl-10'
+            className='bg-dark-300 w-full rounded-lg  p-3 focus:(outline-solid-dark-100 bg-dark-400 transition)'
           ></input>
 
           <button
-            className='px-5 bg-dark-300 w-9/100 text-white font-semibold text-md rounded-lg'
+            className='px-5 bg-dark-300 max-w-xs text-white font-semibold text-md rounded-lg flex justify-center items-center p-1 focus:outline-solid-dark-100'
             onClick={getResults}
             type='submit'
           >
-            <i className='fa fa-search ml-3 mr-3' aria-hidden='true'></i>
+            <i
+              className='fa fa-search mb-0.5 ml-3 mr-3 '
+              aria-hidden='true'
+            ></i>
             Search
           </button>
         </div>
