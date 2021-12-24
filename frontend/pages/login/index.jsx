@@ -125,11 +125,14 @@ export default function Login() {
             </Card>
           </form>
         </div>
-
-        {width > 768 ? <div className="col-span-1">
+        
+        <div className="col-span-1 hidden md:block">
           <h1 className="text-3xl text-gray-400 font-bold text-center">OR</h1>
           <div className="border-l-3 border-dark-300 rounded-lg h-500px w-0px mx-auto mt-10"></div>
-        </div> : null }
+        </div> 
+
+        <div className="col-span-1 block md:hidden">
+        </div>
 
         <div className="col-span-2 md:col-span-1 ">
           <h1 className="text-3xl font-bold text-center">Register</h1>
