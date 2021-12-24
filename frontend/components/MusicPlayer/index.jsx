@@ -28,6 +28,18 @@ export default function MusicPlayer() {
     return hours + ":" + minutes + ":" + seconds; // Return is HH : MM : SS
   }
 
+  function play() {
+    if (!audio) return;
+    audio.play();
+    setPlaying(true);
+  }
+
+  function pause() {
+    if (!audio) return;
+    audio.pause();
+    setPlaying(false);
+  }
+
   useEffect(() => {
     if (!music) return;
     // Reset
@@ -38,6 +50,8 @@ export default function MusicPlayer() {
     setPercentage(0);
 
     const audioPlayer = new Audio(music.url);
+    audioPlayer.preload = "auto";
+    // audioPlayer.autoplay = true;
     audioPlayer.addEventListener("ended", () => setPlaying(false));
     audioPlayer.addEventListener("durationchange", () => {
       setDuration(convertHMS(audioPlayer.duration));
@@ -47,21 +61,23 @@ export default function MusicPlayer() {
       setPercentage((currentTime * 100) / audioPlayer.duration);
       setProgress(convertHMS(currentTime));
     });
+    audioPlayer.addEventListener("play", () => {
+      audioPlayer.play();
+      setPlaying(true);
+    });
+    audioPlayer.addEventListener("pause", () => {
+      audioPlayer.pause();
+      setPlaying(false);
+    });
+    audioPlayer.addEventListener("ended", () => {
+      // Reset for playing again
+      audioPlayer.currentTime = 0;
+    });
     setAudio(audioPlayer);
   }, [music]);
 
   if (!music) {
     return <></>;
-  }
-
-  function play() {
-    audio.play();
-    setPlaying(true);
-  }
-
-  function pause() {
-    audio.pause();
-    setPlaying(false);
   }
 
   function seek(e) {
@@ -70,10 +86,12 @@ export default function MusicPlayer() {
     const left = e.clientX - rect.left; //x position within the element.
     const width = rect.width;
     const percentage = left / width;
+    const currentlyPlaying = playing;
 
     const seekTime = audio.duration * percentage;
     pause();
     audio.currentTime = seekTime;
+    if (currentlyPlaying) setTimeout(() => play(), 100);
   }
 
   return (

@@ -1,9 +1,14 @@
 var router = require("express").Router();
-const { client } = require("../../db");
+const { uri } = require("../../db");
+const { MongoClient } = require("mongodb");
 
 router.get("/", async (req, res) => {
   try {
-    const query = req.body;
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    const query = req.query;
     console.log(query);
     const response = [];
     client.connect(async (err, data) => {
@@ -28,7 +33,12 @@ router.get("/", async (req, res) => {
       const userCollection = client.db("Dollop").collection("users");
 
       userCollection
-        .find({ name: { $regex: `.*${query.name}.*`, $options: "i" } })
+        .find({
+          $or: [
+            { name: { $regex: `${query.name}`, $options: "i" } },
+            { username: { $regex: `${query.name}`, $options: "i" } },
+          ],
+        })
         .toArray((err, data) => {
           if (err) {
             console.log(err);

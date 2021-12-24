@@ -1,7 +1,12 @@
 var router = require("express").Router();
-const { client } = require("../../db");
+const { uri } = require("../../db");
+const { MongoClient } = require("mongodb");
 
 router.post("/add_following", (req, res) => {
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   const body = req.body;
   var userId = req.body.userId;
 
@@ -41,6 +46,10 @@ router.post("/add_following", (req, res) => {
 });
 
 router.post("/remove_following", (req, res) => {
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   const body = req.body;
   var userId = req.body.userId;
 
@@ -69,6 +78,10 @@ router.post("/remove_following", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   const body = req.body;
   const params = req.params;
   var userId = params.id;

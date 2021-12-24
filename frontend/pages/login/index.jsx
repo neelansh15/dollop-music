@@ -1,10 +1,12 @@
 import { Card } from "components/Card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useStore } from "../../store";
 import { useRouter } from "next/router";
 
 export default function Login() {
+  const apiUrl = useStore((state) => state.apiUrl);
+
   const [hovered, setHovered] = useState(false);
   const toggleHover = () => setHovered(!hovered);
 
@@ -20,13 +22,13 @@ export default function Login() {
 
     try {
       const { data, status } = await axios.post(
-        "http://localhost:8000/api/profile/login/",
+        `${apiUrl}/api/profile/login/`,
         formData
       );
       //Fetch user doc if success
       if (!data || status != 200) return;
       const { data: userDoc } = await axios.get(
-        "http://localhost:8000/api/profile/" + formData.email
+        `${apiUrl}/api/profile/` + formData.email
       );
       const userData = {
         token: data,
@@ -51,16 +53,45 @@ export default function Login() {
       password: e.target.password.value,
     };
 
-    const { status } = await axios.post(
-      "http://localhost:8000/api/profile/register/",
-      formData
-    );
-    console.log("Status of Register Request", status);
+    try {
+      const { data, status } = await axios.post(
+        `${apiUrl}/api/profile/register/`,
+        formData
+      );
+      //Fetch user doc if success
+      if (!data || status != 201) return;
+      const { data: userDoc } = await axios.get(
+        `${apiUrl}/api/profile/` + formData.email
+      );
+      const userData = {
+        token: data,
+        ...userDoc,
+      };
+      console.log(userData);
+      // Store user doc in state
+      setUser(userData);
+
+      // Redirect to profile page
+      router.push("/profile");
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  let [width, setWidth] = useState();
+
+  useEffect (() => {
+    window.addEventListener('resize', handleResize);
+  }, [])
+
+  function handleResize (e) {
+    setWidth(window.innerWidth)
+    console.log(width);
   }
 
   return (
     <div className="px-15 py-8 w-full">
-      <div className="grid grid-cols-[1fr,50px,1fr] gap-x-5 mt-10">
+      <div className="grid md:grid-cols-[1fr,50px,1fr] gap-x-5 mt-10">
         <div className="col-span-2 md:col-span-1">
           <h1 className="text-3xl font-bold text-center">Login</h1>
 
@@ -95,10 +126,10 @@ export default function Login() {
           </form>
         </div>
 
-        <div className="col-span-1">
+        {width > 768 ? <div className="col-span-1">
           <h1 className="text-3xl text-gray-400 font-bold text-center">OR</h1>
           <div className="border-l-3 border-dark-300 rounded-lg h-500px w-0px mx-auto mt-10"></div>
-        </div>
+        </div> : null }
 
         <div className="col-span-2 md:col-span-1 ">
           <h1 className="text-3xl font-bold text-center">Register</h1>

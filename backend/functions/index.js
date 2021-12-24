@@ -3,6 +3,12 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+var bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: true }));
+// var multer = require('multer');
+// var upload = multer();
+// app.use(upload.array());
+
 app.use(
   cors({
     origin: "*",

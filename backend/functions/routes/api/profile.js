@@ -1,11 +1,17 @@
 var router = require("express").Router();
-const { client, firebaseApp, bucket } = require("../../db");
+const { uri, firebaseApp, bucket } = require("../../db");
+const { MongoClient } = require("mongodb");
+
 const multer = require("multer");
 let upload = multer({ storage: multer.memoryStorage() });
 var crypto = require("crypto");
 
 router.get("/", (req, res) => {
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     client.connect((err, data) => {
       if (err) {
         console.log(err);
@@ -35,6 +41,10 @@ router.get("/", (req, res) => {
 router.post("/register", (req, res) => {
   // body has email pass and username
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
     const hash = crypto.createHash("md5").digest("hex");
     body.password = crypto
@@ -66,18 +76,6 @@ router.post("/register", (req, res) => {
         return;
       }
       const collection = client.db("Dollop").collection("users");
-      // collection.find({}).toArray((err, data) => {
-      //   for (i in data) {
-      //     if (data[i]._id == obj._id) {
-      //       res.send(400).send("Email taken");
-      //       return;
-      //     } else if (data[i].username == obj.username) {
-      //       res.send(400).send("Username taken");
-      //       return;
-      //     }
-      //   }
-      // });
-
       let response = await collection.findOne({
         $or: [{ _id: obj._id }, { username: obj.username }],
       });
@@ -102,7 +100,7 @@ router.post("/register", (req, res) => {
             client.close();
             return;
           }
-          res.status(200).send(token);
+          res.status(201).send(token);
           client.close();
         },
       );
@@ -116,6 +114,10 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   // body has email and pass
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
 
     client.connect(async (err, data) => {
@@ -171,6 +173,10 @@ router.post("/login", (req, res) => {
 router.post("/logout", (req, res) => {
   // body has email
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
     client.connect(async (err, data) => {
       if (err) {
@@ -204,6 +210,10 @@ router.post("/validate_token", (req, res) => {
   const body = req.body;
   // body has email and token
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     client.connect(async (err, data) => {
       if (err) {
         console.log(err);
@@ -239,6 +249,10 @@ router.post("/validate_token", (req, res) => {
 router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
   // body has obj to be updated
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
     const obj = body.obj;
     client.connect(async (err, data) => {
@@ -293,6 +307,10 @@ router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
 router.get("/email/:username", (req, res) => {
   // params has username
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.body;
     const params = req.params;
     client.connect(async (err, data) => {
@@ -322,6 +340,10 @@ router.get("/email/:username", (req, res) => {
 router.get("/most_followed", (req, res) => {
   // params has username
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     client.connect(async (err, data) => {
       if (err) {
         console.log(err);
@@ -364,6 +386,10 @@ router.get("/most_followed", (req, res) => {
 router.get("/:id", (req, res) => {
   // body has email id as id
   try {
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const body = req.params;
     const docId = body.id;
     client.connect(async (err, data) => {

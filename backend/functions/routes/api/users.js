@@ -2,8 +2,14 @@ const { client, firebaseApp, firebaseAuth, bucket } = require("../../db");
 const admin = require("firebase-admin");
 const db = admin.firestore();
 const { signInWithEmailAndPassword } = require("firebase/auth");
+const config = require("../../config");
+const uri = config.MONGO_DB_URI;
 
 const signup = (email, username, password) => {
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   console.log(email, username, password);
   const newUser = {
     email: email,
@@ -27,6 +33,10 @@ const signup = (email, username, password) => {
 };
 
 const login = (email, password) => {
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   const user = {
     email: email,
     password: password,
