@@ -3,6 +3,7 @@ const { uri } = require("../../db");
 const { MongoClient } = require("mongodb");
 
 router.get("/", async (req, res) => {
+  console.log("SEARCH called");
   try {
     const client = new MongoClient(uri, {
       useNewUrlParser: true,

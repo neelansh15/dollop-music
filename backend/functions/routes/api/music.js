@@ -18,6 +18,7 @@ Routes:
 // check for token in post/upload music
 
 router.get("/name", (req, res) => {
+  console.log("GET MUSIC NAMES called");
   try {
     const client = new MongoClient(uri, {
       useNewUrlParser: true,
@@ -50,6 +51,7 @@ router.get("/name", (req, res) => {
 });
 
 router.get("/most_clapped", (req, res) => {
+  console.log("GET MOST CLAPPED MUSIC called");
   // body has nothing
 
   try {
@@ -84,6 +86,7 @@ router.get("/most_clapped", (req, res) => {
   }
 });
 router.get("/recent", (req, res) => {
+  console.log("GET RECENT MUSIC called");
   // body has nothing
   try {
     const client = new MongoClient(uri, {
@@ -118,6 +121,8 @@ router.get("/recent", (req, res) => {
 });
 
 router.post("/clap", (req, res) => {
+  console.log("ADD CLAP called");
+
   // body has music id
   try {
     const client = new MongoClient(uri, {
@@ -144,6 +149,7 @@ router.post("/clap", (req, res) => {
 });
 
 router.post("/", upload.array("uploadedFile", 5), (req, res) => {
+  console.log("UPLOAD MUSIC called");
   // body has all the fields needed for music
   // userId, name, image, music file as uploadedFile
   try {
@@ -152,8 +158,6 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       useUnifiedTopology: true,
     });
     const body = req.body;
-    console.log(body);
-    console.log(req.files);
     var image, music;
     for (i in req.files) {
       if (req.files[i].mimetype.split("/")[0] === "image") {
@@ -207,8 +211,7 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
           return;
         }
       }
-
-      console.log("img upload");
+      console.log("IMAGE UPLOADING...");
       var mimetype = image.mimetype;
       mimetype = mimetype.split("/");
       obj.meta.image = {
@@ -220,9 +223,9 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       await file.save(image.buffer, { contentType: image.mimetype });
       file.makePublic();
       const imgLink = file.publicUrl();
+      console.log("IMAGE UPLOADED...");
 
-      console.log("music upload");
-      console.log(music);
+      console.log("MUSIC UPLOADING...");
       mimetype = music.mimetype.split("/");
       obj.meta.music = {
         name: music.originalname,
@@ -235,7 +238,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
       await musicFile.save(music.buffer, { contentType: music.mimetype });
       musicFile.makePublic();
       const musicLink = musicFile.publicUrl();
-      console.log("image and music uploaded");
+      console.log("MUSIC UPLOADED...");
+
       obj.image = imgLink;
       obj.music = musicLink;
       const musicCollection = client.db("Dollop").collection("music");
@@ -255,6 +259,8 @@ router.post("/", upload.array("uploadedFile", 5), (req, res) => {
 });
 
 router.get("/", (req, res) => {
+  console.log("GET MUSIC called");
+
   // body has an array of music ids
   try {
     const client = new MongoClient(uri, {
@@ -287,6 +293,8 @@ router.get("/", (req, res) => {
 });
 
 router.delete("/", async (req, res) => {
+  console.log("DELETE MUSIC called id:", req.body.id);
+
   // body has music id as id and userId as userId
   try {
     const client = new MongoClient(uri, {
@@ -294,9 +302,7 @@ router.delete("/", async (req, res) => {
       useUnifiedTopology: true,
     });
     const body = req.body;
-    console.log(body);
     const music_id = new ObjectId(body.id);
-    console.log(music_id);
 
     let name, meta;
     client.connect(async (err, data) => {
@@ -324,16 +330,12 @@ router.delete("/", async (req, res) => {
           res.status(400).send("Error in finding");
           return;
         }
-        console.log(data);
         name = data[0].name;
         meta = data[0].meta;
-
-        console.log(name, meta);
 
         let imgExtension, musicExtension;
         imgExtension = meta.image.mimetype.split("/")[1];
         musicExtension = meta.music.mimetype.split("/")[1];
-        console.log(imgExtension, musicExtension);
         await bucket
           .file(`Images/${body.userId}/${name}.${imgExtension}`)
           .delete();

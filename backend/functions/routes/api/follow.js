@@ -3,6 +3,12 @@ const { uri } = require("../../db");
 const { MongoClient } = require("mongodb");
 
 router.post("/add_following", (req, res) => {
+  console.log(
+    "ADD FOLLOWER called userId:",
+    req.body.userId,
+    "followeeId:",
+    req.body.followeeId,
+  );
   const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -11,7 +17,6 @@ router.post("/add_following", (req, res) => {
   var userId = req.body.userId;
 
   var followeeId = req.body.followeeId;
-  console.log(userId, followeeId);
 
   client.connect(async (err, res) => {
     if (err) {
@@ -29,23 +34,18 @@ router.post("/add_following", (req, res) => {
       { _id: followeeId },
       { $push: { followers: userId } },
     );
-    // collection
-    //   .find({ _id: followeeId }, { following: 1 })
-    //   .toArray((err, res) => {
-    //     if (err) {
-    //       console.log(err);
-    //       return;
-    //     }
-    //     if (userId in res) {
-    //       ///add to chat
-    //     }
-    //   });
     client.close();
   });
   res.status(200).send("Added to following");
 });
 
 router.post("/remove_following", (req, res) => {
+  console.log(
+    "REMOVE FOLLOWER called userId:",
+    req.body.userId,
+    "followeeId:",
+    req.body.followeeId,
+  );
   const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -54,7 +54,6 @@ router.post("/remove_following", (req, res) => {
   var userId = req.body.userId;
 
   var followeeId = req.body.followeeId;
-  console.log(userId, followeeId);
 
   client.connect(async (err, res) => {
     if (err) {
@@ -78,6 +77,7 @@ router.post("/remove_following", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
+  console.log("GET USER FOLLOWERS called id", req.params.id);
   const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

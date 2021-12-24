@@ -7,6 +7,7 @@ let upload = multer({ storage: multer.memoryStorage() });
 var crypto = require("crypto");
 
 router.get("/", (req, res) => {
+  console.log("GET ALL PROFILE called");
   try {
     const client = new MongoClient(uri, {
       useNewUrlParser: true,
@@ -39,6 +40,8 @@ router.get("/", (req, res) => {
 });
 
 router.post("/register", (req, res) => {
+  console.log("REGISTER PROFILE called");
+
   // body has email pass and username
   try {
     const client = new MongoClient(uri, {
@@ -112,6 +115,8 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
+  console.log("LOGIN called");
+
   // body has email and pass
   try {
     const client = new MongoClient(uri, {
@@ -141,7 +146,6 @@ router.post("/login", (req, res) => {
             crypto.createHash("md5").update(body.password).digest("hex") ==
             result[0].password
           ) {
-            console.log("pass");
             const token = crypto.randomBytes(20).toString("hex");
             collection.updateOne(
               { _id: body.email },
@@ -158,7 +162,6 @@ router.post("/login", (req, res) => {
               },
             );
           } else {
-            console.log(body.password, result[0].password);
             client.close();
             res.status(400).send("Invalid credentials");
           }
@@ -171,6 +174,8 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
+  console.log("LOGOUT called");
+
   // body has email
   try {
     const client = new MongoClient(uri, {
@@ -207,6 +212,8 @@ router.post("/logout", (req, res) => {
 });
 
 router.post("/validate_token", (req, res) => {
+  console.log("VALIDATE TOKEN called");
+
   const body = req.body;
   // body has email and token
   try {
@@ -229,10 +236,8 @@ router.post("/validate_token", (req, res) => {
           return;
         }
         if (body.token == result[0].activeSession) {
-          console.log("pass");
           res.status(200).send("Active");
         } else {
-          console.log(body.password, result[0].password);
           res.status(400).send("Invalid session");
         }
         client.close();
@@ -247,6 +252,8 @@ router.post("/validate_token", (req, res) => {
 // TBD
 
 router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
+  console.log("UPDATE PROFILE called");
+
   // body has obj to be updated
   try {
     const client = new MongoClient(uri, {
@@ -269,7 +276,6 @@ router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
         var mimetype = image.mimetype;
         mimetype = mimetype.split("/");
         var extension = mimetype[1];
-        console.log(image.buffer);
         const file = bucket.file(`Images/${obj._id}/${obj.name}.${extension}`);
         await file.save(image.buffer, { contentType: image.mimetype });
         file.makePublic();
@@ -279,7 +285,6 @@ router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
         mimetype = bannerImage.mimetype;
         mimetype = mimetype.split("/");
         extension = mimetype[1];
-        console.log(bannerImage.buffer);
         const bannerImageFile = bucket.file(
           `Images/${obj._id}/${obj.name}.${extension}`,
         );
@@ -305,6 +310,8 @@ router.patch("/", upload.array("uploadedFile", 5), async (req, res) => {
 // get email frm username
 
 router.get("/email/:username", (req, res) => {
+  console.log("GET EMAIL FROM USERNAME called");
+
   // params has username
   try {
     const client = new MongoClient(uri, {
@@ -338,6 +345,8 @@ router.get("/email/:username", (req, res) => {
 });
 
 router.get("/most_followed", (req, res) => {
+  console.log("GET MOST FOLLOWED called");
+
   // params has username
   try {
     const client = new MongoClient(uri, {
@@ -372,7 +381,6 @@ router.get("/most_followed", (req, res) => {
             res.status(400).send("err");
             return;
           }
-          console.log(result);
           res.status(200).send(result);
           client.close();
         });
@@ -384,6 +392,8 @@ router.get("/most_followed", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
+  console.log("GET PROFILE BY ID called");
+
   // body has email id as id
   try {
     const client = new MongoClient(uri, {
