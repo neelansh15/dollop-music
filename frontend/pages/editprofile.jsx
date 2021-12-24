@@ -3,10 +3,11 @@ import Card from "components/Card/Card";
 import { useEffect, useState } from "react";
 import { useStore } from "store";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function EditProfile() {
-  const userState = useStore(state => state.user);
-  const apiUrl = useStore(state => state.apiUrl);
+  const userState = useStore((state) => state.user);
+  const apiUrl = useStore((state) => state.apiUrl);
   const router = useRouter();
   // let [email, setEmail] = useState()
   // let [username, setUsername] = useState()
@@ -63,7 +64,9 @@ export default function EditProfile() {
     console.log("start");
     console.log(e);
     const formData = new FormData();
-    formData.append("uploadedFile", e.target[0].files[0]);
+    if (e.target[0].files[0]) {
+      formData.append("uploadedFile", e.target[0].files[0]);
+    }
     formData.append("username", e.target[1].value);
     formData.append("tagline", e.target[2].value);
     formData.append("about", e.target[3].value);
@@ -91,6 +94,9 @@ export default function EditProfile() {
 
   return (
     <div className="px-15 pt-10 w-full">
+      <Head>
+        <title>Edit Profile - Dollop Music</title>
+      </Head>
       <h1 className="text-3xl font-bold text-center">Edit Profile</h1>
 
       <div className="max-w-700px mx-auto mt-10">
@@ -102,8 +108,16 @@ export default function EditProfile() {
               src={userDetails.image}
             ></img>
             <div className="my-4">
-              <label htmlFor="uploadedFile" className="text-lg font-semibold">Update avatar</label> <br />
-              <input type="file" name="uploadedFile" id="uploadedFile" accept="image/*" />
+              <label htmlFor="uploadedFile" className="text-lg font-semibold">
+                Update avatar
+              </label>{" "}
+              <br />
+              <input
+                type="file"
+                name="uploadedFile"
+                id="uploadedFile"
+                accept="image/*"
+              />
             </div>
 
             <h1 className="text-lg font-semibold mb-3">Username</h1>
