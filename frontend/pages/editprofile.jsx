@@ -3,10 +3,11 @@ import Card from "components/Card/Card";
 import { useEffect, useState } from "react";
 import { useStore } from "store";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function EditProfile() {
-  const userState = useStore(state => state.user);
-  const apiUrl = useStore(state => state.apiUrl);
+  const userState = useStore((state) => state.user);
+  const apiUrl = useStore((state) => state.apiUrl);
   const router = useRouter();
   // let [email, setEmail] = useState()
   // let [username, setUsername] = useState()
@@ -58,12 +59,14 @@ export default function EditProfile() {
     setUserDetails({ ...userDetails, [field]: value });
   }
 
-  const handleFormSubmit = async e => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log("start");
     console.log(e);
     const formData = new FormData();
-    formData.append("uploadedFile", e.target[0].files[0]);
+    if (e.target[0].files[0]) {
+      formData.append("uploadedFile", e.target[0].files[0]);
+    }
     formData.append("username", e.target[1].value);
     formData.append("tagline", e.target[2].value);
     formData.append("about", e.target[3].value);
@@ -81,7 +84,7 @@ export default function EditProfile() {
     const { data: returnDoc } = await axios.post(
       `${apiUrl}/api/profile/update`,
       formData,
-      config,
+      config
     );
     console.log("end", returnDoc);
     router.push("/profile");
@@ -90,88 +93,102 @@ export default function EditProfile() {
   const toggleHover = () => setHovered(!hovered);
 
   return (
-    <div className='px-15 pt-10 w-full'>
-      <h1 className='text-3xl font-bold text-center'>Edit Profile</h1>
+    <div className="px-15 pt-10 w-full">
+      <Head>
+        <title>Edit Profile - Dollop Music</title>
+      </Head>
+      <h1 className="text-3xl font-bold text-center">Edit Profile</h1>
 
-      <div className='max-w-700px mx-auto mt-10'>
+      <div className="max-w-700px mx-auto mt-10">
         <Card>
           <form onSubmit={handleFormSubmit}>
-            <h1 className='text-lg font-semibold mb-5'>Avatar</h1>
+            <h1 className="text-lg font-semibold mb-5">Avatar</h1>
             <img
-              className='object-cover w-3/5 h-3/5 max-w-300px max-h-300px rounded-full mx-auto mb-5'
+              className="object-cover w-3/5 h-3/5 max-w-300px max-h-300px rounded-full mx-auto mb-5"
               src={userDetails.image}
             ></img>
-            <input type='file' name='uploadedFile' id='uploadedFile' />
+            <div className="my-4">
+              <label htmlFor="uploadedFile" className="text-lg font-semibold">
+                Update avatar
+              </label>{" "}
+              <br />
+              <input
+                type="file"
+                name="uploadedFile"
+                id="uploadedFile"
+                accept="image/*"
+              />
+            </div>
 
-            <h1 className='text-lg font-semibold mb-3'>Username</h1>
+            <h1 className="text-lg font-semibold mb-3">Username</h1>
             <input
-              name='username'
-              type='username'
+              name="username"
+              type="username"
               value={userDetails.username}
               onChange={handleInput}
-              className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
-              id='username'
+              className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              id="username"
             ></input>
 
-            <h1 className='text-lg font-semibold mb-3'>Tag Line</h1>
+            <h1 className="text-lg font-semibold mb-3">Tag Line</h1>
             <input
-              name='tagline'
-              type='tagline'
+              name="tagline"
+              type="tagline"
               value={userDetails.tagline}
               onChange={handleInput}
-              className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
-              id='tagline'
+              className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              id="tagline"
             ></input>
 
-            <h1 className='text-lg font-semibold mb-3'>About</h1>
+            <h1 className="text-lg font-semibold mb-3">About</h1>
             <textarea
               rows={5}
-              name='about'
-              type='about'
+              name="about"
+              type="about"
               value={userDetails.about}
               onChange={handleInput}
-              className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
-              id='about'
+              className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              id="about"
             ></textarea>
 
-            <h1 className='text-lg font-semibold mb-3'>Instagram Profile</h1>
+            <h1 className="text-lg font-semibold mb-3">Instagram Profile</h1>
             <input
-              name='instagram'
-              type='instagram'
+              name="instagram"
+              type="instagram"
               value={userDetails.instagram}
               onChange={handleInput}
-              className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
-              id='instagram'
+              className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              id="instagram"
             ></input>
 
-            <h1 className='text-lg font-semibold mb-3'>SoundCloud Profile</h1>
+            <h1 className="text-lg font-semibold mb-3">SoundCloud Profile</h1>
             <input
-              name='soundcloud'
-              type='soundcloud'
+              name="soundcloud"
+              type="soundcloud"
               value={userDetails.soundcloud}
               onChange={handleInput}
-              className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
-              id='soundcloud'
+              className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              id="soundcloud"
             ></input>
 
-            <h1 className='text-lg font-semibold mb-3'>Twitter Profile</h1>
+            <h1 className="text-lg font-semibold mb-3">Twitter Profile</h1>
             <input
-              name='twitter'
-              type='twitter'
+              name="twitter"
+              type="twitter"
               value={userDetails.twitter}
               onChange={handleInput}
-              className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
-              id='twitter'
+              className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              id="twitter"
             ></input>
 
-            <h1 className='text-lg font-semibold mb-3'>GitHub Profile</h1>
+            <h1 className="text-lg font-semibold mb-3">GitHub Profile</h1>
             <input
-              name='github'
-              type='github'
+              name="github"
+              type="github"
               value={userDetails.github}
               onChange={handleInput}
-              className='bg-dark-300 p-2 mb-3 w-full rounded-lg'
-              id='github'
+              className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
+              id="github"
             ></input>
 
             {/* Question: Do we let them change email? */}
@@ -203,11 +220,11 @@ export default function EditProfile() {
             className="bg-dark-300 p-2 mb-3 w-full rounded-lg"
           ></input> */}
 
-            <div className='text-center'>
+            <div className="text-center">
               <button
                 onMouseEnter={toggleHover}
                 onMouseLeave={toggleHover}
-                type='submit'
+                type="submit"
                 className={
                   "py-2 px-10 m-2 my-3 text-white bg-dark-300 font-semibold text-md rounded-lg " +
                   (hovered ? "" : "bg-dark-100")
