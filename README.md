@@ -35,7 +35,7 @@ yarn dev
 
 ### For Backend:
 #### Configuration file
-For privacy reasons, the config file is not included in the repo. You can make your own at `backend/functions/` and give it the following structure:
+For privacy reasons, the config file is not included in the repo. You can make your own at `backend/functions/config.js` and give it the following structure:
 ```js
 exports.MONGO_DB_URI = "";
 
