@@ -74,9 +74,9 @@ firebase emulators:start --only functions
 ```
 
 ## Requirements
-User Requirements: Works on any computer that support a modern browser
-Firebase Account 
-MongoDB Atlas Account
+User Requirements: Works on any computer that support a modern browser.  
+Firebase Account   
+MongoDB Atlas Account  
 
 ## Screenshots
 Dashboard
